@@ -1,5 +1,6 @@
 import { listEnquiries } from "../../lib/storage.js";
 import Link from "next/link";
+import DeleteEnquiryButton from "./DeleteEnquiryButton.js";
 
 // This dashboard shows live enquiry data behind auth middleware — it must
 // never be statically prerendered/cached, or it would freeze on whatever
@@ -58,16 +59,20 @@ export default async function AdminDashboard() {
         <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem" }}>
           {enquiries?.map(e => {
             const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
+            const displayName = `${e.first_name} ${e.last_name || ""}`.trim();
             return (
-              <Link key={e.id} href={`/admin/enquiry/${e.id}`} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"0.75rem", background:C.white, border:`1px solid ${C.stone}`, padding:"1.1rem 1.5rem", textDecoration:"none", color:C.ink, transition:"border-color 0.15s" }}>
-                <div>
-                  <div style={{ fontSize:"1rem", fontWeight:400 }}>{e.first_name} {e.last_name || ""}</div>
-                  <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{e.email}</div>
-                </div>
-                <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
-                <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
-                <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
-              </Link>
+              <div key={e.id} style={{ display:"flex", alignItems:"center", gap:"0.5rem", background:C.white, border:`1px solid ${C.stone}`, padding:"1.1rem 1.5rem", transition:"border-color 0.15s" }}>
+                <Link href={`/admin/enquiry/${e.id}`} style={{ flex:1, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"0.75rem", textDecoration:"none", color:C.ink, minWidth:0 }}>
+                  <div>
+                    <div style={{ fontSize:"1rem", fontWeight:400 }}>{displayName}</div>
+                    <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{e.email}</div>
+                  </div>
+                  <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
+                  <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
+                  <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
+                </Link>
+                <DeleteEnquiryButton id={e.id} name={displayName} />
+              </div>
             );
           })}
         </div>

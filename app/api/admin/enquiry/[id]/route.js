@@ -1,4 +1,4 @@
-import { getEnquiry, updateEnquiry } from "../../../../../lib/storage.js";
+import { getEnquiry, updateEnquiry, deleteEnquiry } from "../../../../../lib/storage.js";
 
 export async function GET(request, { params }) {
   const { id } = await params;
@@ -14,6 +14,16 @@ export async function PATCH(request, { params }) {
   const updates = Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
   try {
     await updateEnquiry(id, updates);
+    return Response.json({ ok: true });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request, { params }) {
+  const { id } = await params;
+  try {
+    await deleteEnquiry(id);
     return Response.json({ ok: true });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
