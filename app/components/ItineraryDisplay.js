@@ -1,4 +1,4 @@
-import { buildQuickLinks, normalizeItinerary, parseItineraryJSON } from "../../lib/itinerary.js";
+import { buildQuickLinks, normalizeItinerary, parseItineraryJSON, linkifySegments } from "../../lib/itinerary.js";
 import Accordion from "./Accordion.js";
 
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
@@ -34,6 +34,17 @@ function LegRow({ leg }) {
   );
 }
 
+// Renders free text with any [label](https://...) markdown-style links as
+// real clickable <a> tags — lets narrative fields (whyHere, day
+// descriptions, etc.) reference a link without a separate structured field.
+function LinkedText({ text }) {
+  return linkifySegments(text).map((seg, i) =>
+    seg.type === "link"
+      ? <a key={i} href={seg.url} target="_blank" rel="noopener noreferrer" style={{ color:"inherit", textDecoration:"underline" }}>{seg.label}</a>
+      : <span key={i}>{seg.value}</span>
+  );
+}
+
 function OptionRow({ opt, recommended }) {
   return (
     <div style={{ display:"flex", justifyContent:"space-between", gap:"1rem", padding:"0.5rem 0", borderBottom:`1px solid ${C.mist}` }}>
@@ -54,11 +65,11 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
   return (
     <div>
       <h2 style={{ fontSize:"clamp(1.6rem,3.5vw,2.4rem)", fontWeight:300, marginBottom:"0.5rem" }}>{d.title}</h2>
-      {d.intro && <p style={{ ...body, marginBottom:"1rem" }}>{d.intro}</p>}
+      {d.intro && <p style={{ ...body, marginBottom:"1rem" }}><LinkedText text={d.intro} /></p>}
 
       {d.preTripNotes?.length > 0 && (
         <div style={{ background:C.mist, border:`1px solid ${C.stone}`, padding:"1rem 1.25rem", marginBottom:"1rem" }}>
-          {d.preTripNotes.map((n, i) => <p key={i} style={{ ...sans, fontSize:"0.8rem", color:C.dusk, margin:i ? "0.4rem 0 0" : 0 }}>{n}</p>)}
+          {d.preTripNotes.map((n, i) => <p key={i} style={{ ...sans, fontSize:"0.8rem", color:C.dusk, margin:i ? "0.4rem 0 0" : 0 }}><LinkedText text={n} /></p>)}
         </div>
       )}
 
@@ -77,20 +88,20 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
           title={region.name}
           subtitle={collapsible ? `${region.days?.length || 0} day${(region.days?.length || 0) === 1 ? "" : "s"}` : undefined}
         >
-          {region.whyHere && <p style={{ ...body, marginBottom:"1rem" }}>{region.whyHere}</p>}
+          {region.whyHere && <p style={{ ...body, marginBottom:"1rem" }}><LinkedText text={region.whyHere} /></p>}
 
           {region.accommodation?.options?.length > 0 && (
             <div style={{ marginBottom:"1.25rem" }}>
               <div style={{ fontSize:"0.95rem", fontWeight:400, marginBottom:"0.25rem" }}>
                 Accommodation {region.accommodation.nights ? `— ${region.accommodation.nights}` : ""}
               </div>
-              {region.accommodation.note && <p style={{ ...sans, fontSize:"0.78rem", color:C.stone, fontStyle:"italic", marginBottom:"0.5rem" }}>{region.accommodation.note}</p>}
+              {region.accommodation.note && <p style={{ ...sans, fontSize:"0.78rem", color:C.stone, fontStyle:"italic", marginBottom:"0.5rem" }}><LinkedText text={region.accommodation.note} /></p>}
               {region.accommodation.options.map((opt, i) => <OptionRow key={i} opt={opt} recommended />)}
             </div>
           )}
 
           {region.gettingThereNote && (
-            <p style={{ ...sans, fontSize:"0.8rem", color:C.dusk, fontStyle:"italic", marginBottom:"1rem" }}>{region.gettingThereNote}</p>
+            <p style={{ ...sans, fontSize:"0.8rem", color:C.dusk, fontStyle:"italic", marginBottom:"1rem" }}><LinkedText text={region.gettingThereNote} /></p>
           )}
 
           {region.days?.map((day) => (
@@ -100,7 +111,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
                 Day {day.day}{day.dateLabel ? ` — ${day.dateLabel}` : ""}{day.bookInAdvance ? " ⚠️ Book in advance" : ""}
               </div>
               <div style={{ fontSize:"1.05rem", fontWeight:400, marginBottom:"0.4rem" }}>{day.title}</div>
-              {day.description && <p style={{ ...body, margin:0 }}>{day.description}</p>}
+              {day.description && <p style={{ ...body, margin:0 }}><LinkedText text={day.description} /></p>}
               {day.options?.length > 0 && (
                 <div style={{ marginTop:"0.5rem" }}>
                   {day.options.map((opt, i) => <OptionRow key={i} opt={opt} />)}
@@ -127,7 +138,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
         <div>
           <div style={sectionLabel}>Similar packages from other operators</div>
           <ul style={{ listStyle:"none", padding:0, margin:0 }}>
-            {d.alternativeOperators.map((op, i) => <li key={i} style={{ ...sans, fontSize:"0.82rem", color:C.dusk, padding:"0.2rem 0" }}>— {op}</li>)}
+            {d.alternativeOperators.map((op, i) => <li key={i} style={{ ...sans, fontSize:"0.82rem", color:C.dusk, padding:"0.2rem 0" }}>— <LinkedText text={op} /></li>)}
           </ul>
         </div>
       )}
@@ -136,7 +147,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
         <div>
           <div style={sectionLabel}>Good to know before you go</div>
           <ul style={{ listStyle:"none", padding:0, margin:0 }}>
-            {d.goodToKnow.map((tip, i) => <li key={i} style={{ ...sans, fontSize:"0.82rem", color:C.dusk, padding:"0.2rem 0" }}>— {tip}</li>)}
+            {d.goodToKnow.map((tip, i) => <li key={i} style={{ ...sans, fontSize:"0.82rem", color:C.dusk, padding:"0.2rem 0" }}>— <LinkedText text={tip} /></li>)}
           </ul>
         </div>
       )}
