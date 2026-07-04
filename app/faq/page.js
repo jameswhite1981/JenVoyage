@@ -27,7 +27,7 @@ const FAQS = [
   },
   {
     q: "Isn't this all just done using AI?",
-    a: "Absolutely not. I'd be lying if I said that AI wasn't involved — and I'd also probably be a bit stupid. All that stuff you see pre-payment is AI generated. However, all that changes once I look into your request: it is fully designed by one person. All accommodation, trips and flights are personally picked — by a real person!",
+    a: "Absolutely not. I'd be lying if I said that AI wasn't involved — and I'd also probably be a bit naive. All that stuff you see pre-payment is AI generated. However, all that changes once I look into your request: it is fully designed by one person. All accommodation, trips and flights are personally picked — by a real person!",
   },
 ];
 
