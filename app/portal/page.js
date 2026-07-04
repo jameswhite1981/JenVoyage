@@ -75,7 +75,7 @@ export default async function PortalPage() {
 
               {isReady && (
                 <div style={{ marginTop:"2.5rem" }}>
-                  <ItineraryDisplay itinerary={enquiry.published_content} collapsible defaultOpen />
+                  <ItineraryDisplay itinerary={enquiry.published_content} collapsible />
                 </div>
               )}
             </div>
