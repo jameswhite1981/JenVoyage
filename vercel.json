@@ -1,7 +1,7 @@
 {
   "functions": {
     "app/api/enquiry/route.js": {
-      "maxDuration": 60,
+      "maxDuration": 180,
       "memory": 512
     },
     "app/api/portal/download/[id]/route.js": {
