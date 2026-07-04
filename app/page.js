@@ -585,21 +585,17 @@ export default function JenVoyagePage() {
             </div>
 
             {form.otherCountry && (
-              <div style={{ display:"flex", alignItems:"center", gap:"1.5rem", marginBottom:"2rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"1.5rem" }}>
-                <div style={{ width:110, height:110, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"3.2rem", flexShrink:0 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"1rem", marginBottom:"1.25rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.85rem 1rem" }}>
+                <div style={{ width:56, height:56, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.6rem", flexShrink:0 }}>
                   {flagEmoji(form.otherCountry)}
                 </div>
                 <div style={{ flex:1, minWidth:200 }}>
-                  <div style={{ fontSize:"1.25rem", fontWeight:400, marginBottom:"0.5rem" }}>{form.otherCountry}</div>
+                  <div style={{ fontSize:"0.95rem", fontWeight:500, marginBottom:"0.2rem" }}>{form.otherCountry}</div>
                   {countryKnownFor(form.otherCountry).length>0 && (
-                    <>
-                      <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.12em", textTransform:"uppercase", color:COLORS.dusk, marginBottom:"0.4rem" }}>Known for</div>
-                      <ul style={{ listStyle:"none", padding:0, margin:0 }}>
-                        {countryKnownFor(form.otherCountry).map((item,i)=>(
-                          <li key={i} style={{ ...sans, fontSize:"0.85rem", color:COLORS.dusk, padding:"0.15rem 0" }}>{item}</li>
-                        ))}
-                      </ul>
-                    </>
+                    <div style={{ ...sans, fontSize:"0.72rem", color:COLORS.dusk }}>
+                      <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
+                      {countryKnownFor(form.otherCountry).join("  ·  ")}
+                    </div>
                   )}
                 </div>
               </div>
