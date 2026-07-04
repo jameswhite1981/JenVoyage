@@ -4,12 +4,11 @@ import Accordion from "./Accordion.js";
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
 const sans = { fontFamily:"system-ui,sans-serif" };
 
-// Renders as a collapsible accordion (admin preview) or a plain labelled
-// section (customer portal — collapsible defaults to false, so the portal
-// is unaffected by this).
-function Section({ collapsible, title, subtitle, children }) {
+// Renders as a collapsible accordion (admin preview + customer portal) or a
+// plain labelled section when collapsible is false entirely.
+function Section({ collapsible, defaultOpen, title, subtitle, children }) {
   if (collapsible) {
-    return <Accordion title={title} subtitle={subtitle}>{children}</Accordion>;
+    return <Accordion title={title} subtitle={subtitle} defaultOpen={defaultOpen}>{children}</Accordion>;
   }
   return (
     <>
@@ -22,14 +21,24 @@ function Section({ collapsible, title, subtitle, children }) {
 const sectionLabel = { ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:C.gold, margin:"2rem 0 0.75rem", paddingBottom:"0.35rem", borderBottom:`1px solid ${C.stone}` };
 const body = { ...sans, fontSize:"0.85rem", color:C.dusk, fontWeight:300, lineHeight:1.8 };
 
+function BookLink({ href }) {
+  if (!href) return null;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{ ...sans, fontSize:"0.72rem", fontWeight:500, color:C.gold, textDecoration:"none", whiteSpace:"nowrap" }}>
+      Book →
+    </a>
+  );
+}
+
 function LegRow({ leg }) {
   if (!leg) return null;
   return (
-    <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem 1.25rem", padding:"0.75rem 0", borderBottom:`1px solid ${C.mist}` }}>
+    <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem 1.25rem", padding:"0.75rem 0", borderBottom:`1px solid ${C.mist}`, alignItems:"center" }}>
       <div style={{ ...sans, fontSize:"0.78rem", fontWeight:500, color:C.ink, minWidth:110 }}>{leg.label}</div>
       {leg.date  && <div style={{ ...sans, fontSize:"0.78rem", color:C.dusk }}>{leg.date}</div>}
       {leg.route && <div style={{ ...sans, fontSize:"0.78rem", color:C.dusk, flex:1 }}>{leg.route}</div>}
       {leg.cost  && <div style={{ ...sans, fontSize:"0.78rem", color:C.ink, fontWeight:500 }}>{leg.cost}</div>}
+      <BookLink href={leg.link} />
     </div>
   );
 }
@@ -47,16 +56,19 @@ function LinkedText({ text }) {
 
 function OptionRow({ opt, recommended }) {
   return (
-    <div style={{ display:"flex", justifyContent:"space-between", gap:"1rem", padding:"0.5rem 0", borderBottom:`1px solid ${C.mist}` }}>
+    <div style={{ display:"flex", justifyContent:"space-between", gap:"1rem", padding:"0.5rem 0", borderBottom:`1px solid ${C.mist}`, alignItems:"center" }}>
       <div style={{ ...sans, fontSize:"0.8rem", color:C.ink }}>
         {opt.label}{opt.name ? ` — ${opt.name}` : ""}{recommended && opt.recommended ? <span style={{ color:C.gold, fontWeight:500 }}> ★ Recommended</span> : null}
       </div>
-      {opt.cost && <div style={{ ...sans, fontSize:"0.8rem", color:C.dusk, whiteSpace:"nowrap" }}>{opt.cost}</div>}
+      <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", flexShrink:0 }}>
+        {opt.cost && <span style={{ ...sans, fontSize:"0.8rem", color:C.dusk, whiteSpace:"nowrap" }}>{opt.cost}</span>}
+        <BookLink href={opt.link} />
+      </div>
     </div>
   );
 }
 
-export default function ItineraryDisplay({ itinerary, collapsible = false }) {
+export default function ItineraryDisplay({ itinerary, collapsible = false, defaultOpen = false }) {
   const raw = typeof itinerary === "string" ? parseItineraryJSON(itinerary) : itinerary;
   const d = normalizeItinerary(raw);
   if (!d) return null;
@@ -74,7 +86,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
       )}
 
       {(d.flights?.outbound || d.flights?.return || d.flights?.internal?.length > 0) && (
-        <Section collapsible={collapsible} title="Flights">
+        <Section collapsible={collapsible} defaultOpen={defaultOpen} title="Flights">
           <LegRow leg={d.flights.outbound} />
           {d.flights.internal?.map((leg, i) => <LegRow key={i} leg={leg} />)}
           <LegRow leg={d.flights.return} />
@@ -85,6 +97,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false }) {
         <Section
           key={ri}
           collapsible={collapsible}
+          defaultOpen={defaultOpen}
           title={region.name}
           subtitle={collapsible ? `${region.days?.length || 0} day${(region.days?.length || 0) === 1 ? "" : "s"}` : undefined}
         >
