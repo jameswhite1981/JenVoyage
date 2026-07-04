@@ -1,6 +1,11 @@
 import { listEnquiries } from "../../lib/storage.js";
 import Link from "next/link";
 
+// This dashboard shows live enquiry data behind auth middleware — it must
+// never be statically prerendered/cached, or it would freeze on whatever
+// data existed at build time.
+export const dynamic = "force-dynamic";
+
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
 const sans = { fontFamily:"system-ui,sans-serif" };
 
