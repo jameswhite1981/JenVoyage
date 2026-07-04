@@ -10,29 +10,11 @@ const COLORS = {
 };
 
 const DESTINATIONS = {
-  thailand: { name:"Thailand", flag:"🇹🇭",
-    general:["🤿 Snorkelling","🐠 Scuba diving","🧘 Yoga & wellness","🍜 Thai cooking class","🐘 Elephant sanctuary","🛶 River kayaking","🌿 Jungle trekking","🧖 Thai massage","🌅 Island hopping","🥊 Muay Thai","🎣 Deep sea fishing","🏍️ Motorbike touring"],
-    landmarks:["🏯 Grand Palace, Bangkok","🛕 Wat Pho (Reclining Buddha)","🌟 Golden Buddha (Wat Traimit)","🏝️ Ko Phi Phi","🪨 Railay Beach","🌊 Similan Islands","🌸 Chiang Mai Old City","💧 Erawan Waterfalls","🌉 Chiang Rai White Temple","⛵ Phang Nga Bay","🌴 Koh Samui","🏙️ Chatuchak Market"],
-    regions:["🏙️ Bangkok","🌴 Southern Islands","🏔️ Chiang Mai & North","🌊 Andaman Coast","🌅 Gulf of Thailand"] },
-  japan: { name:"Japan", flag:"🇯🇵",
-    general:["🍣 Sushi & ramen food tour","🎌 Tea ceremony","🏯 Samurai experience","♨️ Onsen (hot springs)","🌸 Cherry blossom viewing","🎎 Ryokan stay","⛷️ Skiing","🎋 Bamboo forest walk","🏔️ Mount Fuji hike","🎮 Anime & pop culture","🥋 Martial arts","🚅 Shinkansen bullet train"],
-    landmarks:["⛩️ Fushimi Inari, Kyoto","🏯 Osaka Castle","🗼 Tokyo Tower","🦌 Nara Deer Park","🎋 Arashiyama Bamboo Grove","⛩️ Meiji Shrine, Tokyo","🏔️ Hakone (Mt Fuji views)","🏯 Himeji Castle","🛕 Senso-ji, Asakusa","🌊 Miyajima Island","🌉 Akihabara","🌿 Kenroku-en Garden"],
-    regions:["🏙️ Tokyo","🎎 Kyoto & Nara","🍜 Osaka & Kobe","🏔️ Hakone & Fuji","❄️ Hokkaido","🌊 Hiroshima & Miyajima"] },
-  srilanka: { name:"Sri Lanka", flag:"🇱🇰",
-    general:["🐘 Wildlife safari","🐢 Turtle watching","🤿 Snorkelling & diving","🍵 Tea plantation tour","🚂 Scenic train journey","🧘 Ayurveda wellness","🏄 Surfing","🐋 Whale watching","🌿 Rainforest trekking","🍛 Cooking class","🏄 Kitesurfing","🎣 Deep sea fishing"],
-    landmarks:["🪨 Sigiriya Rock Fortress","🏛️ Polonnaruwa","🛕 Temple of the Tooth, Kandy","🌿 Sinharaja Rainforest","🌊 Galle Dutch Fort","🐘 Yala National Park","⛰️ Adam's Peak","🏖️ Mirissa Beach","🌅 Tangalle","🐊 Bundala National Park","💧 Ravana Falls","🌸 Udawalawe Elephant Transit"],
-    regions:["🏙️ Colombo & Negombo","🪨 Cultural Triangle","🍵 Hill Country & Ella","🌊 South Coast","🐘 Yala & Safari Belt","🏰 Galle & the Fort"] },
-  newzealand: { name:"New Zealand", flag:"🇳🇿",
-    general:["🪂 Skydiving","🏔️ Glacier hiking","🎬 Hobbiton tour","🎭 Māori cultural experience","🍷 Wine tasting","🚣 Kayaking Fiordland","🐋 Whale watching","⛷️ Skiing & snowboarding","♨️ Geothermal spa","🪲 Glowworm cave tour","🌊 Sandboarding","🏄 Surfing"],
-    landmarks:["🌊 Milford Sound","🎬 Hobbiton, Matamata","🏔️ Tongariro Alpine Crossing","♨️ Rotorua Geothermal","🏖️ Bay of Islands","🧊 Franz Josef Glacier","🏙️ Queenstown","🌿 Abel Tasman National Park","🪲 Waitomo Glowworm Caves","🦅 Fiordland National Park","🌁 Auckland Sky Tower","🦜 Kaikōura Coast"],
-    regions:["🌆 Auckland & Northland","♨️ Rotorua & Bay of Plenty","🏛️ Wellington & Wairarapa","🍷 Marlborough & Nelson","🏔️ Queenstown & Fiordland","🧊 West Coast & Glaciers"] },
   somewhere_else: { name:"Somewhere else", flag:"🌍",
     general:["🏖️ Beach & relaxation","🏔️ Hiking & trekking","🍽️ Local food & cuisine","🏛️ History & culture","🤿 Water sports","🌿 Nature & wildlife","🎭 Arts & entertainment","🛍️ Shopping","🧘 Wellness & spa","🎉 Festivals & events","🚴 Cycling & adventure","📸 Photography"],
     landmarks:[],
     regions:[] }
 };
-
-const REGIONS = ["Southeast Asia","East Asia","South Asia","Australasia","Worldwide"];
 
 const CONTINENTS_COUNTRIES = {
   "Europe":        ["Albania","Andorra","Austria","Belgium","Bosnia & Herzegovina","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Kosovo","Latvia","Lithuania","Luxembourg","Malta","Moldova","Montenegro","Netherlands","North Macedonia","Norway","Poland","Portugal","Romania","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Turkey","Ukraine","United Kingdom"],
@@ -44,6 +26,37 @@ const CONTINENTS_COUNTRIES = {
   "Oceania":       ["Australia","Cook Islands","Fiji","French Polynesia","New Caledonia","New Zealand","Papua New Guinea","Samoa","Solomon Islands","Tonga","Vanuatu"],
   "Middle East":   ["Bahrain","Iran","Iraq","Israel","Jordan","Kuwait","Lebanon","Oman","Qatar","Saudi Arabia","UAE","Yemen"]
 };
+
+const COUNTRY_ISO = {
+  "Albania":"AL","Andorra":"AD","Austria":"AT","Belgium":"BE","Bosnia & Herzegovina":"BA","Bulgaria":"BG","Croatia":"HR","Cyprus":"CY","Czech Republic":"CZ","Denmark":"DK","Estonia":"EE","Finland":"FI","France":"FR","Germany":"DE","Greece":"GR","Hungary":"HU","Iceland":"IS","Ireland":"IE","Kosovo":"XK","Latvia":"LV","Lithuania":"LT","Luxembourg":"LU","Malta":"MT","Moldova":"MD","Montenegro":"ME","Netherlands":"NL","North Macedonia":"MK","Norway":"NO","Poland":"PL","Portugal":"PT","Romania":"RO","Serbia":"RS","Slovakia":"SK","Slovenia":"SI","Spain":"ES","Sweden":"SE","Switzerland":"CH","Turkey":"TR","Ukraine":"UA","United Kingdom":"GB",
+  "Armenia":"AM","Azerbaijan":"AZ","Bahrain":"BH","Bangladesh":"BD","Bhutan":"BT","Brunei":"BN","Cambodia":"KH","China":"CN","Georgia":"GE","Hong Kong":"HK","India":"IN","Indonesia":"ID","Japan":"JP","Jordan":"JO","Kazakhstan":"KZ","Kyrgyzstan":"KG","Laos":"LA","Lebanon":"LB","Malaysia":"MY","Maldives":"MV","Mongolia":"MN","Myanmar":"MM","Nepal":"NP","Oman":"OM","Pakistan":"PK","Philippines":"PH","Qatar":"QA","Saudi Arabia":"SA","Singapore":"SG","South Korea":"KR","Sri Lanka":"LK","Taiwan":"TW","Tajikistan":"TJ","Thailand":"TH","UAE":"AE","Uzbekistan":"UZ","Vietnam":"VN",
+  "Algeria":"DZ","Angola":"AO","Benin":"BJ","Botswana":"BW","Cameroon":"CM","Cape Verde":"CV","Egypt":"EG","Ethiopia":"ET","Ghana":"GH","Kenya":"KE","Madagascar":"MG","Malawi":"MW","Morocco":"MA","Mozambique":"MZ","Namibia":"NA","Nigeria":"NG","Rwanda":"RW","Senegal":"SN","Seychelles":"SC","South Africa":"ZA","Tanzania":"TZ","Tunisia":"TN","Uganda":"UG","Zambia":"ZM","Zimbabwe":"ZW",
+  "Bahamas":"BS","Barbados":"BB","Canada":"CA","Cuba":"CU","Dominican Republic":"DO","Haiti":"HT","Jamaica":"JM","Mexico":"MX","Puerto Rico":"PR","Trinidad & Tobago":"TT","USA":"US",
+  "Belize":"BZ","Costa Rica":"CR","El Salvador":"SV","Guatemala":"GT","Honduras":"HN","Nicaragua":"NI","Panama":"PA",
+  "Argentina":"AR","Bolivia":"BO","Brazil":"BR","Chile":"CL","Colombia":"CO","Ecuador":"EC","Paraguay":"PY","Peru":"PE","Suriname":"SR","Uruguay":"UY","Venezuela":"VE",
+  "Australia":"AU","Cook Islands":"CK","Fiji":"FJ","French Polynesia":"PF","New Caledonia":"NC","New Zealand":"NZ","Papua New Guinea":"PG","Samoa":"WS","Solomon Islands":"SB","Tonga":"TO","Vanuatu":"VU",
+  "Iran":"IR","Iraq":"IQ","Israel":"IL","Kuwait":"KW","Yemen":"YE"
+};
+
+function flagEmoji(country) {
+  const iso = COUNTRY_ISO[country];
+  if (!iso) return "🌍";
+  return [...iso].map(c => String.fromCodePoint(127397 + c.charCodeAt(0))).join("");
+}
+
+function continentForCountry(country) {
+  for (const [continent, list] of Object.entries(CONTINENTS_COUNTRIES)) {
+    if (list.includes(country)) return continent;
+  }
+  return null;
+}
+
+function countryKnownFor(country) {
+  if (!country) return [];
+  const specific = COUNTRY_DATA[country]?.landmarks;
+  if (specific?.length) return specific.slice(0, 3);
+  return (CONTINENT_DATA[continentForCountry(country)]?.landmarks || []).slice(0, 3);
+}
 
 const ALL_COUNTRIES = [...new Set(Object.values(CONTINENTS_COUNTRIES).flat())].sort((a, b) => a.localeCompare(b));
 
@@ -100,6 +113,9 @@ const COUNTRY_DATA = {
   "Ireland":         { general:["🍺 Pub culture & traditional music","🍺 Guinness Storehouse tour","🥾 Cliffside hiking","🏰 Castles & manor houses","🥃 Whiskey distillery visit","🏛️ Celtic heritage tour","⛳ Golf on links course","🦅 Falconry experience","🚴 Cycling the Wild Atlantic","📚 Literary Dublin tour","🐑 Sheep herding","🏊 Wild swimming"], landmarks:["🌊 Cliffs of Moher","🌿 Ring of Kerry","⛰️ Giant's Causeway","🏰 Rock of Cashel","🏰 Blarney Castle","🌿 Killarney National Park","🏝️ Skellig Michael","🏯 Dublin Castle","🌿 Glendalough","🏰 Bunratty Castle","🏝️ Aran Islands","🌊 Wild Atlantic Way"], regions:["🏙️ Dublin & East Coast","🌿 Kerry & Wild Atlantic Way","🎨 Galway & Connemara","⛰️ Northern Ireland & Causeway","🌊 Cork & South Coast","🏰 Shannon & Midlands"] },
   "Netherlands":     { general:["⛵ Canal boat tour","🌷 Tulip fields visit","🚴 Cycling countryside","🎨 Rijksmuseum art","🧀 Cheese market tour","🥃 Genever gin tasting","🌬️ Windmill visit","🌸 Flower auction tour","🍽️ Food market walk","🏺 Delft pottery workshop","🏖️ Beach at Zandvoort","👑 Royal palace visit"], landmarks:["🌊 Amsterdam Canals (UNESCO)","🌷 Keukenhof Tulip Gardens","🌬️ Kinderdijk Windmills (UNESCO)","🎨 Rijksmuseum, Amsterdam","📖 Anne Frank House","🏘️ Delft Old Town","🏛️ The Hague & Binnenhof","🌳 Zaanse Schans","🏙️ Maastricht Old Town","🏛️ Utrecht Dom Tower","🏖️ Scheveningen Beach","🚲 Haarlem Cycling Route"], regions:["🏙️ Amsterdam & North Holland","🏛️ The Hague & South Holland","🏰 Utrecht & Central","🌊 Zeeland & Delta","🍺 Maastricht & South","🌷 Haarlem & Flower Region"] },
   // ── Asia ────────────────────────────────────────────────────────────────────
+  "Thailand":        { general:["🤿 Snorkelling","🐠 Scuba diving","🧘 Yoga & wellness","🍜 Thai cooking class","🐘 Elephant sanctuary","🛶 River kayaking","🌿 Jungle trekking","🧖 Thai massage","🌅 Island hopping","🥊 Muay Thai","🎣 Deep sea fishing","🏍️ Motorbike touring"], landmarks:["🏯 Grand Palace, Bangkok","🛕 Wat Pho (Reclining Buddha)","🌟 Golden Buddha (Wat Traimit)","🏝️ Ko Phi Phi","🪨 Railay Beach","🌊 Similan Islands","🌸 Chiang Mai Old City","💧 Erawan Waterfalls","🌉 Chiang Rai White Temple","⛵ Phang Nga Bay","🌴 Koh Samui","🏙️ Chatuchak Market"], regions:["🏙️ Bangkok","🌴 Southern Islands","🏔️ Chiang Mai & North","🌊 Andaman Coast","🌅 Gulf of Thailand"] },
+  "Japan":           { general:["🍣 Sushi & ramen food tour","🎌 Tea ceremony","🏯 Samurai experience","♨️ Onsen (hot springs)","🌸 Cherry blossom viewing","🎎 Ryokan stay","⛷️ Skiing","🎋 Bamboo forest walk","🏔️ Mount Fuji hike","🎮 Anime & pop culture","🥋 Martial arts","🚅 Shinkansen bullet train"], landmarks:["⛩️ Fushimi Inari, Kyoto","🏯 Osaka Castle","🗼 Tokyo Tower","🦌 Nara Deer Park","🎋 Arashiyama Bamboo Grove","⛩️ Meiji Shrine, Tokyo","🏔️ Hakone (Mt Fuji views)","🏯 Himeji Castle","🛕 Senso-ji, Asakusa","🌊 Miyajima Island","🌉 Akihabara","🌿 Kenroku-en Garden"], regions:["🏙️ Tokyo","🎎 Kyoto & Nara","🍜 Osaka & Kobe","🏔️ Hakone & Fuji","❄️ Hokkaido","🌊 Hiroshima & Miyajima"] },
+  "Sri Lanka":       { general:["🐘 Wildlife safari","🐢 Turtle watching","🤿 Snorkelling & diving","🍵 Tea plantation tour","🚂 Scenic train journey","🧘 Ayurveda wellness","🏄 Surfing","🐋 Whale watching","🌿 Rainforest trekking","🍛 Cooking class","🏄 Kitesurfing","🎣 Deep sea fishing"], landmarks:["🪨 Sigiriya Rock Fortress","🏛️ Polonnaruwa","🛕 Temple of the Tooth, Kandy","🌿 Sinharaja Rainforest","🌊 Galle Dutch Fort","🐘 Yala National Park","⛰️ Adam's Peak","🏖️ Mirissa Beach","🌅 Tangalle","🐊 Bundala National Park","💧 Ravana Falls","🌸 Udawalawe Elephant Transit"], regions:["🏙️ Colombo & Negombo","🪨 Cultural Triangle","🍵 Hill Country & Ella","🌊 South Coast","🐘 Yala & Safari Belt","🏰 Galle & the Fort"] },
   "Vietnam":         { general:["🍜 Street food tour","🏍️ Motorbike adventure","🍳 Cooking class","⛵ Ha Long Bay boat trip","🏮 Lantern making, Hoi An","☕ Vietnamese coffee culture","🚴 Cycling rice fields","🦇 Cave exploring","🚣 Kayaking","🏜️ Sand dune buggy","🛶 Mekong Delta cruise","🌊 Sea kayaking"], landmarks:["⛵ Ha Long Bay","🏮 Hoi An Ancient Town","🏛️ My Son Sanctuary","🏯 Hue Imperial City","🦇 Phong Nha Caves","🛶 Mekong Delta","🏛️ Ho Chi Minh Mausoleum","🌾 Sa Pa Rice Terraces","⛵ Ninh Binh","🪖 Cu Chi Tunnels","🪨 Marble Mountains","🏜️ Mui Ne Sand Dunes"], regions:["🏙️ Hanoi & North Vietnam","⛵ Ha Long Bay","🏮 Hue, Hoi An & Da Nang","🏙️ Ho Chi Minh City & South","🛶 Mekong Delta","🌾 Sa Pa & Highlands"] },
   "India":           { general:["🏯 Golden Triangle tour","🧘 Yoga & meditation retreat","🐯 Tiger safari","🚣 Kerala backwaters","🛕 Varanasi spiritual experience","🎨 Rajasthan palace stays","🍛 Spice market & cooking class","🎈 Hot air balloon, Jaipur","🌸 Holi festival","🎬 Bollywood tour","🍵 Tea plantation walk","🐘 Elephant conservation"], landmarks:["🕌 Taj Mahal, Agra","🏯 Amber Fort, Jaipur","🛕 Varanasi Ghats","🏛️ Hampi Ruins","🚣 Kerala Backwaters","🐯 Ranthambore Tiger Reserve","⛪ Golden Temple, Amritsar","🏜️ Jaisalmer Desert Fort","🏛️ Mysore Palace","🗿 Ellora Caves","🌸 Hawa Mahal, Jaipur","🏛️ Udaipur City Palace"], regions:["🏙️ Delhi & Golden Triangle","🏯 Rajasthan","🌴 Kerala & South India","🏙️ Mumbai & Maharashtra","🏖️ Goa","🏔️ North India & Himalayas"] },
   "Cambodia":        { general:["🌅 Angkor Wat sunrise tour","🍳 Khmer cooking class","⛵ Boat trip on Tonlé Sap","🚴 Cycling temple ruins","🧵 Silk weaving workshop","🛺 Tuk-tuk city tour","🚂 Bamboo train ride","🎭 Traditional dance show","🌿 Jungle trek","🚣 River kayaking","🍽️ Food market tour","🐘 Elephant sanctuary"], landmarks:["🛕 Angkor Wat","🗿 Bayon Temple, Angkor Thom","🌿 Ta Prohm (Tomb Raider Temple)","🏛️ Phnom Penh Royal Palace","🕊️ Killing Fields Memorial","🌊 Tonlé Sap Lake","🏛️ Preah Vihear","🏙️ Siem Reap Night Market","🌶️ Kampot Pepper Farms","🐬 Irrawaddy Dolphins","🏝️ Koh Rong Islands","🚂 Battambang Bamboo Train"], regions:["🛕 Siem Reap & Angkor","🏙️ Phnom Penh & South","🏖️ Sihanoukville & Coast","🚂 Battambang & Northwest","🌿 Kampot & South Coast","🌊 Mekong Northeast"] },
@@ -132,6 +148,7 @@ const COUNTRY_DATA = {
   "Argentina":       { general:["💃 Tango dancing lesson","🍷 Malbec wine tasting","🏔️ Patagonia trekking","🌊 Iguazú Falls visit","🥩 Steak & BBQ asado","🧊 Glacier visit","⚽ Football match","🐎 Gaucho ranch stay","🐋 Whale watching","🎿 Ski resort","🏇 Polo match","🏙️ Buenos Aires food tour"], landmarks:["🧊 Perito Moreno Glacier (UNESCO)","🌊 Iguazú Falls (UNESCO)","🏘️ Buenos Aires San Telmo","🌈 Quebrada de Humahuaca (UNESCO)","🌿 Bariloche & Nahuel Huapi","🍷 Mendoza Wine Region","🏙️ Ushuaia (End of the World)","🌊 Tigre Delta","🏔️ El Calafate & Los Glaciares","🐧 Valdés Peninsula (UNESCO)","🍷 Cafayate Wine Route","🌿 Iberá Wetlands"], regions:["🏙️ Buenos Aires & Pampas","🧊 Patagonia & El Calafate","🍷 Mendoza & Wine Country","🌊 Iguazú & Northeast","🌿 Bariloche & Lake District","🏔️ Ushuaia & Tierra del Fuego"] },
   "Cuba":            { general:["🚗 Classic car tour, Havana","💃 Salsa dancing class","🚬 Cigar factory visit","🥃 Rum tasting","🏛️ Colonial architecture walk","🤿 Snorkelling & diving","🏖️ Beach holiday","🎵 Jazz & live music evening","🌆 Vintage Havana walk","🌾 Tobacco plantation","🚴 Cycling countryside","🎣 Deep sea fishing"], landmarks:["🏙️ Havana Old City (UNESCO)","🌿 Viñales Tobacco Valley (UNESCO)","🏘️ Trinidad (UNESCO)","🌊 Bay of Pigs","🏛️ El Capitolio, Havana","🏝️ Cayo Santa María","🌆 Malecón, Havana","⛰️ Sierra Maestra","🏘️ Santiago de Cuba","🏛️ Cienfuegos Colonial (UNESCO)","🏖️ Varadero Beach","🌿 Topes de Collantes"], regions:["🏙️ Havana & West","🌿 Viñales & Pinar del Río","🏘️ Trinidad & Central Cuba","🏝️ Cayo Santa María & North","🎵 Santiago & East Cuba","🏖️ Varadero & Beach Resorts"] },
   // ── Oceania ─────────────────────────────────────────────────────────────────
+  "New Zealand":     { general:["🪂 Skydiving","🏔️ Glacier hiking","🎬 Hobbiton tour","🎭 Māori cultural experience","🍷 Wine tasting","🚣 Kayaking Fiordland","🐋 Whale watching","⛷️ Skiing & snowboarding","♨️ Geothermal spa","🪲 Glowworm cave tour","🌊 Sandboarding","🏄 Surfing"], landmarks:["🌊 Milford Sound","🎬 Hobbiton, Matamata","🏔️ Tongariro Alpine Crossing","♨️ Rotorua Geothermal","🏖️ Bay of Islands","🧊 Franz Josef Glacier","🏙️ Queenstown","🌿 Abel Tasman National Park","🪲 Waitomo Glowworm Caves","🦅 Fiordland National Park","🌁 Auckland Sky Tower","🦜 Kaikōura Coast"], regions:["🌆 Auckland & Northland","♨️ Rotorua & Bay of Plenty","🏛️ Wellington & Wairarapa","🍷 Marlborough & Nelson","🏔️ Queenstown & Fiordland","🧊 West Coast & Glaciers"] },
   "Fiji":            { general:["🤿 Snorkelling & scuba diving","🏝️ Island hopping","🏖️ Beach relaxation","👥 Village kava ceremony","🚣 Sea kayaking","🏄 Surfing","🌊 Coral reef walk","🎣 Deep sea fishing","🎭 Meke cultural show","🐋 Whale watching","⛵ Catamaran sailing","💧 Jungle waterfall trek"], landmarks:["🤿 Great Astrolabe Reef","🏝️ Mamanuca Islands","🏝️ Yasawa Islands","🌊 Coral Coast, Viti Levu","🌺 Garden of the Sleeping Giant","🏜️ Sigatoka Sand Dunes (UNESCO)","🏘️ Navala Traditional Village","🤿 Taveuni Rainbow Reef","🏛️ Suva Cultural Centre","🏖️ Natadola Beach","🌿 Bouma Heritage Park, Taveuni","🤿 Beqa Lagoon (Shark Dive)"], regions:["🌊 Viti Levu & Coral Coast","🏝️ Mamanuca Islands","🏝️ Yasawa Islands","🤿 Taveuni & Vanua Levu","🦈 Kadavu & Astrolabe Reef","🏙️ Suva & East Viti Levu"] },
   "Australia":       { general:["🤿 Great Barrier Reef snorkel","🏄 Surfing","🦘 Wildlife spotting","🍷 Wine tasting","🏜️ Outback safari","🪃 Aboriginal culture tour","🐋 Whale watching","🥾 Bushwalking","🎣 Deep sea fishing","⛵ Sailing the Whitsundays","🐊 Crocodile cruise","🌊 Sea kayaking"], landmarks:["🎭 Sydney Opera House","🏖️ Bondi Beach","🪨 Uluru (Ayers Rock)","🐠 Great Barrier Reef (UNESCO)","🌊 Great Ocean Road","🌿 Daintree Rainforest (UNESCO)","🏝️ Whitsunday Islands","🏔️ Blue Mountains","🐊 Kakadu National Park (UNESCO)","🌉 Sydney Harbour Bridge","🌆 Melbourne laneways","🌺 King's Park, Perth"], regions:["🌉 Sydney & New South Wales","🎨 Melbourne & Victoria","🌴 Queensland & Gold Coast","🐠 Great Barrier Reef","🪨 Uluru & Red Centre","🌊 Western Australia"] },
   // ── Middle East ─────────────────────────────────────────────────────────────
@@ -223,8 +240,8 @@ export default function JenVoyagePage() {
           email: form.email,
           phone: form.phone,
           referral: form.referral,
-          destination: dest,
-          destinationName: dest==="somewhere_else" ? form.otherCountry : (d?.name || dest),
+          destination: form.otherCountry || dest,
+          destinationName: form.otherCountry || d?.name || dest,
           continent: form.continent,
           brief: {
             departDate: form.departDate,
@@ -546,7 +563,7 @@ export default function JenVoyagePage() {
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.4rem" }}>
           <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk }}>Step {step} of 5</div>
           <button style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, cursor:"pointer", padding:"0.3rem 0.75rem" }}
-            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"" }); }}>
+            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
             ← Home
           </button>
         </div>
@@ -559,41 +576,37 @@ export default function JenVoyagePage() {
           <div>
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 1</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Where are you dreaming of?</h3>
-            <p style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.12em", textTransform:"uppercase", color:COLORS.gold, fontWeight:500, marginBottom:"1.5rem" }}>Top Chosen Destinations</p>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))", gap:"0.85rem", marginBottom:"0.85rem" }}>
-              {Object.entries(DESTINATIONS).filter(([key])=>key!=="somewhere_else").map(([key,d],idx) => (
-                <div key={key} onClick={()=>{ setDest(key); upd("continent",""); upd("otherCountry",""); }} style={{ border:`1.5px solid ${dest===key?COLORS.gold:COLORS.stone}`, background:dest===key?COLORS.mist:COLORS.white, padding:"1.25rem 0.75rem", textAlign:"center", cursor:"pointer", transition:"all 0.2s" }}>
-                  <div style={{ fontSize:"1.8rem", marginBottom:"0.4rem" }}>{d.flag}</div>
-                  <span style={{ fontSize:"1rem", fontWeight:400, display:"block", marginBottom:"0.15rem" }}>{d.name}</span>
-                  <span style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.06em", textTransform:"uppercase", color:COLORS.dusk }}>{REGIONS[idx]}</span>
-                </div>
-              ))}
+            <p style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.12em", textTransform:"uppercase", color:COLORS.gold, fontWeight:500, marginBottom:"1.5rem" }}>Choose your destination country</p>
+
+            <div style={{ marginBottom:"2rem" }}>
+              <label style={label}>Country</label>
+              <select style={{...inp,appearance:"none"}} value={form.otherCountry} onChange={e=>{ const c=e.target.value; setDest(c ? "somewhere_else" : null); upd("otherCountry",c); upd("continent", continentForCountry(c)||""); }}>
+                <option value="">Select a country…</option>
+                {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
+              </select>
             </div>
-            <div style={{ display:"flex", alignItems:"flex-start", gap:"0.85rem", marginBottom:"2rem" }}>
-              <div onClick={()=>{ setDest("somewhere_else"); upd("continent",""); upd("otherCountry",""); }} style={{ border:`1.5px solid ${dest==="somewhere_else"?COLORS.gold:COLORS.stone}`, background:dest==="somewhere_else"?COLORS.mist:COLORS.white, padding:"1.25rem 0.75rem", textAlign:"center", cursor:"pointer", transition:"all 0.2s", flexShrink:0, width:150 }}>
-                <div style={{ fontSize:"1.8rem", marginBottom:"0.4rem" }}>🌍</div>
-                <span style={{ fontSize:"1rem", fontWeight:400, display:"block", marginBottom:"0.15rem" }}>Somewhere else</span>
-                <span style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.06em", textTransform:"uppercase", color:COLORS.dusk }}>Worldwide</span>
+
+            {form.otherCountry && (
+              <div style={{ display:"flex", alignItems:"center", gap:"1.5rem", marginBottom:"2rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"1.5rem" }}>
+                <div style={{ width:110, height:110, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"3.2rem", flexShrink:0 }}>
+                  {flagEmoji(form.otherCountry)}
+                </div>
+                <div style={{ flex:1, minWidth:200 }}>
+                  <div style={{ fontSize:"1.25rem", fontWeight:400, marginBottom:"0.5rem" }}>{form.otherCountry}</div>
+                  {countryKnownFor(form.otherCountry).length>0 && (
+                    <>
+                      <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.12em", textTransform:"uppercase", color:COLORS.dusk, marginBottom:"0.4rem" }}>Known for</div>
+                      <ul style={{ listStyle:"none", padding:0, margin:0 }}>
+                        {countryKnownFor(form.otherCountry).map((item,i)=>(
+                          <li key={i} style={{ ...sans, fontSize:"0.85rem", color:COLORS.dusk, padding:"0.15rem 0" }}>{item}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </div>
               </div>
-              {dest==="somewhere_else" && (
-                <div style={{ flex:1, display:"flex", gap:"1rem", alignItems:"flex-end" }}>
-                  <div style={{ flex:1 }}>
-                    <label style={label}>Continent</label>
-                    <select style={{...inp,appearance:"none"}} value={form.continent} onChange={e=>{ upd("continent",e.target.value); upd("otherCountry",""); }}>
-                      <option value="">Select a continent…</option>
-                      {Object.keys(CONTINENTS_COUNTRIES).map(c=><option key={c}>{c}</option>)}
-                    </select>
-                  </div>
-                  <div style={{ flex:1 }}>
-                    <label style={label}>Country</label>
-                    <select style={{...inp,appearance:"none"}} value={form.otherCountry} onChange={e=>upd("otherCountry",e.target.value)} disabled={!form.continent}>
-                      <option value="">{form.continent ? "Select a country…" : "Choose a continent first"}</option>
-                      {(CONTINENTS_COUNTRIES[form.continent]||[]).map(c=><option key={c}>{c}</option>)}
-                    </select>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
+
             <div style={formNav}>
               <span />
               <button style={btnNext} onClick={goNext}>Continue →</button>
