@@ -314,7 +314,7 @@ export default function JenVoyagePage() {
   const btnNext    = { ...sans, background:COLORS.ink, color:COLORS.white, border:"none", fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", padding:"0.85rem 1.75rem", cursor:"pointer" };
   const btnBack    = { ...sans, background:"none", border:"none", fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, cursor:"pointer" };
   const chipSecLbl = { ...sans, fontSize:"0.72rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold, margin:"1.25rem 0 0.6rem", paddingBottom:"0.35rem", borderBottom:`1px solid ${COLORS.stone}` };
-  const formNav    = { display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:"2.5rem", paddingTop:"1.75rem", borderTop:`1px solid ${COLORS.stone}` };
+  const formNav    = { display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:"2.5rem", padding:"1.75rem 0", borderTop:`1px solid ${COLORS.stone}`, position:"sticky", bottom:0, background:COLORS.sand, zIndex:5 };
   const fieldGroup = { marginBottom:"1.75rem" };
   const fieldRow   = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem" };
 
