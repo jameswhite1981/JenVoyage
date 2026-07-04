@@ -5,6 +5,7 @@ import Link from "next/link";
 import { saveDraft, publishEnquiry } from "./actions.js";
 import { emptyItinerary, emptyLeg, normalizeItinerary, parseItineraryJSON } from "../../../../lib/itinerary.js";
 import ItineraryDisplay from "../../../components/ItineraryDisplay.js";
+import Accordion from "../../../components/Accordion.js";
 
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
 const sans = { fontFamily:"system-ui,sans-serif" };
@@ -250,36 +251,37 @@ export default function EnquiryEditor() {
             </div>
 
             {/* Flights */}
-            <div style={sectionHead}>Flights</div>
-            <div style={groupBox}>
-              <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Outbound</div>
-              <LegEditor leg={draft.flights?.outbound} onChange={v => upd("flights.outbound", v)} />
-            </div>
-            {(draft.flights?.internal || []).map((leg, i) => (
-              <div key={i} style={groupBox}>
-                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.5rem" }}>
-                  <span style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase" }}>Internal flight {i+1}</span>
-                  <button style={removeBtn} onClick={() => removeInternalLeg(i)}>Remove</button>
-                </div>
-                <LegEditor leg={leg} onChange={v => upd(`flights.internal.${i}`, v)} />
+            <Accordion title="Flights" subtitle={`${2 + (draft.flights?.internal?.length || 0)} legs`}>
+              <div style={groupBox}>
+                <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Outbound</div>
+                <LegEditor leg={draft.flights?.outbound} onChange={v => upd("flights.outbound", v)} />
               </div>
-            ))}
-            <button style={{ ...smallBtn, marginBottom:"1.25rem" }} onClick={addInternalLeg}>+ Add internal flight</button>
-            <div style={groupBox}>
-              <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Return</div>
-              <LegEditor leg={draft.flights?.return} onChange={v => upd("flights.return", v)} />
-            </div>
+              {(draft.flights?.internal || []).map((leg, i) => (
+                <div key={i} style={groupBox}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.5rem" }}>
+                    <span style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase" }}>Internal flight {i+1}</span>
+                    <button style={removeBtn} onClick={() => removeInternalLeg(i)}>Remove</button>
+                  </div>
+                  <LegEditor leg={leg} onChange={v => upd(`flights.internal.${i}`, v)} />
+                </div>
+              ))}
+              <button style={{ ...smallBtn, marginBottom:"1.25rem" }} onClick={addInternalLeg}>+ Add internal flight</button>
+              <div style={groupBox}>
+                <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Return</div>
+                <LegEditor leg={draft.flights?.return} onChange={v => upd("flights.return", v)} />
+              </div>
+            </Accordion>
 
             {/* Regions */}
             <div style={sectionHead}>Regions & day-by-day</div>
             {(draft.regions || []).map((region, ri) => (
-              <div key={ri} style={groupBox}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"0.5rem" }}>
-                  <div style={{ flex:1, marginRight:"1rem" }}>
-                    <Field label="Region name" value={region.name} onChange={v => upd(`regions.${ri}.name`, v)} />
-                  </div>
-                  <button style={removeBtn} onClick={() => removeRegion(ri)}>Remove region</button>
-                </div>
+              <Accordion
+                key={ri}
+                title={region.name || `Region ${ri + 1}`}
+                subtitle={`${region.days?.length || 0} day${(region.days?.length || 0) === 1 ? "" : "s"}`}
+                onRemove={() => removeRegion(ri)}
+              >
+                <Field label="Region name" value={region.name} onChange={v => upd(`regions.${ri}.name`, v)} />
                 <Field label="Why here" textarea value={region.whyHere} onChange={v => upd(`regions.${ri}.whyHere`, v)} />
 
                 <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.dusk, textTransform:"uppercase", margin:"1rem 0 0.5rem" }}>Accommodation</div>
@@ -334,7 +336,7 @@ export default function EnquiryEditor() {
                   </div>
                 ))}
                 <button style={smallBtn} onClick={() => addDay(ri)}>+ Add day</button>
-              </div>
+              </Accordion>
             ))}
             <button style={smallBtn} onClick={addRegion}>+ Add region</button>
 
@@ -359,7 +361,7 @@ export default function EnquiryEditor() {
 
         {draft && tab === "preview" && (
           <div style={{ maxWidth:700 }}>
-            <ItineraryDisplay itinerary={draft} />
+            <ItineraryDisplay itinerary={draft} collapsible />
           </div>
         )}
       </div>

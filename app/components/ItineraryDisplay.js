@@ -1,7 +1,23 @@
 import { buildQuickLinks, normalizeItinerary, parseItineraryJSON } from "../../lib/itinerary.js";
+import Accordion from "./Accordion.js";
 
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
 const sans = { fontFamily:"system-ui,sans-serif" };
+
+// Renders as a collapsible accordion (admin preview) or a plain labelled
+// section (customer portal — collapsible defaults to false, so the portal
+// is unaffected by this).
+function Section({ collapsible, title, subtitle, children }) {
+  if (collapsible) {
+    return <Accordion title={title} subtitle={subtitle}>{children}</Accordion>;
+  }
+  return (
+    <>
+      <div style={sectionLabel}>{title}</div>
+      {children}
+    </>
+  );
+}
 
 const sectionLabel = { ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:C.gold, margin:"2rem 0 0.75rem", paddingBottom:"0.35rem", borderBottom:`1px solid ${C.stone}` };
 const body = { ...sans, fontSize:"0.85rem", color:C.dusk, fontWeight:300, lineHeight:1.8 };
@@ -29,7 +45,7 @@ function OptionRow({ opt, recommended }) {
   );
 }
 
-export default function ItineraryDisplay({ itinerary }) {
+export default function ItineraryDisplay({ itinerary, collapsible = false }) {
   const raw = typeof itinerary === "string" ? parseItineraryJSON(itinerary) : itinerary;
   const d = normalizeItinerary(raw);
   if (!d) return null;
@@ -47,17 +63,20 @@ export default function ItineraryDisplay({ itinerary }) {
       )}
 
       {(d.flights?.outbound || d.flights?.return || d.flights?.internal?.length > 0) && (
-        <>
-          <div style={sectionLabel}>Flights</div>
+        <Section collapsible={collapsible} title="Flights">
           <LegRow leg={d.flights.outbound} />
           {d.flights.internal?.map((leg, i) => <LegRow key={i} leg={leg} />)}
           <LegRow leg={d.flights.return} />
-        </>
+        </Section>
       )}
 
       {d.regions?.map((region, ri) => (
-        <div key={ri}>
-          <div style={sectionLabel}>{region.name}</div>
+        <Section
+          key={ri}
+          collapsible={collapsible}
+          title={region.name}
+          subtitle={collapsible ? `${region.days?.length || 0} day${(region.days?.length || 0) === 1 ? "" : "s"}` : undefined}
+        >
           {region.whyHere && <p style={{ ...body, marginBottom:"1rem" }}>{region.whyHere}</p>}
 
           {region.accommodation?.options?.length > 0 && (
@@ -89,7 +108,7 @@ export default function ItineraryDisplay({ itinerary }) {
               )}
             </div>
           ))}
-        </div>
+        </Section>
       ))}
 
       {d.costSummary?.length > 0 && (
