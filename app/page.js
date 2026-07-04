@@ -574,9 +574,7 @@ export default function JenVoyagePage() {
         {/* STEP 1 — Destination */}
         {step===1 && (
           <div>
-            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 1</div>
-            <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Where are you dreaming of?</h3>
-            <p style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.12em", textTransform:"uppercase", color:COLORS.gold, fontWeight:500, marginBottom:"1.5rem" }}>Choose your destination country</p>
+            <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"1.5rem" }}>Where are you dreaming of?</h3>
 
             <div style={{ marginBottom:"2rem" }}>
               <label style={label}>Country</label>
