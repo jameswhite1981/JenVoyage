@@ -54,3 +54,10 @@ CREATE INDEX magic_links_token_idx ON magic_links (token);
 -- Revoke anonymous access — all DB access goes through the service role key on the server
 REVOKE ALL ON enquiries   FROM anon, authenticated;
 REVOKE ALL ON magic_links FROM anon, authenticated;
+
+-- Enable RLS with no policies — hard default-deny for anon/authenticated.
+-- The server-side service role key bypasses RLS entirely, so the app is
+-- unaffected; this only protects against future accidental exposure
+-- (e.g. a client-side Supabase call, or a grant added later).
+ALTER TABLE enquiries   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE magic_links ENABLE ROW LEVEL SECURITY;
