@@ -15,7 +15,7 @@ const TRIPS = [
     title: "Cherry Blossom & Ancient Temples",
     route: "Tokyo → Hakone → Kyoto → Nara → Osaka",
     nights: 12,
-    videoUrl: "https://youtube.com/shorts/nWpOrseKEvg",
+    videoUrl: "https://youtube.com/shorts/nWpOrseKEvg?feature=share",
     tags: ["Couples", "Culture", "Food & drink"],
     description: "Begin in the electric streets of Tokyo, retreat to Hakone for Fuji views and onsen, then slow down through the ancient capitals of Kyoto and Nara before finishing in the food capital of Osaka. Timed around late March, the cherry blossom transforms every park and temple garden into something extraordinary.",
   },
