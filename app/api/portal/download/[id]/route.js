@@ -1,5 +1,5 @@
 import { getSession } from "../../../../../lib/session.js";
-import { db } from "../../../../../lib/db.js";
+import { getEnquiry } from "../../../../../lib/storage.js";
 import { generatePdf } from "../../../../../lib/pdf.js";
 
 export const runtime = "nodejs";
@@ -12,13 +12,9 @@ export async function GET(request, { params }) {
   }
 
   const { id } = await params;
-  const { data: enquiry, error } = await db
-    .from("enquiries")
-    .select("first_name, destination_name, published_content, status, email")
-    .eq("id", id)
-    .single();
+  const enquiry = await getEnquiry(id);
 
-  if (error || !enquiry) return new Response("Not found", { status: 404 });
+  if (!enquiry) return new Response("Not found", { status: 404 });
   if (enquiry.email !== session.email) return new Response("Forbidden", { status: 403 });
   if (enquiry.status !== "published" || !enquiry.published_content) {
     return new Response("Itinerary not yet published", { status: 404 });

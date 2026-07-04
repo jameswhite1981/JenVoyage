@@ -18,11 +18,18 @@ CREATE TABLE enquiries (
 
   -- Workflow
   status           TEXT NOT NULL DEFAULT 'pending'
-                   CHECK (status IN ('pending', 'generating', 'ai_ready', 'published')),
+                   CHECK (status IN ('pending', 'generating', 'ai_ready', 'wants_to_proceed', 'published')),
+
+  -- Fast teaser shown to the customer while the full itinerary generates (raw JSON string)
+  teaser              TEXT,
+  teaser_generated_at TIMESTAMPTZ,
 
   -- AI output (raw JSON string)
   ai_draft         TEXT,
   ai_generated_at  TIMESTAMPTZ,
+
+  -- Set when the customer clicks "proceed to payment" on the preview
+  proceed_requested_at TIMESTAMPTZ,
 
   -- Jen's customised version (raw JSON string — same schema as ai_draft)
   published_content TEXT,

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Nav from "./components/Nav";
+import DateRangePicker from "./components/DateRangePicker";
 
 const COLORS = {
   sand: "#F2EDE4", stone: "#C8BFB0", ink: "#1C1A17", dusk: "#4A3F35",
@@ -157,6 +158,9 @@ export default function JenVoyagePage() {
   }, []);
   const [step, setStep]   = useState(1);
   const [dest, setDest]   = useState(null);
+  const [enquiryId, setEnquiryId] = useState(null);
+  const [preview, setPreview]     = useState(null);
+  const [proceeding, setProceeding] = useState(false);
   const [form, setForm]   = useState({
     departDate:"", returnDate:"", departCountry:"", preferredAirport:"",
     adults:"2", children:"0", childrenAges:"",
@@ -182,42 +186,96 @@ export default function JenVoyagePage() {
   const submit = async () => {
     if (!form.firstName || !form.email) { alert("Please enter your name and email."); return; }
     const d = DESTINATIONS[dest];
-    await fetch("/api/enquiry", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        phone: form.phone,
-        referral: form.referral,
-        destination: dest,
-        destinationName: dest==="somewhere_else" ? form.otherCountry : (d?.name || dest),
-        continent: form.continent,
-        brief: {
-          departDate: form.departDate,
-          returnDate: form.returnDate,
-          departCountry: form.departCountry,
-          preferredAirport: form.preferredAirport,
-          adults: form.adults,
-          children: form.children,
-          childrenAges: form.childrenAges,
-          rooms: form.rooms,
-          beds: form.beds,
-          accomNotes: form.accomNotes,
-          pace: form.pace,
-          accom: form.accom,
-          budget: form.budget,
-          activities: form.activities,
-          landmarks: form.landmarks,
-          regions: form.regions,
-          dietary: form.dietary,
-          accessibility: form.accessibility,
-          notes: form.notes,
-        },
-      }),
-    }).catch(() => {}); // best-effort; don't block the thank-you screen
-    setScreen("thankyou");
+    setScreen("generating");
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          referral: form.referral,
+          destination: dest,
+          destinationName: dest==="somewhere_else" ? form.otherCountry : (d?.name || dest),
+          continent: form.continent,
+          brief: {
+            departDate: form.departDate,
+            returnDate: form.returnDate,
+            departCountry: form.departCountry,
+            preferredAirport: form.preferredAirport,
+            adults: form.adults,
+            children: form.children,
+            childrenAges: form.childrenAges,
+            rooms: form.rooms,
+            beds: form.beds,
+            accomNotes: form.accomNotes,
+            pace: form.pace,
+            accom: form.accom,
+            budget: form.budget,
+            activities: form.activities,
+            landmarks: form.landmarks,
+            regions: form.regions,
+            dietary: form.dietary,
+            accessibility: form.accessibility,
+            notes: form.notes,
+          },
+        }),
+      });
+      const data = await res.json();
+      if (data?.id) {
+        setEnquiryId(data.id);
+      } else {
+        setScreen("thankyou");
+      }
+    } catch {
+      setScreen("thankyou");
+    }
+  };
+
+  // Poll for the AI itinerary while on the "generating" screen, then reveal
+  // the teaser. Falls back to the 48-hour thank-you screen if generation
+  // fails or takes too long, so nobody gets stuck waiting.
+  useEffect(() => {
+    if (screen !== "generating" || !enquiryId) return;
+    let cancelled = false;
+    const startedAt = Date.now();
+
+    const poll = async () => {
+      if (cancelled) return;
+      try {
+        const res = await fetch(`/api/enquiry/${enquiryId}`);
+        const data = await res.json();
+        if (data.status && data.status !== "generating" && data.status !== "failed" && data.preview) {
+          if (!cancelled) { setPreview(data.preview); setScreen("preview"); }
+          return;
+        }
+        if (data.status === "failed") {
+          if (!cancelled) setScreen("thankyou");
+          return;
+        }
+      } catch {
+        // transient error — keep polling until the timeout below
+      }
+      if (Date.now() - startedAt > 180000) {
+        if (!cancelled) setScreen("thankyou");
+        return;
+      }
+      if (!cancelled) setTimeout(poll, 3000);
+    };
+
+    poll();
+    return () => { cancelled = true; };
+  }, [screen, enquiryId]);
+
+  const proceedToPayment = async () => {
+    setProceeding(true);
+    try {
+      await fetch(`/api/enquiry/${enquiryId}/proceed`, { method: "POST" });
+    } catch {}
+    setProceeding(false);
+    setScreen("proceeded");
   };
 
   // ── STYLES ────────────────────────────────────────────────────────────────
@@ -329,6 +387,79 @@ export default function JenVoyagePage() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── GENERATING ───────────────────────────────────────────────────────────
+  if (screen==="generating") {
+    const d = DESTINATIONS[dest];
+    return (
+      <div style={page}>
+        <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", padding:"3rem 1.5rem" }}>
+          <div style={{ width:44, height:44, borderRadius:"50%", border:`3px solid ${COLORS.stone}`, borderTopColor:COLORS.gold, animation:"spin 0.9s linear infinite", marginBottom:"2rem" }} />
+          <h2 style={{ fontSize:"clamp(1.6rem,4vw,2.4rem)", fontWeight:300, lineHeight:1.1, maxWidth:"20ch", marginBottom:"1rem" }}>
+            Crafting your {dest==="somewhere_else" ? form.otherCountry : d?.name} itinerary
+          </h2>
+          <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"40ch", lineHeight:1.8 }}>
+            This usually takes less than a minute. Please don&apos;t close this page.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── PREVIEW ──────────────────────────────────────────────────────────────
+  if (screen==="preview" && preview) {
+    const day1 = preview.day1;
+    return (
+      <div style={page}>
+        <div style={{ maxWidth:640, margin:"0 auto", padding:"4rem 1.5rem 5rem" }}>
+          <div style={{ textAlign:"center", marginBottom:"2.5rem" }}>
+            <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>A first look</div>
+            <h2 style={{ fontSize:"clamp(1.8rem,4.5vw,2.8rem)", fontWeight:300, lineHeight:1.15, marginBottom:"1rem" }}>{preview.title}</h2>
+            <p style={{ ...sans, fontSize:"0.95rem", fontWeight:300, color:COLORS.dusk, lineHeight:1.8 }}>{preview.overview}</p>
+          </div>
+
+          {day1 && (
+            <div style={{ background:COLORS.white, border:`1px solid ${COLORS.stone}`, padding:"1.75rem 2rem", marginBottom:"2rem" }}>
+              <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.18em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.5rem" }}>Day 1{preview.totalDays ? ` of ${preview.totalDays}` : ""}</div>
+              <div style={{ fontSize:"1.2rem", fontWeight:400, marginBottom:"0.75rem" }}>{day1.title}</div>
+              <div style={{ ...sans, fontSize:"0.88rem", color:COLORS.dusk, fontWeight:300, lineHeight:1.8 }}>
+                {day1.description && <p style={{margin:0}}>{day1.description}</p>}
+              </div>
+            </div>
+          )}
+
+          <div style={{ textAlign:"center", borderTop:`1px solid ${COLORS.stone}`, paddingTop:"2.25rem" }}>
+            <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"46ch", margin:"0 auto 1.5rem", lineHeight:1.8 }}>
+              Like the sound of it? Press below to proceed with full personalisation by Jen — including accommodation and flight recommendations — and payment.
+            </p>
+            <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
+              {proceeding ? "One moment…" : "Proceed to payment →"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── PROCEEDED ────────────────────────────────────────────────────────────
+  if (screen==="proceeded") {
+    return (
+      <div style={page}>
+        <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", padding:"3rem 1.5rem" }}>
+          <div style={{ marginBottom:"2.5rem", width:40, height:1, background:COLORS.gold }} />
+          <h2 style={{ fontSize:"clamp(2rem,5vw,3.5rem)", fontWeight:300, lineHeight:1.1, maxWidth:"18ch", marginBottom:"1.25rem" }}>
+            Wonderful, {form.firstName}
+          </h2>
+          <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
+            Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight recommendations.
+          </p>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+            Back to home
+          </button>
         </div>
       </div>
     );
@@ -446,9 +577,12 @@ export default function JenVoyagePage() {
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 2</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>The essentials</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>A few practical details to shape your itinerary.</p>
-            <div style={fieldRow}>
-              <div style={fieldGroup}><label style={label}>Departure date</label><input type="date" style={inp} value={form.departDate} onChange={e=>upd("departDate",e.target.value)} /></div>
-              <div style={fieldGroup}><label style={label}>Return date</label><input type="date" style={inp} value={form.returnDate} onChange={e=>upd("returnDate",e.target.value)} /></div>
+            <div style={fieldGroup}>
+              <DateRangePicker
+                startDate={form.departDate}
+                endDate={form.returnDate}
+                onChange={({ start, end }) => setForm(f => ({ ...f, departDate:start, returnDate:end }))}
+              />
             </div>
             <div style={fieldRow}>
               <div style={fieldGroup}><label style={label}>Departure country</label><input type="text" style={inp} value={form.departCountry} onChange={e=>upd("departCountry",e.target.value)} placeholder="e.g. United Kingdom" /></div>

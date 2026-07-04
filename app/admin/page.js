@@ -5,10 +5,11 @@ const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold
 const sans = { fontFamily:"system-ui,sans-serif" };
 
 const STATUS_BADGE = {
-  pending:    { text:"Pending",        bg:"#EAE4DA", color:"#4A3F35" },
-  generating: { text:"Generating",     bg:"#EAE4DA", color:"#4A3F35" },
-  ai_ready:   { text:"Ready to review",bg:"#B8962E", color:"#FDFBF8" },
-  published:  { text:"Published",      bg:"#1C1A17", color:"#FDFBF8" },
+  pending:          { text:"Pending",           bg:"#EAE4DA", color:"#4A3F35" },
+  generating:       { text:"Generating",        bg:"#EAE4DA", color:"#4A3F35" },
+  ai_ready:         { text:"Ready to review",   bg:"#B8962E", color:"#FDFBF8" },
+  wants_to_proceed: { text:"Wants to proceed!", bg:"#2F6B3A", color:"#FDFBF8" },
+  published:        { text:"Published",         bg:"#1C1A17", color:"#FDFBF8" },
 };
 
 function fmtDate(s) {
@@ -16,9 +17,9 @@ function fmtDate(s) {
 }
 
 export default async function AdminDashboard() {
-  const enquiries = listEnquiries();
+  const enquiries = await listEnquiries();
 
-  const counts = { pending:0, generating:0, ai_ready:0, published:0 };
+  const counts = { pending:0, generating:0, ai_ready:0, wants_to_proceed:0, published:0 };
   enquiries?.forEach(e => { if (counts[e.status] !== undefined) counts[e.status]++; });
 
   return (
@@ -37,8 +38,8 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Stats */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1px", background:C.stone, border:`1px solid ${C.stone}`, marginBottom:"2.5rem" }}>
-          {[["Pending",counts.pending],["Generating",counts.generating],["Awaiting review",counts.ai_ready],["Published",counts.published]].map(([lbl,n]) => (
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:"1px", background:C.stone, border:`1px solid ${C.stone}`, marginBottom:"2.5rem" }}>
+          {[["Pending",counts.pending],["Generating",counts.generating],["Awaiting review",counts.ai_ready],["Wants to proceed",counts.wants_to_proceed],["Published",counts.published]].map(([lbl,n]) => (
             <div key={lbl} style={{ background:C.white, padding:"1.25rem", textAlign:"center" }}>
               <div style={{ fontSize:"2rem", fontWeight:300 }}>{n}</div>
               <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, marginTop:"0.25rem" }}>{lbl}</div>

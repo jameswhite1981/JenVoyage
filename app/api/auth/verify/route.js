@@ -8,7 +8,7 @@ export async function GET(request) {
 
   if (!token) return Response.redirect(`${base}/portal/login?error=missing`);
 
-  const link = claimMagicLink(token);
+  const link = await claimMagicLink(token);
   if (!link) return Response.redirect(`${base}/portal/login?error=invalid`);
 
   await createSession(link.email, "user");
