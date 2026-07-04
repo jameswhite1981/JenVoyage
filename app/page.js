@@ -442,6 +442,10 @@ export default function JenVoyagePage() {
     return (
       <div style={page}>
         <div style={{ maxWidth:640, margin:"0 auto", padding:"4rem 1.5rem 5rem" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"2.5rem" }}>
+            <button onClick={()=>setScreen("hero")} style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, background:"none", border:"none", cursor:"pointer", padding:0, textDecoration:"none" }}>← Home</button>
+            <button onClick={()=>setScreen("pricing")} style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, background:"none", border:"none", cursor:"pointer", padding:0 }}>Pricing</button>
+          </div>
           <div style={{ textAlign:"center", marginBottom:"2.5rem" }}>
             <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>A first look</div>
             <h2 style={{ fontSize:"clamp(1.8rem,4.5vw,2.8rem)", fontWeight:300, lineHeight:1.15, marginBottom:"1rem" }}>{preview.title}</h2>
