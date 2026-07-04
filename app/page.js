@@ -460,7 +460,7 @@ export default function JenVoyagePage() {
 
           <div style={{ textAlign:"center", borderTop:`1px solid ${COLORS.stone}`, paddingTop:"2.25rem" }}>
             <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"46ch", margin:"0 auto 1.5rem", lineHeight:1.8 }}>
-              Here&apos;s what your first day might look like, but to see a full personalised itinerary — including accommodation, flights and recommendations on trips or places to visit (all complete with links for easy, instant booking) — please continue to payment.
+              Here&apos;s what your first day might look like, but to see a fully personalised itinerary – including accommodation, flights and recommendations on trips or places to visit (all complete with links for easy, instant booking) – please continue to payment.
             </p>
             <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
               {proceeding ? "One moment…" : "Proceed to payment →"}
