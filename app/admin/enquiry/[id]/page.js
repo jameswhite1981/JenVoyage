@@ -18,6 +18,15 @@ const groupBox = { border:`1px solid ${C.stone}`, padding:"1.25rem 1.5rem", marg
 const row2 = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.75rem" };
 const field = { marginBottom:"0.9rem" };
 
+const COST_SUMMARY_LABELS = [
+  "Total flights",
+  "Total accommodation",
+  "Total recommended activities",
+  "Total transfers",
+  "Overall total",
+  "Total per person",
+];
+
 function Field({ label, value, onChange, textarea, placeholder }) {
   return (
     <div style={field}>
@@ -135,8 +144,14 @@ export default function EnquiryEditor() {
   const addInternalLeg = () => setDraft(prev => ({ ...prev, flights: { ...prev.flights, internal: [...(prev.flights.internal || []), { ...emptyLeg(), label:"Internal flight" }] } }));
   const removeInternalLeg = (i) => setDraft(prev => ({ ...prev, flights: { ...prev.flights, internal: prev.flights.internal.filter((_, idx) => idx !== i) } }));
 
-  const addCostRow = () => setDraft(prev => ({ ...prev, costSummary: [...(prev.costSummary || []), { label:"", value:"" }] }));
-  const removeCostRow = (i) => setDraft(prev => ({ ...prev, costSummary: prev.costSummary.filter((_, idx) => idx !== i) }));
+  const updCostValue = (label, value) => setDraft(prev => {
+    const next = structuredClone(prev);
+    const list = next.costSummary || (next.costSummary = []);
+    const row = list.find(r => r.label === label);
+    if (row) row.value = value;
+    else list.push({ label, value });
+    return next;
+  });
 
   const handleSave = async () => {
     setSaving(true); setMsg("");
@@ -323,16 +338,14 @@ export default function EnquiryEditor() {
             ))}
             <button style={smallBtn} onClick={addRegion}>+ Add region</button>
 
-            {/* Cost summary */}
+            {/* Cost summary — fixed six line items, values only */}
             <div style={sectionHead}>Cost summary</div>
-            {(draft.costSummary || []).map((row, i) => (
-              <div key={i} style={{ display:"flex", gap:"0.5rem", marginBottom:"0.5rem", alignItems:"flex-end" }}>
-                <div style={{ flex:1 }}><Field label="Label" value={row.label} onChange={v => upd(`costSummary.${i}.label`, v)} /></div>
-                <div style={{ flex:1 }}><Field label="Value" value={row.value} onChange={v => upd(`costSummary.${i}.value`, v)} /></div>
-                <button style={{ ...removeBtn, marginBottom:"0.9rem" }} onClick={() => removeCostRow(i)}>✕</button>
-              </div>
-            ))}
-            <button style={{ ...smallBtn, marginBottom:"1.5rem" }} onClick={addCostRow}>+ Add line item</button>
+            {COST_SUMMARY_LABELS.map(label => {
+              const row = (draft.costSummary || []).find(r => r.label === label);
+              return (
+                <Field key={label} label={label} value={row?.value} onChange={v => updCostValue(label, v)} placeholder="£X,XXX" />
+              );
+            })}
 
             {/* Alternative operators */}
             <div style={sectionHead}>Similar packages from other operators</div>
