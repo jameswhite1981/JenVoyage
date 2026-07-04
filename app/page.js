@@ -45,6 +45,32 @@ const CONTINENTS_COUNTRIES = {
   "Middle East":   ["Bahrain","Iran","Iraq","Israel","Jordan","Kuwait","Lebanon","Oman","Qatar","Saudi Arabia","UAE","Yemen"]
 };
 
+const ALL_COUNTRIES = [...new Set(Object.values(CONTINENTS_COUNTRIES).flat())].sort((a, b) => a.localeCompare(b));
+
+const OTHER_AIRPORT = "Other — not listed";
+
+const COUNTRY_AIRPORTS = {
+  "United Kingdom": ["London Heathrow","London Gatwick","London Stansted","London Luton","London City","Manchester","Birmingham","Bristol","Edinburgh","Glasgow","Newcastle","Liverpool","Leeds Bradford","East Midlands","Belfast International","Belfast City","Aberdeen","Cardiff","Southampton","Norwich","Doncaster Sheffield","Exeter"],
+  "Ireland": ["Dublin","Cork","Shannon","Knock"],
+  "USA": ["New York JFK","Newark","Los Angeles","Chicago O'Hare","Miami","San Francisco","Boston","Washington Dulles","Atlanta","Dallas Fort Worth","Seattle","Orlando"],
+  "Canada": ["Toronto Pearson","Vancouver","Montreal","Calgary"],
+  "Australia": ["Sydney","Melbourne","Brisbane","Perth","Adelaide"],
+  "New Zealand": ["Auckland","Wellington","Christchurch"],
+  "South Africa": ["Johannesburg","Cape Town","Durban"],
+  "Germany": ["Frankfurt","Munich","Berlin","Dusseldorf","Hamburg"],
+  "France": ["Paris Charles de Gaulle","Paris Orly","Nice","Lyon"],
+  "Spain": ["Madrid","Barcelona","Malaga","Palma de Mallorca"],
+  "Italy": ["Rome Fiumicino","Milan Malpensa","Venice","Naples"],
+  "Netherlands": ["Amsterdam Schiphol"],
+  "UAE": ["Dubai","Abu Dhabi"],
+  "Singapore": ["Singapore Changi"],
+  "India": ["Delhi","Mumbai","Bangalore"],
+};
+
+function airportOptionsFor(country) {
+  return [...(COUNTRY_AIRPORTS[country] || []), OTHER_AIRPORT];
+}
+
 const CONTINENT_DATA = {
   "Europe":         { general:["🏛️ Historic city walking tour","🍷 Wine & food tasting","🎨 Art gallery & museum visit","🚴 Countryside cycling","⛵ Coastal sailing","🏔️ Mountain hiking","🎭 Theatre & live music","🍽️ Local market tour","🏖️ Beach & coastline","🎿 Skiing & snowboarding","🚂 Scenic rail journey","🧖 Spa & thermal baths"], landmarks:["🏰 Medieval castles & fortresses","⛪ Gothic cathedrals","🏛️ Roman & ancient ruins","🌊 Dramatic coastal scenery","🏔️ Alpine mountain landscapes","🌿 Historic gardens & parks","🎨 World-class art museums","🏙️ UNESCO Old Towns","🌉 Iconic bridges & waterways","🛶 Scenic river & canal cruises"], regions:[] },
   "Asia":           { general:["🍜 Street food & night market","🛕 Temple & heritage tour","🧘 Yoga & wellness retreat","🤿 Island snorkelling & diving","🏯 Ancient ruins & archaeology","🌿 Jungle & nature trek","🎎 Cultural experience & workshop","🍵 Tea ceremony","🛶 River cruise","🏄 Water sports","🚴 Bicycle tour","🌸 Garden & landscape walk"], landmarks:["🛕 Ancient temples & pagodas","🏯 Historic palaces & forts","🌾 Rice terraces & rural landscapes","🌋 Volcanoes & craters","🏝️ Tropical islands & beaches","🌊 Turquoise bays & lagoons","🐘 Wildlife sanctuaries","🌿 Tropical rainforests","🏙️ Modern skylines & city markets","🚂 Scenic mountain railways"], regions:[] },
@@ -162,7 +188,7 @@ export default function JenVoyagePage() {
   const [preview, setPreview]     = useState(null);
   const [proceeding, setProceeding] = useState(false);
   const [form, setForm]   = useState({
-    departDate:"", returnDate:"", departCountry:"", preferredAirport:"",
+    departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"",
     adults:"2", children:"0", childrenAges:"",
     pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500,
     activities:[], landmarks:[], regions:[],
@@ -204,7 +230,7 @@ export default function JenVoyagePage() {
             departDate: form.departDate,
             returnDate: form.returnDate,
             departCountry: form.departCountry,
-            preferredAirport: form.preferredAirport,
+            preferredAirport: form.preferredAirport===OTHER_AIRPORT ? form.preferredAirportOther : form.preferredAirport,
             adults: form.adults,
             children: form.children,
             childrenAges: form.childrenAges,
@@ -457,7 +483,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
             Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight recommendations.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
             Back to home
           </button>
         </div>
@@ -487,7 +513,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"0.88rem", fontWeight:300, color:COLORS.stone, maxWidth:"40ch", lineHeight:1.8, marginBottom:"3rem" }}>
             In the meantime, if you have anything to add or want to get in touch sooner, just reply to the confirmation email you'll receive shortly.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
             Back to home
           </button>
         </div>
@@ -585,8 +611,23 @@ export default function JenVoyagePage() {
               />
             </div>
             <div style={fieldRow}>
-              <div style={fieldGroup}><label style={label}>Departure country</label><input type="text" style={inp} value={form.departCountry} onChange={e=>upd("departCountry",e.target.value)} placeholder="e.g. United Kingdom" /></div>
-              <div style={fieldGroup}><label style={label}>Preferred airport</label><input type="text" style={inp} value={form.preferredAirport} onChange={e=>upd("preferredAirport",e.target.value)} placeholder="e.g. Manchester, Heathrow" /></div>
+              <div style={fieldGroup}>
+                <label style={label}>Departure country</label>
+                <select style={{...inp,appearance:"none"}} value={form.departCountry} onChange={e=>{ upd("departCountry",e.target.value); upd("preferredAirport",""); upd("preferredAirportOther",""); }}>
+                  <option value="">Select a country…</option>
+                  {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
+                </select>
+              </div>
+              <div style={fieldGroup}>
+                <label style={label}>Preferred airport</label>
+                <select style={{...inp,appearance:"none"}} value={form.preferredAirport} onChange={e=>{ upd("preferredAirport",e.target.value); upd("preferredAirportOther",""); }} disabled={!form.departCountry}>
+                  <option value="">{form.departCountry ? "Select an airport…" : "Choose a country first"}</option>
+                  {airportOptionsFor(form.departCountry).map(a=><option key={a}>{a}</option>)}
+                </select>
+                {form.preferredAirport===OTHER_AIRPORT && (
+                  <input type="text" style={{...inp,marginTop:"0.5rem"}} value={form.preferredAirportOther} onChange={e=>upd("preferredAirportOther",e.target.value)} placeholder="Please specify your airport" />
+                )}
+              </div>
             </div>
             <div style={fieldRow}>
               <div style={fieldGroup}><label style={label}>Adults</label><input type="number" style={inp} min="1" max="20" value={form.adults} onChange={e=>upd("adults",e.target.value)} /></div>
