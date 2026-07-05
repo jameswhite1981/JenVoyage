@@ -508,11 +508,8 @@ export default function JenVoyagePage() {
         </div>
 
         <div style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:"0.75rem" }}>
-          <div style={{ width:329, height:329, borderRadius:"50%", background:COLORS.sand, overflow:"hidden", boxShadow:"0 4px 24px rgba(28,26,23,0.18)", flexShrink:0, position:"relative" }}>
-            {/* Logo image is zoomed/centred to crop out the "Jen Voyage" / tagline
-                text baked into the artwork, leaving just the globe, plane and
-                elephant graphic for the home page. */}
-            <Image src="/logo.jpg" alt="Jen Voyage" width={628} height={628} style={{ position:"absolute", top:"50%", left:"50%", width:628, height:628, transform:"translate(-50%,-50%)", objectFit:"contain", mixBlendMode:"multiply" }} priority />
+          <div style={{ width:329, height:329, borderRadius:"50%", background:COLORS.sand, overflow:"hidden", boxShadow:"0 4px 24px rgba(28,26,23,0.18)", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <Image src="/logo.jpg" alt="Jen Voyage" width={297} height={297} style={{ objectFit:"contain", mixBlendMode:"multiply" }} priority />
           </div>
           <div style={{ width:40, height:1, background:COLORS.gold, margin:"0.25rem 0" }} />
           <h1 style={{ fontSize:"clamp(2rem,5vw,3.6rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
