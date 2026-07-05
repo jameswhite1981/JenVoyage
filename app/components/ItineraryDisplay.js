@@ -176,7 +176,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
               {g.items.map((item, j) => (
                 <div key={j} style={{ ...sans, fontSize:"0.78rem", color:C.dusk, padding:"0.15rem 0" }}>
                   {item.recommended && <span style={{ color:C.gold }}>★ </span>}
-                  {item.link ? <a href={item.link} style={{ color:C.dusk }}>{item.label}</a> : item.label}
+                  {item.link ? <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color:C.gold, textDecoration:"underline" }}>{item.label}</a> : item.label}
                   {item.note ? `: ${item.note}` : ""}
                 </div>
               ))}
