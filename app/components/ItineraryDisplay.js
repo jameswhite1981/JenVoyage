@@ -123,7 +123,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
               <div style={{ ...sans, fontSize:"0.62rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, marginBottom:"0.2rem" }}>
                 Day {day.day}{day.dateLabel ? ` — ${day.dateLabel}` : ""}{day.bookInAdvance ? " ⚠️ Book in advance" : ""}
               </div>
-              <div style={{ fontSize:"1.05rem", fontWeight:400, marginBottom:"0.4rem" }}>{day.title}</div>
+              {day.title && <div style={{ fontSize:"1.05rem", fontWeight:400, marginBottom:"0.4rem" }}>{day.title}</div>}
               {day.description && <p style={{ ...body, margin:0 }}><LinkedText text={day.description} /></p>}
               {day.options?.length > 0 && (
                 <div style={{ marginTop:"0.5rem" }}>

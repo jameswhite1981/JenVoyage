@@ -104,11 +104,23 @@ export default function EnquiryEditor() {
     return next;
   });
 
+  // Day numbers run continuously across the whole trip (region 2 continues
+  // where region 1 left off), so they're recomputed from scratch whenever
+  // days are added/removed rather than left editable.
+  const renumberDays = (itinerary) => {
+    const next = structuredClone(itinerary);
+    let n = 0;
+    (next.regions || []).forEach(region => {
+      (region.days || []).forEach(day => { n += 1; day.day = n; });
+    });
+    return next;
+  };
+
   const addRegion = () => setDraft(prev => ({
     ...prev,
     regions: [...(prev.regions || []), { name:"New region", whyHere:"", accommodation:{ nights:"", note:"", options:[] }, gettingThereNote:"", days:[] }],
   }));
-  const removeRegion = (ri) => setDraft(prev => ({ ...prev, regions: prev.regions.filter((_, i) => i !== ri) }));
+  const removeRegion = (ri) => setDraft(prev => renumberDays({ ...prev, regions: prev.regions.filter((_, i) => i !== ri) }));
 
   const addAccomOption = (ri) => setDraft(prev => {
     const next = structuredClone(prev);
@@ -123,15 +135,13 @@ export default function EnquiryEditor() {
 
   const addDay = (ri) => setDraft(prev => {
     const next = structuredClone(prev);
-    const days = next.regions[ri].days;
-    const nextDayNum = (days[days.length - 1]?.day || 0) + 1;
-    days.push({ day: nextDayNum, dateLabel:"", title:"", description:"", bookInAdvance:false, options:[] });
-    return next;
+    next.regions[ri].days.push({ day: 0, description:"", bookInAdvance:false, options:[] });
+    return renumberDays(next);
   });
   const removeDay = (ri, di) => setDraft(prev => {
     const next = structuredClone(prev);
     next.regions[ri].days.splice(di, 1);
-    return next;
+    return renumberDays(next);
   });
 
   const addDayOption = (ri, di) => setDraft(prev => {
@@ -366,12 +376,8 @@ export default function EnquiryEditor() {
                 <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.dusk, textTransform:"uppercase", margin:"1rem 0 0.5rem" }}>Day by day</div>
                 {(region.days || []).map((day, di) => (
                   <div key={di} style={{ border:`1px solid ${C.mist}`, padding:"0.85rem 1rem", marginBottom:"0.6rem" }}>
-                    <div style={row2}>
-                      <Field label="Day #" value={day.day} onChange={v => upd(`regions.${ri}.days.${di}.day`, Number(v) || 0)} />
-                      <Field label="Date label" value={day.dateLabel} onChange={v => upd(`regions.${ri}.days.${di}.dateLabel`, v)} placeholder="27th March" />
-                    </div>
-                    <Field label="Title" value={day.title} onChange={v => upd(`regions.${ri}.days.${di}.title`, v)} />
-                    <Field label="Description" textarea value={day.description} onChange={v => upd(`regions.${ri}.days.${di}.description`, v)} />
+                    <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Day {day.day}</div>
+                    <Field label="Day notes" textarea value={day.description} onChange={v => upd(`regions.${ri}.days.${di}.description`, v)} placeholder="Write the whole day out freely — e.g. 27th March: arrive Bangkok, transfer to hotel, evening street food walk near Chinatown…" />
                     <label style={{ ...sans, fontSize:"0.78rem", color:C.dusk, display:"flex", alignItems:"center", gap:"0.4rem", marginBottom:"0.6rem" }}>
                       <input type="checkbox" checked={!!day.bookInAdvance} onChange={e => upd(`regions.${ri}.days.${di}.bookInAdvance`, e.target.checked)} />
                       ⚠️ Book in advance
