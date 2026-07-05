@@ -518,30 +518,32 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.ink, maxWidth:"64ch", lineHeight:1.7, margin:0 }}>
             At Jen Voyage we take the stress out of travel planning by crafting friendly, fully costed, tailormade itineraries that match your exact needs, putting the fun and excitement back into your next adventure.
           </p>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap", marginTop:"0.5rem" }}>
-            <div style={{ position:"relative" }}>
-              <button onClick={()=>setHeroDropdown(d=>d==="what"?null:"what")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.95rem 1.1rem", cursor:"pointer" }}>
-                {HERO_INFO.what.label} {heroDropdown==="what" ? "▲" : "▼"}
-              </button>
-              {heroDropdown==="what" && (
-                <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
-                  <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.what.body}</p>
-                </div>
-              )}
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"1rem", marginTop:"0.5rem" }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap" }}>
+              <div style={{ position:"relative" }}>
+                <button onClick={()=>setHeroDropdown(d=>d==="what"?null:"what")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.95rem 1.1rem", cursor:"pointer" }}>
+                  {HERO_INFO.what.label} {heroDropdown==="what" ? "▲" : "▼"}
+                </button>
+                {heroDropdown==="what" && (
+                  <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
+                    <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.what.body}</p>
+                  </div>
+                )}
+              </div>
+
+              <div style={{ position:"relative" }}>
+                <button onClick={()=>setHeroDropdown(d=>d==="how"?null:"how")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.95rem 1.1rem", cursor:"pointer" }}>
+                  {HERO_INFO.how.label} {heroDropdown==="how" ? "▲" : "▼"}
+                </button>
+                {heroDropdown==="how" && (
+                  <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
+                    <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.how.body}</p>
+                  </div>
+                )}
+              </div>
             </div>
 
             <button style={btnPrimary} onClick={() => setScreen("form")}>Begin Planning</button>
-
-            <div style={{ position:"relative" }}>
-              <button onClick={()=>setHeroDropdown(d=>d==="how"?null:"how")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.95rem 1.1rem", cursor:"pointer" }}>
-                {HERO_INFO.how.label} {heroDropdown==="how" ? "▲" : "▼"}
-              </button>
-              {heroDropdown==="how" && (
-                <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
-                  <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.how.body}</p>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
