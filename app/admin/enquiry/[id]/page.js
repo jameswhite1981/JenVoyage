@@ -81,6 +81,8 @@ export default function EnquiryEditor() {
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [msg, setMsg] = useState("");
+  const [templates, setTemplates] = useState([]);
+  const [savingTemplate, setSavingTemplate] = useState(false);
 
   useEffect(() => {
     fetch(`/api/admin/enquiry/${id}`)
@@ -90,6 +92,7 @@ export default function EnquiryEditor() {
         const raw = data.published_content || data.ai_draft || "";
         try { setDraft(normalizeItinerary(parseItineraryJSON(raw))); } catch { setDraft(null); }
       });
+    fetch("/api/admin/templates").then(r => r.json()).then(setTemplates).catch(() => {});
   }, [id]);
 
   const upd = (path, val) => setDraft(prev => {
@@ -160,6 +163,38 @@ export default function EnquiryEditor() {
     setMsg("");
   };
 
+  const handleSaveAsTemplate = async () => {
+    if (!draft) return;
+    const suggested = `${enquiry.destination_name || ""}${draft.title ? " — " + draft.title : ""}`.trim() || "Untitled template";
+    const name = prompt("Save this itinerary as a template named:", suggested);
+    if (!name) return;
+    setSavingTemplate(true); setMsg("");
+    try {
+      const res = await fetch("/api/admin/templates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, destinationName: enquiry.destination_name, content: JSON.stringify(draft) }),
+      });
+      if (!res.ok) throw new Error("Save failed");
+      const template = await res.json();
+      setTemplates(prev => [template, ...prev]);
+      setMsg("Saved as template.");
+    } catch (e) { setMsg(`Error: ${e.message}`); }
+    setSavingTemplate(false);
+  };
+
+  const handleLoadTemplate = async (templateId) => {
+    if (!templateId) return;
+    if (draft && !confirm("Replace the current draft with this template? This discards everything currently entered (not yet saved unless you already clicked Save draft).")) return;
+    try {
+      const res = await fetch(`/api/admin/templates/${templateId}`);
+      if (!res.ok) throw new Error("Load failed");
+      const template = await res.json();
+      setDraft(normalizeItinerary(parseItineraryJSON(template.content)));
+      setMsg("Template loaded.");
+    } catch (e) { setMsg(`Error: ${e.message}`); }
+  };
+
   const handleSave = async () => {
     setSaving(true); setMsg("");
     try {
@@ -195,8 +230,20 @@ export default function EnquiryEditor() {
           </div>
           <div style={{ display:"flex", gap:"0.75rem", alignItems:"center", flexWrap:"wrap" }}>
             {msg && <span style={{ ...sans, fontSize:"0.78rem", color: msg.startsWith("Error") ? "#9B3A2A" : C.dusk }}>{msg}</span>}
+            <select
+              value=""
+              onChange={e => handleLoadTemplate(e.target.value)}
+              disabled={enquiry.status === "published" || !templates.length}
+              style={{ ...sans, background:C.white, border:`1.5px solid ${C.stone}`, color:C.dusk, fontSize:"0.72rem", fontWeight:500, letterSpacing:"0.05em", textTransform:"uppercase", padding:"0.55rem 0.7rem", cursor:"pointer" }}
+            >
+              <option value="">{templates.length ? "Load from template…" : "No templates saved"}</option>
+              {templates.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+            </select>
             <button onClick={handleBlankTemplate} disabled={enquiry.status === "published"} style={smallBtn}>
               Blank template
+            </button>
+            <button onClick={handleSaveAsTemplate} disabled={savingTemplate || !draft} style={smallBtn}>
+              {savingTemplate ? "Saving…" : "Save as template"}
             </button>
             <button onClick={handleSave} disabled={saving || !draft} style={{ ...sans, background:"none", border:`1.5px solid ${C.stone}`, color:C.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.6rem 1.2rem", cursor:"pointer" }}>
               {saving ? "Saving…" : "Save draft"}

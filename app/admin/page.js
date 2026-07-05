@@ -38,9 +38,12 @@ export default async function AdminDashboard() {
             <div style={{ ...sans, fontSize:"0.75rem", letterSpacing:"0.3em", textTransform:"uppercase", color:C.gold }}>Jen Voyage</div>
             <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.2em", textTransform:"uppercase", color:C.stone }}>Admin</div>
           </div>
-          <form action="/api/admin/logout" method="POST">
-            <button style={{ ...sans, background:"none", border:"none", fontSize:"0.75rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, cursor:"pointer" }}>Sign out</button>
-          </form>
+          <div style={{ display:"flex", alignItems:"center", gap:"1.5rem" }}>
+            <Link href="/admin/templates" style={{ ...sans, fontSize:"0.75rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, textDecoration:"none" }}>Templates</Link>
+            <form action="/api/admin/logout" method="POST">
+              <button style={{ ...sans, background:"none", border:"none", fontSize:"0.75rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, cursor:"pointer" }}>Sign out</button>
+            </form>
+          </div>
         </div>
 
         {/* Stats */}

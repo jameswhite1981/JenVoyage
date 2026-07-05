@@ -51,13 +51,25 @@ CREATE TABLE magic_links (
 
 CREATE INDEX magic_links_token_idx ON magic_links (token);
 
+-- Reusable itinerary templates, saved by Jen from a published enquiry so a
+-- similar future trip can start from a fleshed-out draft instead of blank.
+CREATE TABLE itinerary_templates (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name             TEXT NOT NULL,
+  destination_name TEXT,
+  content          TEXT NOT NULL,  -- raw JSON string — same schema as ai_draft/published_content
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- Revoke anonymous access — all DB access goes through the service role key on the server
-REVOKE ALL ON enquiries   FROM anon, authenticated;
-REVOKE ALL ON magic_links FROM anon, authenticated;
+REVOKE ALL ON enquiries           FROM anon, authenticated;
+REVOKE ALL ON magic_links         FROM anon, authenticated;
+REVOKE ALL ON itinerary_templates FROM anon, authenticated;
 
 -- Enable RLS with no policies — hard default-deny for anon/authenticated.
 -- The server-side service role key bypasses RLS entirely, so the app is
 -- unaffected; this only protects against future accidental exposure
 -- (e.g. a client-side Supabase call, or a grant added later).
-ALTER TABLE enquiries   ENABLE ROW LEVEL SECURITY;
-ALTER TABLE magic_links ENABLE ROW LEVEL SECURITY;
+ALTER TABLE enquiries           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE magic_links          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE itinerary_templates  ENABLE ROW LEVEL SECURITY;
