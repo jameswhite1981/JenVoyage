@@ -31,6 +31,11 @@ CREATE TABLE enquiries (
   -- Set when the customer clicks "proceed to payment" on the preview
   proceed_requested_at TIMESTAMPTZ,
 
+  -- Set when the customer isn't sure and asks Jen to reach out instead —
+  -- contacted using the phone/email already given above, not a new address
+  unsure_contact_method TEXT CHECK (unsure_contact_method IN ('call', 'whatsapp', 'email')),
+  unsure_requested_at   TIMESTAMPTZ,
+
   -- Jen's customised version (raw JSON string — same schema as ai_draft)
   published_content TEXT,
   published_at      TIMESTAMPTZ

@@ -248,7 +248,7 @@ export default function EnquiryEditor() {
           <div>
             <Link href="/admin" style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, textDecoration:"none" }}>← All enquiries</Link>
             <h1 style={{ fontSize:"1.6rem", fontWeight:300, margin:"0.4rem 0 0.2rem" }}>{enquiry.first_name} {enquiry.last_name || ""} · {enquiry.destination_name}</h1>
-            <div style={{ ...sans, fontSize:"0.78rem", color:C.stone }}>{enquiry.email} · {enquiry.status}</div>
+            <div style={{ ...sans, fontSize:"0.78rem", color:C.stone }}>{enquiry.email}{enquiry.phone ? ` · ${enquiry.phone}` : ""} · {enquiry.status}</div>
           </div>
           <div style={{ display:"flex", gap:"0.75rem", alignItems:"center", flexWrap:"wrap" }}>
             {msg && <span style={{ ...sans, fontSize:"0.78rem", color: msg.startsWith("Error") ? "#9B3A2A" : C.dusk }}>{msg}</span>}
@@ -284,6 +284,12 @@ export default function EnquiryEditor() {
         {enquiry.status === "wants_to_proceed" && (
           <div style={{ ...sans, background:"#e9f3ea", border:"1px solid #b7d6ba", color:"#2F6B3A", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
             This customer has seen their preview and wants to proceed with personalisation & payment, reach out to take payment and start the full itinerary.
+          </div>
+        )}
+
+        {enquiry.unsure_contact_method && (
+          <div style={{ ...sans, background:"#fdf3e3", border:"1px solid #e8d3a0", color:"#8a6416", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
+            This customer wasn&apos;t sure about the process and asked Jen to reach out by <strong>{enquiry.unsure_contact_method}</strong>, using the phone/email shown above.
           </div>
         )}
 

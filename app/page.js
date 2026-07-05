@@ -355,6 +355,8 @@ export default function JenVoyagePage() {
   const [enquiryId, setEnquiryId] = useState(null);
   const [preview, setPreview]     = useState(null);
   const [proceeding, setProceeding] = useState(false);
+  const [contactMethod, setContactMethod] = useState(null);
+  const [requestingContact, setRequestingContact] = useState(false);
   const [form, setForm]   = useState({
     departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"",
     adults:"2", children:"0", childrenAges:"",
@@ -472,6 +474,19 @@ export default function JenVoyagePage() {
     } catch {}
     setProceeding(false);
     setScreen("proceeded");
+  };
+
+  const requestContact = async (method) => {
+    setRequestingContact(true);
+    try {
+      await fetch(`/api/enquiry/${enquiryId}/unsure`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ method }),
+      });
+    } catch {}
+    setContactMethod(method);
+    setRequestingContact(false);
   };
 
   // ── STYLES ────────────────────────────────────────────────────────────────
@@ -662,9 +677,51 @@ export default function JenVoyagePage() {
             <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"46ch", margin:"0 auto 1.5rem", lineHeight:1.8 }}>
               Here&apos;s what your first day might look like, but to see a fully personalised itinerary – including accommodation, flights and recommendations on trips or places to visit (all complete with links for easy, instant booking) – please continue to payment.
             </p>
-            <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
-              {proceeding ? "One moment…" : "Proceed to payment →"}
-            </button>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap" }}>
+              <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
+                {proceeding ? "One moment…" : "Proceed to payment →"}
+              </button>
+              <button onClick={()=>setScreen("unsure")} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.82rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.95rem 1.75rem", cursor:"pointer" }}>
+                I&apos;m not sure
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── NOT SURE / TALK TO JEN ───────────────────────────────────────────────
+  if (screen==="unsure") {
+    return (
+      <div style={page}>
+        <div style={{ maxWidth:560, margin:"0 auto", padding:"4rem 1.5rem 5rem" }}>
+          <button onClick={()=>setScreen("preview")} style={btnBack}>← Back</button>
+          <div style={{ textAlign:"center", marginTop:"2.5rem" }}>
+            {!contactMethod ? (
+              <>
+                <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Not sure yet?</div>
+                <h2 style={{ fontSize:"clamp(1.8rem,4.5vw,2.6rem)", fontWeight:300, lineHeight:1.15, marginBottom:"1rem" }}>Talk to Jen</h2>
+                <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, lineHeight:1.8, maxWidth:"42ch", margin:"0 auto 2.5rem" }}>
+                  If you&apos;re still not sure about the process, let Jen know how you&apos;d like to be contacted and she&apos;ll reach out personally, using the phone number or email you&apos;ve already given us.
+                </p>
+                <div style={{ display:"flex", flexDirection:"column", gap:"0.85rem", maxWidth:280, margin:"0 auto" }}>
+                  <button style={btnPrimary} onClick={()=>requestContact("call")} disabled={requestingContact}>📞 Call me</button>
+                  <button style={btnPrimary} onClick={()=>requestContact("whatsapp")} disabled={requestingContact}>💬 WhatsApp me</button>
+                  <button style={btnPrimary} onClick={()=>requestContact("email")} disabled={requestingContact}>✉️ Email me</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ width:40, height:1, background:COLORS.gold, margin:"0 auto 2rem" }} />
+                <h2 style={{ fontSize:"clamp(1.8rem,4.5vw,2.6rem)", fontWeight:300, lineHeight:1.15, marginBottom:"1rem" }}>Thanks, {form.firstName}</h2>
+                <p style={{ ...sans, fontSize:"0.95rem", fontWeight:300, color:COLORS.dusk, lineHeight:1.8, maxWidth:"42ch", margin:"0 auto" }}>
+                  {contactMethod==="call" && `Jen will give you a call on ${form.phone || "the number you gave us"} shortly.`}
+                  {contactMethod==="whatsapp" && `Jen will message you on WhatsApp at ${form.phone || "the number you gave us"} shortly.`}
+                  {contactMethod==="email" && `Jen will email you at ${form.email} shortly.`}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
