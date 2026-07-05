@@ -287,21 +287,58 @@ export default function EnquiryEditor() {
           </div>
         )}
 
-        {/* Customer brief summary */}
+        {/* Customer brief summary — everything the customer originally submitted.
+            Admin-only reference: nothing in enquiry.brief is ever read by
+            ItineraryDisplay, the customer portal or the PDF, so none of this
+            reaches the customer-facing itinerary. */}
         {enquiry.brief && (
-          <div style={{ background:C.mist, border:`1px solid ${C.stone}`, padding:"1.25rem 1.5rem", marginBottom:"2rem", display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))", gap:"1rem" }}>
-            {[
-              ["Dates", `${enquiry.brief.departDate || "N/A"} → ${enquiry.brief.returnDate || "N/A"}`],
-              ["Party", `${enquiry.brief.adults} adults, ${enquiry.brief.children || 0} children`],
-              ["Budget", `£${Number(enquiry.brief.budget) >= 10000 ? "10,000+" : Number(enquiry.brief.budget).toLocaleString()} pp`],
-              ["Pace", enquiry.brief.pace || "N/A"],
-              ["Accommodation", enquiry.brief.accom || "N/A"],
-            ].map(([k,v]) => (
-              <div key={k}>
-                <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>{k}</div>
-                <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>{v}</div>
+          <div style={{ background:C.mist, border:`1px solid ${C.stone}`, padding:"1.25rem 1.5rem", marginBottom:"2rem" }}>
+            <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.15em", textTransform:"uppercase", color:C.gold, marginBottom:"1rem" }}>
+              Original booking brief (admin reference only, not shown to customer)
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))", gap:"1rem", marginBottom: (enquiry.brief.notes || enquiry.brief.accomNotes || [...(enquiry.brief.activities||[]),...(enquiry.brief.landmarks||[]),...(enquiry.brief.regions||[])].length) ? "1.25rem" : 0 }}>
+              {[
+                ["Dates", `${enquiry.brief.departDate || "N/A"} → ${enquiry.brief.returnDate || "N/A"}`],
+                ["Departure", `${enquiry.brief.departCountry || "N/A"}${enquiry.brief.preferredAirport ? `, ${enquiry.brief.preferredAirport}` : ""}`],
+                ["Party", `${enquiry.brief.adults} adults, ${enquiry.brief.children || 0} children${enquiry.brief.childrenAges ? ` (ages ${enquiry.brief.childrenAges})` : ""}`],
+                ["Budget", `£${Number(enquiry.brief.budget) >= 10000 ? "10,000+" : Number(enquiry.brief.budget).toLocaleString()} pp`],
+                ["Pace", enquiry.brief.pace || "N/A"],
+                ["Accommodation", enquiry.brief.accom || "N/A"],
+                ["Rooms / beds", `${enquiry.brief.rooms || "N/A"} room(s), ${enquiry.brief.beds || "N/A"} bed(s)`],
+                ["Dietary", (enquiry.brief.dietary || []).join(", ") || "None specified"],
+                ["Accessibility", enquiry.brief.accessibility || "None specified"],
+              ].map(([k,v]) => (
+                <div key={k}>
+                  <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>{k}</div>
+                  <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>{v}</div>
+                </div>
+              ))}
+            </div>
+
+            {enquiry.brief.accomNotes && (
+              <div style={{ marginBottom:"1rem" }}>
+                <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>Accommodation notes</div>
+                <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>{enquiry.brief.accomNotes}</div>
               </div>
-            ))}
+            )}
+
+            {[...(enquiry.brief.activities||[]), ...(enquiry.brief.landmarks||[]), ...(enquiry.brief.regions||[])].length > 0 && (
+              <div style={{ marginBottom: enquiry.brief.notes ? "1rem" : 0 }}>
+                <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold, marginBottom:"0.4rem" }}>Selected interests</div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem" }}>
+                  {[...(enquiry.brief.activities||[]), ...(enquiry.brief.landmarks||[]), ...(enquiry.brief.regions||[])].map((item, i) => (
+                    <span key={i} style={{ ...sans, fontSize:"0.75rem", color:C.ink, background:C.white, border:`1px solid ${C.stone}`, padding:"0.25rem 0.6rem" }}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {enquiry.brief.notes && (
+              <div>
+                <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>Additional notes</div>
+                <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>{enquiry.brief.notes}</div>
+              </div>
+            )}
           </div>
         )}
 
