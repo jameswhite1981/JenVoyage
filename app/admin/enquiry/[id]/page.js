@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveDraft, publishEnquiry } from "./actions.js";
+import { resendItineraryEmail } from "../../actions.js";
 import { emptyItinerary, emptyLeg, normalizeItinerary, parseItineraryJSON } from "../../../../lib/itinerary.js";
 import ItineraryDisplay from "../../../components/ItineraryDisplay.js";
 import Accordion from "../../../components/Accordion.js";
@@ -80,6 +81,7 @@ export default function EnquiryEditor() {
   const [tab, setTab] = useState("edit"); // edit | preview
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [resending, setResending] = useState(false);
   const [msg, setMsg] = useState("");
   const [templates, setTemplates] = useState([]);
   const [savingTemplate, setSavingTemplate] = useState(false);
@@ -225,6 +227,16 @@ export default function EnquiryEditor() {
     setPublishing(false);
   };
 
+  const handleResend = async () => {
+    if (!confirm(`Re-send the itinerary-ready email to ${enquiry.email}?`)) return;
+    setResending(true); setMsg("");
+    try {
+      await resendItineraryEmail(enquiry.email, enquiry.first_name, enquiry.destination_name);
+      setMsg("Email re-sent.");
+    } catch (e) { setMsg(`Error: ${e.message}`); }
+    setResending(false);
+  };
+
   if (!enquiry) return <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.stone }}>Loading…</div>;
 
   return (
@@ -261,6 +273,11 @@ export default function EnquiryEditor() {
             <button onClick={handlePublish} disabled={publishing || !draft || enquiry.status === "published"} style={{ ...sans, background:C.ink, color:C.white, border:"none", fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.65rem 1.4rem", cursor:"pointer", opacity: enquiry.status === "published" ? 0.5 : 1 }}>
               {publishing ? "Publishing…" : enquiry.status === "published" ? "Published ✓" : "Publish to customer →"}
             </button>
+            {enquiry.status === "published" && (
+              <button onClick={handleResend} disabled={resending} style={smallBtn}>
+                {resending ? "Sending…" : "Re-send email"}
+              </button>
+            )}
           </div>
         </div>
 
