@@ -681,7 +681,7 @@ export default function JenVoyagePage() {
               <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
                 {proceeding ? "One moment…" : "Proceed to payment →"}
               </button>
-              <button onClick={()=>setScreen("unsure")} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.82rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.95rem 1.75rem", cursor:"pointer" }}>
+              <button onClick={()=>setScreen("unsure")} style={btnPrimary}>
                 I&apos;m not sure
               </button>
             </div>
