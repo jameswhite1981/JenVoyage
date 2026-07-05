@@ -16,7 +16,7 @@ export default function DeleteEnquiryButton({ id, name }) {
       if (!res.ok) throw new Error("Delete failed");
       router.refresh();
     } catch {
-      alert("Couldn't delete this enquiry — please try again.");
+      alert("Couldn't delete this enquiry, please try again.");
       setDeleting(false);
     }
   };

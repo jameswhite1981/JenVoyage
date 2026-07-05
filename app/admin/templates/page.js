@@ -45,7 +45,7 @@ export default async function TemplatesPage() {
               <Accordion
                 key={t.id}
                 title={t.name}
-                subtitle={`${t.destination_name || "—"} · saved ${fmtDate(t.created_at)}`}
+                subtitle={`${t.destination_name || "N/A"} · saved ${fmtDate(t.created_at)}`}
               >
                 <div style={{ display:"flex", justifyContent:"flex-end", marginBottom:"1rem" }}>
                   <DeleteTemplateButton id={t.id} name={t.name} />

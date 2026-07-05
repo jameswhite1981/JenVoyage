@@ -66,7 +66,7 @@ export default function DateRangePicker({ startDate, endDate, onChange, label = 
   };
 
   const days = buildMonthGrid(viewDate);
-  const displayText = start && end ? `${fmtDisplay(startDate)} — ${fmtDisplay(endDate)}` : start ? `${fmtDisplay(startDate)} — select return date` : "Select dates";
+  const displayText = start && end ? `${fmtDisplay(startDate)} → ${fmtDisplay(endDate)}` : start ? `${fmtDisplay(startDate)} → select return date` : "Select dates";
 
   return (
     <div style={{ position:"relative" }} ref={wrapRef}>

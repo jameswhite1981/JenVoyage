@@ -37,7 +37,7 @@ const TRIPS = [
     nights: 8,
     videoUrl: "/videos/morocco.mp4",
     tags: ["Solo travellers", "Culture", "Adventure"],
-    description: "Four days is not enough for Morocco — eight barely is. This route covers the sensory overload of Marrakech's medina, the more authentic maze of Fes, an overnight in the Sahara dunes, and the dramatic kasbahs of the south. Allow time to simply sit in a café and watch the world move differently.",
+    description: "Four days is not enough for Morocco, eight barely is. This route covers the sensory overload of Marrakech's medina, the more authentic maze of Fes, an overnight in the Sahara dunes, and the dramatic kasbahs of the south. Allow time to simply sit in a café and watch the world move differently.",
   },
   {
     flag: "🇵🇪",
@@ -47,7 +47,7 @@ const TRIPS = [
     nights: 14,
     videoUrl: "/videos/peru.mp4",
     tags: ["Bucket list", "History", "Nature"],
-    description: "This is a trip that takes some planning to get right — the altitude, the logistics, the balance between the Inca sites and the jungle. Done well, it's one of the most rewarding journeys on earth. We build in acclimatisation days, keep the Inca Trail permit in mind, and end with two nights in the Amazon to decompress.",
+    description: "This is a trip that takes some planning to get right: the altitude, the logistics, the balance between the Inca sites and the jungle. Done well, it's one of the most rewarding journeys on earth. We build in acclimatisation days, keep the Inca Trail permit in mind, and end with two nights in the Amazon to decompress.",
   },
   {
     flag: "🇮🇹",
@@ -57,7 +57,7 @@ const TRIPS = [
     nights: 10,
     videoUrl: "/videos/italy.mp4",
     tags: ["Couples", "Food & drink", "Culture"],
-    description: "Italy rewards slow travel. Three nights in Rome to get the classical foundations in place, then north to Florence and the Chianti wine country, before heading south to the coast. The Amalfi is best explored by boat — we'll arrange a private day on the water to reach the villages you can't drive to.",
+    description: "Italy rewards slow travel. Three nights in Rome to get the classical foundations in place, then north to Florence and the Chianti wine country, before heading south to the coast. The Amalfi is best explored by boat, and we'll arrange a private day on the water to reach the villages you can't drive to.",
   },
   {
     flag: "🇱🇰",
@@ -67,7 +67,7 @@ const TRIPS = [
     nights: 12,
     videoUrl: "/videos/sri-lanka.mp4",
     tags: ["Families", "Nature", "First-timers"],
-    description: "Sri Lanka is one of the most manageable long-haul destinations — compact enough to cover properly in under two weeks. The route takes you up through the hill country by scenic train, across tea-terraced hillsides to Ella, then south to Yala for leopard safaris, finishing in the colonial fort city of Galle.",
+    description: "Sri Lanka is one of the most manageable long-haul destinations, compact enough to cover properly in under two weeks. The route takes you up through the hill country by scenic train, across tea-terraced hillsides to Ella, then south to Yala for leopard safaris, finishing in the colonial fort city of Galle.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function InspirationPage() {
             Six trips worth dreaming about.
           </h1>
           <p style={{ ...sans, fontSize: "1rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.8, maxWidth: "52ch", margin: 0 }}>
-            These are examples of the kind of itineraries we build — each one crafted around a real brief. Your version would be shaped around your dates, your group, and what genuinely excites you.
+            These are examples of the kind of itineraries we build, each one crafted around a real brief. Your version would be shaped around your dates, your group, and what genuinely excites you.
           </p>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default function InspirationPage() {
             Don't see what you have in mind?
           </h3>
           <p style={{ ...sans, fontSize: "0.9rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.7, marginBottom: "2rem" }}>
-            These are just examples. We build every itinerary from scratch — tell us your destination and we'll start from there.
+            These are just examples. We build every itinerary from scratch: tell us your destination and we'll start from there.
           </p>
           <Link href="/" style={{ fontFamily: "system-ui,sans-serif", background: COLORS.ink, color: COLORS.white, fontSize: "0.82rem", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", padding: "0.95rem 2.25rem", textDecoration: "none", display: "inline-block" }}>
             Begin Planning

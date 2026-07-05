@@ -177,7 +177,7 @@ export default function EnquiryEditor() {
 
   const handleSaveAsTemplate = async () => {
     if (!draft) return;
-    const suggested = `${enquiry.destination_name || ""}${draft.title ? " — " + draft.title : ""}`.trim() || "Untitled template";
+    const suggested = `${enquiry.destination_name || ""}${draft.title ? " · " + draft.title : ""}`.trim() || "Untitled template";
     const name = prompt("Save this itinerary as a template named:", suggested);
     if (!name) return;
     setSavingTemplate(true); setMsg("");
@@ -247,7 +247,7 @@ export default function EnquiryEditor() {
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"1rem", paddingBottom:"1.5rem", borderBottom:`1px solid ${C.stone}`, marginBottom:"2rem" }}>
           <div>
             <Link href="/admin" style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, textDecoration:"none" }}>← All enquiries</Link>
-            <h1 style={{ fontSize:"1.6rem", fontWeight:300, margin:"0.4rem 0 0.2rem" }}>{enquiry.first_name} {enquiry.last_name || ""} — {enquiry.destination_name}</h1>
+            <h1 style={{ fontSize:"1.6rem", fontWeight:300, margin:"0.4rem 0 0.2rem" }}>{enquiry.first_name} {enquiry.last_name || ""} · {enquiry.destination_name}</h1>
             <div style={{ ...sans, fontSize:"0.78rem", color:C.stone }}>{enquiry.email} · {enquiry.status}</div>
           </div>
           <div style={{ display:"flex", gap:"0.75rem", alignItems:"center", flexWrap:"wrap" }}>
@@ -283,7 +283,7 @@ export default function EnquiryEditor() {
 
         {enquiry.status === "wants_to_proceed" && (
           <div style={{ ...sans, background:"#e9f3ea", border:"1px solid #b7d6ba", color:"#2F6B3A", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
-            This customer has seen their preview and wants to proceed with personalisation & payment — reach out to take payment and start the full itinerary.
+            This customer has seen their preview and wants to proceed with personalisation & payment, reach out to take payment and start the full itinerary.
           </div>
         )}
 
@@ -291,11 +291,11 @@ export default function EnquiryEditor() {
         {enquiry.brief && (
           <div style={{ background:C.mist, border:`1px solid ${C.stone}`, padding:"1.25rem 1.5rem", marginBottom:"2rem", display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))", gap:"1rem" }}>
             {[
-              ["Dates", `${enquiry.brief.departDate || "—"} → ${enquiry.brief.returnDate || "—"}`],
+              ["Dates", `${enquiry.brief.departDate || "N/A"} → ${enquiry.brief.returnDate || "N/A"}`],
               ["Party", `${enquiry.brief.adults} adults, ${enquiry.brief.children || 0} children`],
               ["Budget", `£${Number(enquiry.brief.budget) >= 10000 ? "10,000+" : Number(enquiry.brief.budget).toLocaleString()} pp`],
-              ["Pace", enquiry.brief.pace || "—"],
-              ["Accommodation", enquiry.brief.accom || "—"],
+              ["Pace", enquiry.brief.pace || "N/A"],
+              ["Accommodation", enquiry.brief.accom || "N/A"],
             ].map(([k,v]) => (
               <div key={k}>
                 <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>{k}</div>
@@ -328,8 +328,8 @@ export default function EnquiryEditor() {
             <Field label="Intro" textarea value={draft.intro} onChange={v => upd("intro", v)} placeholder="You asked for a trip that included…" />
 
             <div style={field}>
-              <label style={lbl}>Pre-trip notes (vaccinations, visas, dress codes — optional)</label>
-              <StringListEditor items={draft.preTripNotes} onChange={v => upd("preTripNotes", v)} placeholder="e.g. Do I need vaccinations? Yes — ask your GP." />
+              <label style={lbl}>Optional pre-trip notes (vaccinations, visas, dress codes)</label>
+              <StringListEditor items={draft.preTripNotes} onChange={v => upd("preTripNotes", v)} placeholder="e.g. Do I need vaccinations? Yes, ask your GP." />
             </div>
 
             {/* Flights */}
@@ -374,7 +374,7 @@ export default function EnquiryEditor() {
                 {(region.accommodation?.options || []).map((opt, oi) => (
                   <div key={oi} style={{ border:`1px solid ${C.mist}`, padding:"0.85rem 1rem", marginBottom:"0.6rem" }}>
                     <div style={row2}>
-                      <Field label="Option label" value={opt.label} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.label`, v)} placeholder="Option 1 — Hotel" />
+                      <Field label="Option label" value={opt.label} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.label`, v)} placeholder="Option 1: Hotel" />
                       <Field label="Property name" value={opt.name} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.name`, v)} />
                       <Field label="Cost" value={opt.cost} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.cost`, v)} placeholder="£XXX" />
                       <Field label="Link" value={opt.link} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.link`, v)} placeholder="https://…" />
@@ -388,12 +388,12 @@ export default function EnquiryEditor() {
                 ))}
                 <button style={{ ...smallBtn, marginBottom:"1rem" }} onClick={() => addAccomOption(ri)}>+ Add accommodation option</button>
 
-                <Field label="Getting there note (optional — e.g. ferry between sub-locations)" value={region.gettingThereNote} onChange={v => upd(`regions.${ri}.gettingThereNote`, v)} />
+                <Field label="Getting there note (optional, e.g. ferry between sub-locations)" value={region.gettingThereNote} onChange={v => upd(`regions.${ri}.gettingThereNote`, v)} />
 
                 <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.dusk, textTransform:"uppercase", margin:"1rem 0 0.5rem" }}>Day by day</div>
                 {(region.days || []).map((day, di) => (
                   <div key={di} style={{ border:`1px solid ${C.mist}`, padding:"0.85rem 1rem", marginBottom:"0.6rem" }}>
-                    <Field label="Day notes" textarea value={day.description} onChange={v => upd(`regions.${ri}.days.${di}.description`, v)} placeholder="Write the whole day out freely — e.g. 27th March: arrive Bangkok, transfer to hotel, evening street food walk near Chinatown…" />
+                    <Field label="Day notes" textarea value={day.description} onChange={v => upd(`regions.${ri}.days.${di}.description`, v)} placeholder="Write the whole day out freely, e.g. 27th March: arrive Bangkok, transfer to hotel, evening street food walk near Chinatown…" />
                     <label style={{ ...sans, fontSize:"0.78rem", color:C.dusk, display:"flex", alignItems:"center", gap:"0.4rem", marginBottom:"0.6rem" }}>
                       <input type="checkbox" checked={!!day.bookInAdvance} onChange={e => upd(`regions.${ri}.days.${di}.bookInAdvance`, e.target.checked)} />
                       ⚠️ Book in advance
@@ -428,7 +428,7 @@ export default function EnquiryEditor() {
 
             {/* Alternative operators */}
             <div style={sectionHead}>Similar packages from other operators</div>
-            <StringListEditor items={draft.alternativeOperators} onChange={v => upd("alternativeOperators", v)} placeholder="Operator — package name" />
+            <StringListEditor items={draft.alternativeOperators} onChange={v => upd("alternativeOperators", v)} placeholder="Operator: package name" />
 
             {/* Good to know */}
             <div style={sectionHead}>Good to know before you go</div>

@@ -16,7 +16,7 @@ export default function DeleteTemplateButton({ id, name }) {
       if (!res.ok) throw new Error("Delete failed");
       router.refresh();
     } catch {
-      alert("Couldn't delete this template — please try again.");
+      alert("Couldn't delete this template, please try again.");
       setDeleting(false);
     }
   };

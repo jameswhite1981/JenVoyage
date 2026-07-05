@@ -10,7 +10,7 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 
 const REVIEWS = [
   {
-    quote: "Jen planned our honeymoon in Japan and it was absolutely faultless. Every detail had been thought through — we didn't have to worry about a thing from the moment we landed.",
+    quote: "Jen planned our honeymoon in Japan and it was absolutely faultless. Every detail had been thought through, and we didn't have to worry about a thing from the moment we landed.",
     name: "Sophie & Tom",
     trip: "Tokyo & Kyoto, 12 nights",
   },
@@ -20,7 +20,7 @@ const REVIEWS = [
     trip: "Peru & Machu Picchu, 14 nights",
   },
   {
-    quote: "The Thailand itinerary had something for every member of the family — the kids loved the elephant sanctuary, we loved the cooking class in Chiang Mai. Genuinely magical.",
+    quote: "The Thailand itinerary had something for every member of the family: the kids loved the elephant sanctuary, we loved the cooking class in Chiang Mai. Genuinely magical.",
     name: "Claire W.",
     trip: "Thailand, family of four, 10 nights",
   },

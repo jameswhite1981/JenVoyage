@@ -11,11 +11,11 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 const FAQS = [
   {
     q: "Why should I pay you to design my itinerary when I can just do it myself?",
-    a: "You absolutely can do it yourself — but scrolling through hundreds of flights, reading endless hotel reviews and comparing activities takes hours. It can quickly get overwhelming and take the joy out of the build up. Think of Jen Voyage as your personal travel research team. For a one-off fee we do all the heavy lifting, price matching and scheduling to fit your exact budget and vibe. We save you time and stress, putting the fun back into your travel planning.",
+    a: "You absolutely can do it yourself, but scrolling through hundreds of flights, reading endless hotel reviews and comparing activities takes hours. It can quickly get overwhelming and take the joy out of the build up. Think of Jen Voyage as your personal travel research team. For a one-off fee we do all the heavy lifting, price matching and scheduling to fit your exact budget and vibe. We save you time and stress, putting the fun back into your travel planning.",
   },
   {
     q: "Do I have to go with your specific suggestions?",
-    a: "Not at all! This is your holiday and you are in total control. We provide you with a fully tailored itinerary alongside alternative options and direct booking links. If a specific hotel or activity doesn't quite call to you, you are completely free to swap it out or choose a back-up option. We give you the perfect blueprint — but you make the final calls.",
+    a: "Not at all! This is your holiday and you are in total control. We provide you with a fully tailored itinerary alongside alternative options and direct booking links. If a specific hotel or activity doesn't quite call to you, you are completely free to swap it out or choose a back-up option. We give you the perfect blueprint, but you make the final calls.",
   },
   {
     q: "Do you book the hotels and flights for me?",
@@ -23,18 +23,18 @@ const FAQS = [
   },
   {
     q: "Can you help me make some tweaks?",
-    a: "Yes — make use of your 72-hour window to request tweaks and adjustments to your original itinerary.",
+    a: "Yes, make use of your 72-hour window to request tweaks and adjustments to your original itinerary.",
   },
   {
     q: "Isn't this all just done using AI?",
-    a: "Absolutely not. I'd be lying if I said that AI wasn't involved — and I'd also probably be a bit naive. Most of what you see pre-payment is AI generated. However, all that changes once I look into your request: accommodation, trips and flights are personally picked — by a real person!",
+    a: "Absolutely not. I'd be lying if I said that AI wasn't involved, and I'd also probably be a bit naive. Most of what you see pre-payment is AI generated. However, all that changes once I look into your request: accommodation, trips and flights are personally picked, by a real person!",
   },
 ];
 
 const DIFFERENCES = [
-  { icon: "📋", title: "Fully costed from the start", body: "Every itinerary includes estimated excursion costs, accommodation ranges, and a per-person total — no surprises when you arrive." },
+  { icon: "📋", title: "Fully costed from the start", body: "Every itinerary includes estimated excursion costs, accommodation ranges, and a per-person total, so no surprises when you arrive." },
   { icon: "🗺️", title: "Geographically smart routing", body: "We plan around the map, not the brochure. Regions are grouped to minimise unnecessary travel days and maximise time in the places that matter." },
-  { icon: "🤝", title: "One person, start to finish", body: "You deal with Jen directly — not a call centre, not a rotating team. Every question gets a personal answer from someone who knows your trip." },
+  { icon: "🤝", title: "One person, start to finish", body: "You deal with Jen directly, not a call centre, not a rotating team. Every question gets a personal answer from someone who knows your trip." },
   { icon: "🔍", title: "Only destinations she knows", body: "If Jen hasn't visited recently, she won't plan it. Every recommendation is based on first-hand experience, not a supplier catalogue." },
 ];
 

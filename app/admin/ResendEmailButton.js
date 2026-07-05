@@ -15,7 +15,7 @@ export default function ResendEmailButton({ email, firstName, destinationName })
       await resendItineraryEmail(email, firstName, destinationName);
       setSent(true);
     } catch {
-      alert("Couldn't send the email — please try again.");
+      alert("Couldn't send the email, please try again.");
     }
     setSending(false);
   };

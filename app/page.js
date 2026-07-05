@@ -60,7 +60,7 @@ function countryKnownFor(country) {
 
 const ALL_COUNTRIES = [...new Set(Object.values(CONTINENTS_COUNTRIES).flat())].sort((a, b) => a.localeCompare(b));
 
-const OTHER_AIRPORT = "Other — not listed";
+const OTHER_AIRPORT = "Other (not listed)";
 
 const COUNTRY_AIRPORTS = {
   // ── Europe ──────────────────────────────────────────────────────────────────
@@ -292,7 +292,7 @@ const COUNTRY_DATA = {
   "Australia":       { general:["🤿 Great Barrier Reef snorkel","🏄 Surfing","🦘 Wildlife spotting","🍷 Wine tasting","🏜️ Outback safari","🪃 Aboriginal culture tour","🐋 Whale watching","🥾 Bushwalking","🎣 Deep sea fishing","⛵ Sailing the Whitsundays","🐊 Crocodile cruise","🌊 Sea kayaking"], landmarks:["🎭 Sydney Opera House","🏖️ Bondi Beach","🪨 Uluru (Ayers Rock)","🐠 Great Barrier Reef (UNESCO)","🌊 Great Ocean Road","🌿 Daintree Rainforest (UNESCO)","🏝️ Whitsunday Islands","🏔️ Blue Mountains","🐊 Kakadu National Park (UNESCO)","🌉 Sydney Harbour Bridge","🌆 Melbourne laneways","🌺 King's Park, Perth"], regions:["🌉 Sydney & New South Wales","🎨 Melbourne & Victoria","🌴 Queensland & Gold Coast","🐠 Great Barrier Reef","🪨 Uluru & Red Centre","🌊 Western Australia"] },
   // ── Middle East ─────────────────────────────────────────────────────────────
   "Israel":          { general:["🕌 Jerusalem Old City tour","🌊 Dead Sea float","🥾 Negev Desert hiking","🏖️ Tel Aviv beach & food","🏛️ Masada sunrise","⛵ Sea of Galilee boat trip","🏛️ Archaeological site visit","🍷 Wine tasting, Galilee","🤿 Scuba diving, Red Sea","🕊️ Yad Vashem memorial","🥙 Falafel food trail","🐪 Bedouin desert camp"], landmarks:["🕍 Western Wall, Jerusalem","🕌 Dome of the Rock","🌊 Dead Sea","🏯 Masada Fortress (UNESCO)","🏙️ Tel Aviv Bauhaus City (UNESCO)","🌊 Sea of Galilee","⛪ Church of the Holy Sepulchre","🏛️ Caesarea Maritima","🌿 Rosh Hanikra","🏰 Acre Old City (UNESCO)","🌋 Makhtesh Ramon Crater","🌺 Baha'i Gardens, Haifa (UNESCO)"], regions:["🕌 Jerusalem & Old City","🏖️ Tel Aviv & Coast","🏜️ Dead Sea & Negev Desert","🌿 Galilee & North","🤿 Eilat & Red Sea","🌋 Golan Heights"] },
-  "Jordan":          { general:["🏛️ Petra by night","🏜️ Wadi Rum desert camp","🌊 Dead Sea float","🐪 Camel trek","🏛️ Roman ruins tour","🥙 Jordanian cooking class","🧖 Traditional hammam","🥾 Hiking Dana Biosphere","🤿 Scuba diving, Aqaba","🍽️ Food tour, Amman","🏰 Castle trail","🌅 Desert sunset watching"], landmarks:["🏛️ Petra — Rose-Red City (UNESCO)","🏜️ Wadi Rum Desert (UNESCO)","🌊 Dead Sea","🏛️ Jerash Roman Ruins","🏯 Amman Citadel","🏰 Ajloun Castle","🗺️ Madaba Mosaic Map","🌿 Dana Biosphere Reserve","🤿 Aqaba Coral Reefs","🏛️ Um Qais (Gadara)","🏰 Karak Castle","💧 Wadi Mujib"], regions:["🏙️ Amman & North Jordan","🏛️ Petra & Wadi Musa","🏜️ Wadi Rum & South","🌊 Dead Sea & Rift Valley","🤿 Aqaba & Red Sea","🏛️ Jerash & Roman Sites"] },
+  "Jordan":          { general:["🏛️ Petra by night","🏜️ Wadi Rum desert camp","🌊 Dead Sea float","🐪 Camel trek","🏛️ Roman ruins tour","🥙 Jordanian cooking class","🧖 Traditional hammam","🥾 Hiking Dana Biosphere","🤿 Scuba diving, Aqaba","🍽️ Food tour, Amman","🏰 Castle trail","🌅 Desert sunset watching"], landmarks:["🏛️ Petra: Rose-Red City (UNESCO)","🏜️ Wadi Rum Desert (UNESCO)","🌊 Dead Sea","🏛️ Jerash Roman Ruins","🏯 Amman Citadel","🏰 Ajloun Castle","🗺️ Madaba Mosaic Map","🌿 Dana Biosphere Reserve","🤿 Aqaba Coral Reefs","🏛️ Um Qais (Gadara)","🏰 Karak Castle","💧 Wadi Mujib"], regions:["🏙️ Amman & North Jordan","🏛️ Petra & Wadi Musa","🏜️ Wadi Rum & South","🌊 Dead Sea & Rift Valley","🤿 Aqaba & Red Sea","🏛️ Jerash & Roman Sites"] },
   "Oman":            { general:["💧 Wadi trekking","⛵ Dhow cruise","🏜️ Desert camping","🏰 Ancient fort tour","🐬 Dolphin watching","🌊 Scuba diving","🐢 Turtle watching","🛒 Frankincense souk","🎨 Traditional craft workshop","🏘️ Fishing village walk","🧗 Rock climbing","🦅 Falconry experience"], landmarks:["🛒 Mutrah Souq, Muscat","🕌 Sultan Qaboos Grand Mosque","🏜️ Wahiba Sands Desert","💧 Wadi Shab","🏰 Nizwa Fort & Souq","🌊 Musandam Fjords","💧 Bimmah Sinkhole","🏔️ Jebel Akhdar Green Mountain","🐢 Ras al-Jinz Turtle Reserve","🕳️ Al Hoota Cave","🏰 Bahla Fort (UNESCO)","🏯 Jabrin Palace"], regions:["🏙️ Muscat & North Coast","🏰 Nizwa & Interior","🌿 Salalah & Dhofar","🌊 Musandam Peninsula","🏜️ Wahiba Sands & Eastern","🐢 Sur & Ras al-Jinz"] }
 };
 
@@ -475,9 +475,9 @@ export default function JenVoyagePage() {
   const fieldRow   = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem" };
 
   const TESTIMONIALS = [
-    { quote: "Jen planned our honeymoon in Japan and it was absolutely faultless. Every detail had been thought through — we didn't have to worry about a thing from the moment we landed.", name: "Sophie & Tom", trip: "Tokyo & Kyoto, 12 nights" },
+    { quote: "Jen planned our honeymoon in Japan and it was absolutely faultless. Every detail had been thought through, and we didn't have to worry about a thing from the moment we landed.", name: "Sophie & Tom", trip: "Tokyo & Kyoto, 12 nights" },
     { quote: "I've used big travel agencies before and the difference is night and day. Jen actually listens, then builds something around you rather than fitting you into a template.", name: "Marcus H.", trip: "Peru & Machu Picchu, 14 nights" },
-    { quote: "The Thailand itinerary had something for every member of the family — the kids loved the elephant sanctuary, we loved the cooking class in Chiang Mai. Genuinely magical.", name: "Claire W.", trip: "Thailand, family of four, 10 nights" },
+    { quote: "The Thailand itinerary had something for every member of the family: the kids loved the elephant sanctuary, we loved the cooking class in Chiang Mai. Genuinely magical.", name: "Claire W.", trip: "Thailand, family of four, 10 nights" },
   ];
 
   // ── HERO ─────────────────────────────────────────────────────────────────
@@ -530,7 +530,7 @@ export default function JenVoyagePage() {
       },
       {
         name:"The Epic Adventure", price:"£120",
-        description:"For the big ones — multi-destination, long-haul and complex trips.",
+        description:"For the big ones: multi-destination, long-haul and complex trips.",
         features:["Multi-destination planning","Fully bespoke itinerary","Unlimited revisions","Priority 48-hour delivery","Dedicated travel consultant","No booking fees"],
         highlight:false
       }
@@ -545,7 +545,7 @@ export default function JenVoyagePage() {
           <div style={{ textAlign:"center", marginBottom:"3.5rem" }}>
             <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Planning Fees</div>
             <h2 style={{ fontSize:"clamp(2rem,5vw,3rem)", fontWeight:300, lineHeight:1.1, marginBottom:"1rem", color:"#1C3461" }}>Simple and transparent pricing</h2>
-            <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"48ch", margin:"0 auto", lineHeight:1.8 }}>One flat fee covers everything — your itinerary, your consultant, your revisions. No hidden charges, and no upfront costs.</p>
+            <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"48ch", margin:"0 auto", lineHeight:1.8 }}>One flat fee covers everything: your itinerary, your consultant, your revisions. No hidden charges, and no upfront costs.</p>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:"1.5rem", alignItems:"start" }}>
             {plans.map(p => (
@@ -820,7 +820,7 @@ export default function JenVoyagePage() {
           <div>
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 3</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Your {dest==="somewhere_else" ? form.otherCountry : d.name} preferences</h3>
-            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Select everything that appeals — we'll weave it into your itinerary.</p>
+            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Select everything that appeals, and we'll weave it into your itinerary.</p>
             <div style={chipSecLbl}>Activities & experiences</div>
             <ChipGroup items={d3.general} selected={form.activities} onToggle={v=>toggleArr("activities",v)} />
             {d3.landmarks.length>0 && <><div style={chipSecLbl}>Landmarks & iconic sites</div>

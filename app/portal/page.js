@@ -16,7 +16,7 @@ const STATUS_LABEL = {
 };
 
 function fmtDate(s) {
-  if (!s) return "—";
+  if (!s) return "N/A";
   return new Date(s).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" });
 }
 
