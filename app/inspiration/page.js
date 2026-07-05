@@ -26,7 +26,6 @@ const TRIPS = [
     route: "Bangkok → Chiang Mai → Koh Lanta",
     nights: 10,
     videoUrl: "/videos/thailand.mp4",
-    sampleUrl: "/sample-itinerary",
     tags: ["Families", "First-timers", "Adventure"],
     description: "Three very different sides of Thailand in one trip. Bangkok for the temples, street food, and the chaos you'll love. Chiang Mai for cooking classes, elephant sanctuaries, and jungle trails. Then south to the quieter islands of the Andaman coast before the crowds find them.",
   },
@@ -128,18 +127,11 @@ export default function InspirationPage() {
               </div>
 
               {/* Card footer */}
-              <div style={{ padding: "1rem 1.75rem 1.5rem", borderTop: `1px solid ${COLORS.mist}`, display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+              <div style={{ padding: "1rem 1.75rem 1.5rem", borderTop: `1px solid ${COLORS.mist}`, display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.75rem" }}>
                 <div style={{ ...sans, fontSize: "0.72rem", color: COLORS.stone, letterSpacing: "0.06em" }}>{t.nights} nights</div>
-                <div style={{ display: "flex", gap: "0.6rem" }}>
-                  {t.sampleUrl && (
-                    <Link href={t.sampleUrl} style={{ ...sans, background: "none", border: `1.5px solid ${COLORS.gold}`, color: COLORS.gold, fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.6rem 1rem", textDecoration: "none" }}>
-                      Full itinerary
-                    </Link>
-                  )}
-                  <a href={t.videoUrl} target="_blank" rel="noopener noreferrer" style={{ ...sans, background: "none", border: `1.5px solid ${COLORS.stone}`, color: COLORS.dusk, fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.6rem 1rem", textDecoration: "none" }}>
-                    ▶ Watch
-                  </a>
-                </div>
+                <a href={t.videoUrl} target="_blank" rel="noopener noreferrer" style={{ ...sans, background: "none", border: `1.5px solid ${COLORS.stone}`, color: COLORS.dusk, fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.6rem 1rem", textDecoration: "none" }}>
+                  ▶ Watch
+                </a>
               </div>
             </div>
           ))}
