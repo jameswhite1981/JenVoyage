@@ -515,7 +515,7 @@ export default function JenVoyagePage() {
           <h1 style={{ fontSize:"clamp(2rem,5vw,3.6rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
             Your Journey<br /><em>Your Way</em>
           </h1>
-          <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.ink, maxWidth:"44ch", lineHeight:1.7, margin:0 }}>
+          <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.ink, maxWidth:"64ch", lineHeight:1.7, margin:0 }}>
             At Jen Voyage we take the stress out of travel planning by crafting friendly, fully costed, tailormade itineraries that match your exact needs, putting the fun and excitement back into your next adventure.
           </p>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap", marginTop:"0.5rem" }}>
