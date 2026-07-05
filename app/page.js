@@ -512,7 +512,7 @@ export default function JenVoyagePage() {
             <Image src="/logo.jpg" alt="Jen Voyage" width={297} height={297} style={{ objectFit:"contain", mixBlendMode:"multiply" }} priority />
           </div>
           <div style={{ width:40, height:1, background:COLORS.gold, margin:"0.25rem 0" }} />
-          <h1 style={{ fontSize:"clamp(2rem,5vw,3.6rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
+          <h1 style={{ fontSize:"clamp(1.6rem,4vw,2.88rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
             Your Journey<br /><em>Your Way</em>
           </h1>
           <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.ink, maxWidth:"64ch", lineHeight:1.7, margin:0 }}>
