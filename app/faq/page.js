@@ -35,7 +35,6 @@ const DIFFERENCES = [
   { icon: "📋", title: "Fully costed from the start", body: "Every itinerary includes estimated excursion costs, accommodation ranges, and a per-person total, so no surprises when you arrive." },
   { icon: "🗺️", title: "Geographically smart routing", body: "We plan around the map, not the brochure. Regions are grouped to minimise unnecessary travel days and maximise time in the places that matter." },
   { icon: "🤝", title: "One person, start to finish", body: "You deal with Jen directly, not a call centre, not a rotating team. Every question gets a personal answer from someone who knows your trip." },
-  { icon: "🔍", title: "Only destinations she knows", body: "If Jen hasn't visited recently, she won't plan it. Every recommendation is based on first-hand experience, not a supplier catalogue." },
 ];
 
 export default function FaqPage() {
