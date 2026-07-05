@@ -351,6 +351,28 @@ export default function JenVoyagePage() {
     return () => clearInterval(id);
   }, []);
   const [step, setStep]   = useState(1);
+  const [showScrollHint, setShowScrollHint] = useState(false);
+
+  // Shows a bouncing "scroll for more" hint on Step 3 (Essentials) — the
+  // longest step — so people don't miss fields below the fold. Hides itself
+  // once the user actually scrolls.
+  useEffect(() => {
+    if (screen !== "form" || step !== 3) { setShowScrollHint(false); return; }
+    const check = () => {
+      const overflows = document.documentElement.scrollHeight > window.innerHeight + 40;
+      setShowScrollHint(overflows && window.scrollY < 40);
+    };
+    check();
+    const t = setTimeout(check, 150);
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, [screen, step]);
+
   const [dest, setDest]   = useState(null);
   const [enquiryId, setEnquiryId] = useState(null);
   const [preview, setPreview]     = useState(null);
@@ -785,6 +807,21 @@ export default function JenVoyagePage() {
     : d;
   return (
     <div style={page}>
+      {showScrollHint && (
+        <>
+          <style>{`
+            @keyframes scrollHintBounce {
+              0%, 100% { transform: translate(-50%, 0); opacity: 1; }
+              50% { transform: translate(-50%, 10px); opacity: 0.6; }
+            }
+          `}</style>
+          <div style={{ position:"fixed", bottom:110, left:"50%", zIndex:20, pointerEvents:"none", animation:"scrollHintBounce 1.6s ease-in-out infinite" }}>
+            <div style={{ width:38, height:38, borderRadius:"50%", background:COLORS.ink, color:COLORS.white, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.1rem", boxShadow:"0 4px 14px rgba(28,26,23,0.3)" }}>
+              ↓
+            </div>
+          </div>
+        </>
+      )}
       <div style={{ maxWidth:720, margin:"0 auto", padding:"3rem 1.5rem 5rem" }}>
         <div style={{ paddingBottom:"2rem", borderBottom:`1px solid ${COLORS.stone}`, marginBottom:"2.5rem", display:"flex", alignItems:"flex-start", gap:"2rem" }}>
           <div style={{ width:200, height:200, borderRadius:"50%", overflow:"hidden", position:"relative", background:COLORS.sand, flexShrink:0 }}>
