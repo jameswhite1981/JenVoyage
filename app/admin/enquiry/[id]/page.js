@@ -154,6 +154,12 @@ export default function EnquiryEditor() {
     return next;
   });
 
+  const handleBlankTemplate = () => {
+    if (draft && !confirm("Replace the current draft with a blank template? This discards everything currently entered (not yet saved unless you already clicked Save draft).")) return;
+    setDraft(emptyItinerary());
+    setMsg("");
+  };
+
   const handleSave = async () => {
     setSaving(true); setMsg("");
     try {
@@ -189,6 +195,9 @@ export default function EnquiryEditor() {
           </div>
           <div style={{ display:"flex", gap:"0.75rem", alignItems:"center", flexWrap:"wrap" }}>
             {msg && <span style={{ ...sans, fontSize:"0.78rem", color: msg.startsWith("Error") ? "#9B3A2A" : C.dusk }}>{msg}</span>}
+            <button onClick={handleBlankTemplate} disabled={enquiry.status === "published"} style={smallBtn}>
+              Blank template
+            </button>
             <button onClick={handleSave} disabled={saving || !draft} style={{ ...sans, background:"none", border:`1.5px solid ${C.stone}`, color:C.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.6rem 1.2rem", cursor:"pointer" }}>
               {saving ? "Saving…" : "Save draft"}
             </button>
@@ -236,10 +245,6 @@ export default function EnquiryEditor() {
             {enquiry.ai_draft ? "AI draft could not be parsed." : "AI draft not yet generated. Status: " + enquiry.status}
           </div>
         )}
-        {!draft && (
-          <button style={smallBtn} onClick={() => setDraft(emptyItinerary())}>Start from a blank template</button>
-        )}
-
         {draft && tab === "edit" && (
           <div style={{ maxWidth:820 }}>
             <Field label="Title" value={draft.title} onChange={v => upd("title", v)} />
