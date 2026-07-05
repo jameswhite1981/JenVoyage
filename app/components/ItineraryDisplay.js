@@ -120,9 +120,11 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
           {region.days?.map((day) => (
             <div key={day.day} style={{ marginBottom:"1.5rem", paddingLeft:"1.25rem", borderLeft:`2px solid ${C.stone}`, position:"relative" }}>
               <div style={{ position:"absolute", left:-5, top:"0.4rem", width:8, height:8, background:C.gold, borderRadius:"50%" }} />
-              <div style={{ ...sans, fontSize:"0.62rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, marginBottom:"0.2rem" }}>
-                Day {day.day}{day.dateLabel ? ` — ${day.dateLabel}` : ""}{day.bookInAdvance ? " ⚠️ Book in advance" : ""}
-              </div>
+              {day.bookInAdvance && (
+                <div style={{ ...sans, fontSize:"0.62rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, marginBottom:"0.2rem" }}>
+                  ⚠️ Book in advance
+                </div>
+              )}
               {day.title && <div style={{ fontSize:"1.05rem", fontWeight:400, marginBottom:"0.4rem" }}>{day.title}</div>}
               {day.description && <p style={{ ...body, margin:0 }}><LinkedText text={day.description} /></p>}
               {day.options?.length > 0 && (

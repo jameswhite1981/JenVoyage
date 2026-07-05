@@ -376,7 +376,6 @@ export default function EnquiryEditor() {
                 <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.dusk, textTransform:"uppercase", margin:"1rem 0 0.5rem" }}>Day by day</div>
                 {(region.days || []).map((day, di) => (
                   <div key={di} style={{ border:`1px solid ${C.mist}`, padding:"0.85rem 1rem", marginBottom:"0.6rem" }}>
-                    <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Day {day.day}</div>
                     <Field label="Day notes" textarea value={day.description} onChange={v => upd(`regions.${ri}.days.${di}.description`, v)} placeholder="Write the whole day out freely — e.g. 27th March: arrive Bangkok, transfer to hotel, evening street food walk near Chinatown…" />
                     <label style={{ ...sans, fontSize:"0.78rem", color:C.dusk, display:"flex", alignItems:"center", gap:"0.4rem", marginBottom:"0.6rem" }}>
                       <input type="checkbox" checked={!!day.bookInAdvance} onChange={e => upd(`regions.${ri}.days.${di}.bookInAdvance`, e.target.checked)} />
