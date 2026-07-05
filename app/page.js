@@ -64,6 +64,7 @@ const OTHER_AIRPORT = "Other — not listed";
 
 const COUNTRY_AIRPORTS = {
   // ── Europe ──────────────────────────────────────────────────────────────────
+  "Albania": ["Tirana"],
   "United Kingdom": ["London Heathrow","London Gatwick","Manchester","Birmingham","Edinburgh","Glasgow","Bristol","Newcastle"],
   "Ireland": ["Dublin","Cork","Shannon"],
   "Austria": ["Vienna"],
