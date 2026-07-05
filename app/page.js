@@ -359,6 +359,7 @@ export default function JenVoyagePage() {
     departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"",
     adults:"2", children:"0", childrenAges:"",
     pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500,
+    specificRegions:"",
     activities:[], landmarks:[], regions:[],
     dietary:[], accessibility:"", notes:"",
     firstName:"", lastName:"", email:"", phone:"", referral:"",
@@ -374,7 +375,7 @@ export default function JenVoyagePage() {
   const goNext = () => {
     if (step===1 && !dest) { alert("Please select a destination."); return; }
     if (step===1 && dest==="somewhere_else" && !form.otherCountry) { alert("Please select a country."); return; }
-    if (step<5) setStep(s=>s+1);
+    if (step<6) setStep(s=>s+1);
   };
 
   const submit = async () => {
@@ -405,6 +406,7 @@ export default function JenVoyagePage() {
             rooms: form.rooms,
             beds: form.beds,
             accomNotes: form.accomNotes,
+            specificRegions: form.specificRegions,
             pace: form.pace,
             accom: form.accom,
             budget: form.budget,
@@ -681,7 +683,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
             Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight recommendations.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
             Back to home
           </button>
         </div>
@@ -711,7 +713,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"0.88rem", fontWeight:300, color:COLORS.stone, maxWidth:"40ch", lineHeight:1.8, marginBottom:"3rem" }}>
             In the meantime, if you have anything to add or want to get in touch sooner, just reply to the confirmation email you'll receive shortly.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
             Back to home
           </button>
         </div>
@@ -738,14 +740,14 @@ export default function JenVoyagePage() {
         </div>
 
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.4rem" }}>
-          <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk }}>Step {step} of 5</div>
+          <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk }}>Step {step} of 6</div>
           <button style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, cursor:"pointer", padding:"0.3rem 0.75rem" }}
-            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
             ← Home
           </button>
         </div>
         <div style={{ width:"100%", height:"2px", background:COLORS.stone, marginBottom:"2.5rem" }}>
-          <div style={{ height:"100%", background:COLORS.gold, width:`${step/5*100}%`, transition:"width 0.4s" }} />
+          <div style={{ height:"100%", background:COLORS.gold, width:`${step/6*100}%`, transition:"width 0.4s" }} />
         </div>
 
         {/* STEP 1 — Destination */}
@@ -785,10 +787,27 @@ export default function JenVoyagePage() {
           </div>
         )}
 
-        {/* STEP 2 — Essentials */}
+        {/* STEP 2 — Specific regions or states */}
         {step===2 && (
           <div>
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 2</div>
+            <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Any regions or states in mind?</h3>
+            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>If you already know which parts of {form.otherCountry || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
+            <div style={fieldGroup}>
+              <label style={label}>Regions, states or areas you'd like to include (optional)</label>
+              <textarea style={{...inp,minHeight:110,resize:"vertical"}} value={form.specificRegions} onChange={e=>upd("specificRegions",e.target.value)} placeholder="e.g. Tuscany, the Amalfi Coast, maybe Sicily if time allows..." />
+            </div>
+            <div style={formNav}>
+              <button style={btnBack} onClick={()=>setStep(s=>s-1)}>← Back</button>
+              <button style={btnNext} onClick={goNext}>Continue →</button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3 — Essentials */}
+        {step===3 && (
+          <div>
+            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 3</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>The essentials</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>A few practical details to shape your itinerary.</p>
             <div style={fieldGroup}>
@@ -853,10 +872,10 @@ export default function JenVoyagePage() {
           </div>
         )}
 
-        {/* STEP 3 — Country questions */}
-        {step===3 && d3 && (
+        {/* STEP 4 — Country questions */}
+        {step===4 && d3 && (
           <div>
-            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 3</div>
+            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 4</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Your {dest==="somewhere_else" ? form.otherCountry : d.name} preferences</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Select everything that appeals, and we'll weave it into your itinerary.</p>
             <div style={chipSecLbl}>Activities & experiences</div>
@@ -872,10 +891,10 @@ export default function JenVoyagePage() {
           </div>
         )}
 
-        {/* STEP 4 — Requirements */}
-        {step===4 && (
+        {/* STEP 5 — Requirements */}
+        {step===5 && (
           <div>
-            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 4</div>
+            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 5</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Any special requirements?</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Help us ensure every part of your trip is comfortable.</p>
             <div style={fieldGroup}>
@@ -891,10 +910,10 @@ export default function JenVoyagePage() {
           </div>
         )}
 
-        {/* STEP 5 — Contact */}
-        {step===5 && (
+        {/* STEP 6 — Contact */}
+        {step===6 && (
           <div>
-            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 5</div>
+            <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 6</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Almost there</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Leave your details and we'll generate your draft itinerary instantly.</p>
             <div style={fieldRow}>

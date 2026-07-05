@@ -322,6 +322,13 @@ export default function EnquiryEditor() {
               </div>
             )}
 
+            {enquiry.brief.specificRegions && (
+              <div style={{ marginBottom:"1rem" }}>
+                <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>Specific regions/states requested</div>
+                <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>{enquiry.brief.specificRegions}</div>
+              </div>
+            )}
+
             {[...(enquiry.brief.activities||[]), ...(enquiry.brief.landmarks||[]), ...(enquiry.brief.regions||[])].length > 0 && (
               <div style={{ marginBottom: enquiry.brief.notes ? "1rem" : 0 }}>
                 <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold, marginBottom:"0.4rem" }}>Selected interests</div>
