@@ -9,6 +9,17 @@ const COLORS = {
   gold: "#B8962E", mist: "#EAE4DA", white: "#FDFBF8"
 };
 
+const HERO_INFO = {
+  what: {
+    label: "What do we do?",
+    body: "We design fully personalised, bespoke holiday itineraries: real flights, real accommodation and hand-picked activities matched to your exact budget and taste. No templates and no generic packages, just a trip built around your brief by Jen herself.",
+  },
+  how: {
+    label: "How does it work?",
+    body: "Tell us where you're dreaming of and a few essentials about your trip. You'll get an instant, free first-look preview while we get started. Once you're happy to proceed, Jen personally researches and builds your full itinerary, complete with direct booking links, ready within 48 hours.",
+  },
+};
+
 const DESTINATIONS = {
   somewhere_else: { name:"Somewhere else", flag:"🌍",
     general:["🏖️ Beach & relaxation","🏔️ Hiking & trekking","🍽️ Local food & cuisine","🏛️ History & culture","🤿 Water sports","🌿 Nature & wildlife","🎭 Arts & entertainment","🛍️ Shopping","🧘 Wellness & spa","🎉 Festivals & events","🚴 Cycling & adventure","📸 Photography"],
@@ -333,6 +344,7 @@ function ChipGroup({ items, selected, onToggle }) {
 export default function JenVoyagePage() {
   const [screen, setScreen] = useState("hero");
   const [tIdx, setTIdx] = useState(0);
+  const [heroDropdown, setHeroDropdown] = useState(null); // null | "what" | "how"
 
   useEffect(() => {
     const id = setInterval(() => setTIdx(i => (i + 1) % TESTIMONIALS.length), 5000);
@@ -496,8 +508,32 @@ export default function JenVoyagePage() {
         </div>
 
         <div style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:"0.75rem" }}>
-          <div style={{ width:329, height:329, borderRadius:"50%", background:COLORS.sand, overflow:"hidden", boxShadow:"0 4px 24px rgba(28,26,23,0.18)", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <Image src="/logo.jpg" alt="Jen Voyage" width={297} height={297} style={{ objectFit:"contain", mixBlendMode:"multiply" }} priority />
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1.5rem", flexWrap:"wrap" }}>
+            <div style={{ position:"relative" }}>
+              <button onClick={()=>setHeroDropdown(d=>d==="what"?null:"what")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.6rem 1.1rem", cursor:"pointer" }}>
+                {HERO_INFO.what.label} {heroDropdown==="what" ? "▲" : "▼"}
+              </button>
+              {heroDropdown==="what" && (
+                <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
+                  <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.what.body}</p>
+                </div>
+              )}
+            </div>
+
+            <div style={{ width:329, height:329, borderRadius:"50%", background:COLORS.sand, overflow:"hidden", boxShadow:"0 4px 24px rgba(28,26,23,0.18)", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Image src="/logo.jpg" alt="Jen Voyage" width={297} height={297} style={{ objectFit:"contain", mixBlendMode:"multiply" }} priority />
+            </div>
+
+            <div style={{ position:"relative" }}>
+              <button onClick={()=>setHeroDropdown(d=>d==="how"?null:"how")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.6rem 1.1rem", cursor:"pointer" }}>
+                {HERO_INFO.how.label} {heroDropdown==="how" ? "▲" : "▼"}
+              </button>
+              {heroDropdown==="how" && (
+                <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
+                  <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.how.body}</p>
+                </div>
+              )}
+            </div>
           </div>
           <div style={{ width:40, height:1, background:COLORS.gold, margin:"0.25rem 0" }} />
           <h1 style={{ fontSize:"clamp(2rem,5vw,3.6rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
