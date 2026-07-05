@@ -508,9 +508,19 @@ export default function JenVoyagePage() {
         </div>
 
         <div style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:"0.75rem" }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1.5rem", flexWrap:"wrap" }}>
+          <div style={{ width:329, height:329, borderRadius:"50%", background:COLORS.sand, overflow:"hidden", boxShadow:"0 4px 24px rgba(28,26,23,0.18)", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <Image src="/logo.jpg" alt="Jen Voyage" width={297} height={297} style={{ objectFit:"contain", mixBlendMode:"multiply" }} priority />
+          </div>
+          <div style={{ width:40, height:1, background:COLORS.gold, margin:"0.25rem 0" }} />
+          <h1 style={{ fontSize:"clamp(2rem,5vw,3.6rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
+            Your Journey<br /><em>Your Way</em>
+          </h1>
+          <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.ink, maxWidth:"44ch", lineHeight:1.7, margin:0 }}>
+            At Jen Voyage we take the stress out of travel planning by crafting friendly, fully costed, tailormade itineraries that match your exact needs, putting the fun and excitement back into your next adventure.
+          </p>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap", marginTop:"0.5rem" }}>
             <div style={{ position:"relative" }}>
-              <button onClick={()=>setHeroDropdown(d=>d==="what"?null:"what")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.6rem 1.1rem", cursor:"pointer" }}>
+              <button onClick={()=>setHeroDropdown(d=>d==="what"?null:"what")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.95rem 1.1rem", cursor:"pointer" }}>
                 {HERO_INFO.what.label} {heroDropdown==="what" ? "▲" : "▼"}
               </button>
               {heroDropdown==="what" && (
@@ -520,12 +530,10 @@ export default function JenVoyagePage() {
               )}
             </div>
 
-            <div style={{ width:329, height:329, borderRadius:"50%", background:COLORS.sand, overflow:"hidden", boxShadow:"0 4px 24px rgba(28,26,23,0.18)", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <Image src="/logo.jpg" alt="Jen Voyage" width={297} height={297} style={{ objectFit:"contain", mixBlendMode:"multiply" }} priority />
-            </div>
+            <button style={btnPrimary} onClick={() => setScreen("form")}>Begin Planning</button>
 
             <div style={{ position:"relative" }}>
-              <button onClick={()=>setHeroDropdown(d=>d==="how"?null:"how")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.6rem 1.1rem", cursor:"pointer" }}>
+              <button onClick={()=>setHeroDropdown(d=>d==="how"?null:"how")} style={{ ...sans, background:COLORS.white, border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.95rem 1.1rem", cursor:"pointer" }}>
                 {HERO_INFO.how.label} {heroDropdown==="how" ? "▲" : "▼"}
               </button>
               {heroDropdown==="how" && (
@@ -535,14 +543,6 @@ export default function JenVoyagePage() {
               )}
             </div>
           </div>
-          <div style={{ width:40, height:1, background:COLORS.gold, margin:"0.25rem 0" }} />
-          <h1 style={{ fontSize:"clamp(2rem,5vw,3.6rem)", fontWeight:300, lineHeight:1.05, maxWidth:"16ch", margin:0, color:"#1C3461" }}>
-            Your Journey<br /><em>Your Way</em>
-          </h1>
-          <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.ink, maxWidth:"44ch", lineHeight:1.7, margin:0 }}>
-            At Jen Voyage we take the stress out of travel planning by crafting friendly, fully costed, tailormade itineraries that match your exact needs, putting the fun and excitement back into your next adventure.
-          </p>
-          <button style={{ ...btnPrimary, marginTop:"0.5rem" }} onClick={() => setScreen("form")}>Begin Planning</button>
         </div>
       </div>
     </div>
