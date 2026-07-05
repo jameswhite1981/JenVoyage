@@ -19,6 +19,12 @@ const STATUS_BADGE = {
   published:        { text:"Published",         bg:"#1C1A17", color:"#FDFBF8" },
 };
 
+const CONTACT_METHOD_LABEL = {
+  call:     { icon:"📞", text:"Wants a call" },
+  whatsapp: { icon:"💬", text:"Wants WhatsApp" },
+  email:    { icon:"✉️", text:"Wants an email" },
+};
+
 function fmtDate(s) {
   return new Date(s).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" });
 }
@@ -27,7 +33,11 @@ export default async function AdminDashboard() {
   const enquiries = await listEnquiries();
 
   const counts = { pending:0, generating:0, ai_ready:0, wants_to_proceed:0, published:0 };
-  enquiries?.forEach(e => { if (counts[e.status] !== undefined) counts[e.status]++; });
+  let wantsContact = 0;
+  enquiries?.forEach(e => {
+    if (counts[e.status] !== undefined) counts[e.status]++;
+    if (e.unsure_contact_method) wantsContact++;
+  });
 
   return (
     <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", color:C.ink }}>
@@ -48,8 +58,8 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Stats */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:"1px", background:C.stone, border:`1px solid ${C.stone}`, marginBottom:"2.5rem" }}>
-          {[["Pending",counts.pending],["Generating",counts.generating],["Awaiting review",counts.ai_ready],["Wants to proceed",counts.wants_to_proceed],["Published",counts.published]].map(([lbl,n]) => (
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:"1px", background:C.stone, border:`1px solid ${C.stone}`, marginBottom:"2.5rem" }}>
+          {[["Pending",counts.pending],["Generating",counts.generating],["Awaiting review",counts.ai_ready],["Wants to proceed",counts.wants_to_proceed],["Wants contact",wantsContact],["Published",counts.published]].map(([lbl,n]) => (
             <div key={lbl} style={{ background:C.white, padding:"1.25rem", textAlign:"center" }}>
               <div style={{ fontSize:"2rem", fontWeight:300 }}>{n}</div>
               <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, marginTop:"0.25rem" }}>{lbl}</div>
@@ -63,22 +73,32 @@ export default async function AdminDashboard() {
         <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem" }}>
           {enquiries?.map(e => {
             const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
+            const contact = CONTACT_METHOD_LABEL[e.unsure_contact_method];
+            const contactDetail = e.unsure_contact_method === "email" ? e.email : (e.phone || e.email);
             const displayName = `${e.first_name} ${e.last_name || ""}`.trim();
             return (
-              <div key={e.id} style={{ display:"flex", alignItems:"center", gap:"0.5rem", background:C.white, border:`1px solid ${C.stone}`, padding:"1.1rem 1.5rem", transition:"border-color 0.15s" }}>
-                <Link href={`/admin/enquiry/${e.id}`} style={{ flex:1, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"0.75rem", textDecoration:"none", color:C.ink, minWidth:0 }}>
-                  <div>
-                    <div style={{ fontSize:"1rem", fontWeight:400 }}>{displayName}</div>
-                    <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{e.email}</div>
+              <div key={e.id} style={{ display:"flex", flexDirection:"column", gap:"0.5rem", background:C.white, border:`1px solid ${contact ? C.gold : C.stone}`, padding:"1.1rem 1.5rem", transition:"border-color 0.15s" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                  <Link href={`/admin/enquiry/${e.id}`} style={{ flex:1, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"0.75rem", textDecoration:"none", color:C.ink, minWidth:0 }}>
+                    <div>
+                      <div style={{ fontSize:"1rem", fontWeight:400 }}>{displayName}</div>
+                      <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{e.email}</div>
+                    </div>
+                    <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
+                    <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
+                    <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
+                  </Link>
+                  {e.status === "published" && (
+                    <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} />
+                  )}
+                  <DeleteEnquiryButton id={e.id} name={displayName} />
+                </div>
+                {contact && (
+                  <div style={{ ...sans, fontSize:"0.78rem", color:"#8a6416", background:"#fdf3e3", border:"1px solid #e8d3a0", padding:"0.5rem 0.85rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                    <span>{contact.icon} {contact.text}:</span>
+                    <strong>{contactDetail}</strong>
                   </div>
-                  <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
-                  <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
-                  <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
-                </Link>
-                {e.status === "published" && (
-                  <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} />
                 )}
-                <DeleteEnquiryButton id={e.id} name={displayName} />
               </div>
             );
           })}
