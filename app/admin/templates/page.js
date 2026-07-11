@@ -24,15 +24,18 @@ export default async function TemplatesPage() {
       <div style={{ maxWidth:900, margin:"0 auto", padding:"3rem 1.5rem 5rem" }}>
 
         {/* Header */}
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingBottom:"1.5rem", borderBottom:`1px solid ${C.stone}`, marginBottom:"2rem" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"1rem", paddingBottom:"1.5rem", borderBottom:`1px solid ${C.stone}`, marginBottom:"2rem" }}>
           <div>
             <Link href="/admin" style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.dusk, textDecoration:"none" }}>← All enquiries</Link>
             <h1 style={{ fontSize:"1.6rem", fontWeight:300, margin:"0.4rem 0 0" }}>Itinerary templates</h1>
           </div>
+          <Link href="/admin/templates/new" style={{ ...sans, background:C.ink, color:C.white, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.65rem 1.4rem", textDecoration:"none" }}>
+            + Create new template
+          </Link>
         </div>
 
         <p style={{ ...sans, fontSize:"0.84rem", color:C.dusk, fontWeight:300, lineHeight:1.7, marginBottom:"2rem", maxWidth:"60ch" }}>
-          Saved from any published enquiry via "Save as template" on its editor page. Open an enquiry and use "Load from template" to start its draft from one of these instead of blank.
+          Saved from any published enquiry via "Save as template" on its editor page, or built from scratch with "Create new template". Open an enquiry and use "Load from template" to start its draft from one of these instead of blank.
         </p>
 
         {!templates?.length && <p style={{ ...sans, color:C.dusk }}>No templates saved yet.</p>}
