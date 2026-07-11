@@ -956,7 +956,7 @@ export default function JenVoyagePage() {
             <div style={fieldGroup}>
               <label style={label}>Budget per person (£)</label>
               <div style={{ fontSize:"1.8rem", fontWeight:300, marginBottom:"0.4rem" }}>{form.budget>=10000?"£10,000+":"£"+form.budget.toLocaleString()}</div>
-              <input type="range" min="100" max="10000" step="250" value={form.budget} onChange={e=>upd("budget",parseInt(e.target.value))} style={{ width:"100%", accentColor:COLORS.gold }} />
+              <input type="range" min="100" max="10000" step="100" value={form.budget} onChange={e=>upd("budget",parseInt(e.target.value))} style={{ width:"100%", accentColor:COLORS.gold }} />
               <div style={{ ...sans, display:"flex", justifyContent:"space-between", fontSize:"0.7rem", color:COLORS.dusk, marginTop:"0.35rem" }}><span>£100</span><span>£10,000+</span></div>
             </div>
             <div style={formNav}>
