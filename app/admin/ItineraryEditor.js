@@ -10,6 +10,7 @@ const lbl = { ...sans, display:"block", fontSize:"0.72rem", fontWeight:500, lett
 const sectionHead = { ...sans, fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, margin:"2rem 0 1rem", paddingBottom:"0.4rem", borderBottom:`1px solid ${C.stone}` };
 const smallBtn = { ...sans, background:"none", border:`1.5px solid ${C.stone}`, color:C.dusk, fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.4rem 0.8rem", cursor:"pointer" };
 const removeBtn = { ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.05em", textTransform:"uppercase", cursor:"pointer", padding:"0.2rem 0" };
+const moveBtn = { ...sans, background:"none", border:`1px solid ${C.stone}`, color:C.dusk, fontSize:"0.75rem", fontWeight:600, cursor:"pointer", padding:"0.15rem 0.55rem", lineHeight:1.4 };
 const groupBox = { border:`1px solid ${C.stone}`, padding:"1.25rem 1.5rem", marginBottom:"1.25rem", background:C.white };
 const row2 = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.75rem" };
 const field = { marginBottom:"0.9rem" };
@@ -97,6 +98,13 @@ export default function ItineraryEditor({ draft, setDraft }) {
     regions: [...(prev.regions || []), { name:"New region", whyHere:"", accommodation:{ nights:"", note:"", options:[] }, gettingThereNote:"", days:[] }],
   }));
   const removeRegion = (ri) => setDraft(prev => renumberDays({ ...prev, regions: prev.regions.filter((_, i) => i !== ri) }));
+  const moveRegion = (ri, dir) => setDraft(prev => {
+    const target = ri + dir;
+    if (target < 0 || target >= prev.regions.length) return prev;
+    const next = structuredClone(prev);
+    [next.regions[ri], next.regions[target]] = [next.regions[target], next.regions[ri]];
+    return renumberDays(next);
+  });
 
   const addAccomOption = (ri) => setDraft(prev => {
     const next = structuredClone(prev);
@@ -117,6 +125,14 @@ export default function ItineraryEditor({ draft, setDraft }) {
   const removeDay = (ri, di) => setDraft(prev => {
     const next = structuredClone(prev);
     next.regions[ri].days.splice(di, 1);
+    return renumberDays(next);
+  });
+  const moveDay = (ri, di, dir) => setDraft(prev => {
+    const target = di + dir;
+    if (target < 0 || target >= prev.regions[ri].days.length) return prev;
+    const next = structuredClone(prev);
+    const days = next.regions[ri].days;
+    [days[di], days[target]] = [days[target], days[di]];
     return renumberDays(next);
   });
 
@@ -186,6 +202,12 @@ export default function ItineraryEditor({ draft, setDraft }) {
           title={region.name || `Region ${ri + 1}`}
           subtitle={`${region.days?.length || 0} day${(region.days?.length || 0) === 1 ? "" : "s"}`}
           onRemove={() => removeRegion(ri)}
+          headerExtra={
+            <>
+              <button style={{ ...moveBtn, opacity: ri === 0 ? 0.35 : 1 }} disabled={ri === 0} onClick={() => moveRegion(ri, -1)} title="Move region up">↑</button>
+              <button style={{ ...moveBtn, opacity: ri === draft.regions.length - 1 ? 0.35 : 1 }} disabled={ri === draft.regions.length - 1} onClick={() => moveRegion(ri, 1)} title="Move region down">↓</button>
+            </>
+          }
         >
           <Field label="Region name" value={region.name} onChange={v => upd(`regions.${ri}.name`, v)} />
           <Field label="Why here" textarea value={region.whyHere} onChange={v => upd(`regions.${ri}.whyHere`, v)} />
@@ -231,7 +253,9 @@ export default function ItineraryEditor({ draft, setDraft }) {
                 </div>
               ))}
               <button style={smallBtn} onClick={() => addDayOption(ri, di)}>+ Add option/activity</button>
-              <div style={{ marginTop:"0.6rem" }}>
+              <div style={{ marginTop:"0.6rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                <button style={{ ...moveBtn, opacity: di === 0 ? 0.35 : 1 }} disabled={di === 0} onClick={() => moveDay(ri, di, -1)} title="Move day up">↑</button>
+                <button style={{ ...moveBtn, opacity: di === region.days.length - 1 ? 0.35 : 1 }} disabled={di === region.days.length - 1} onClick={() => moveDay(ri, di, 1)} title="Move day down">↓</button>
                 <button style={removeBtn} onClick={() => removeDay(ri, di)}>Remove day</button>
               </div>
             </div>
