@@ -36,6 +36,9 @@ yarn-error.log*
 # customer data
 /data
 
+# stray downloaded/attached PDFs at the project root (generated dynamically, never checked in)
+/*.pdf
+
 # vercel
 .vercel
 
