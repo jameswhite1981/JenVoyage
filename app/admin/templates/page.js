@@ -50,7 +50,10 @@ export default async function TemplatesPage() {
                 title={t.name}
                 subtitle={`${t.destination_name || "N/A"} · saved ${fmtDate(t.created_at)}`}
               >
-                <div style={{ display:"flex", justifyContent:"flex-end", marginBottom:"1rem" }}>
+                <div style={{ display:"flex", justifyContent:"flex-end", alignItems:"center", gap:"1.25rem", marginBottom:"1rem" }}>
+                  <a href={`/api/admin/templates/${t.id}/download`} style={{ ...sans, fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", color:C.dusk, textDecoration:"none", border:`1.5px solid ${C.stone}`, padding:"0.4rem 0.8rem" }}>
+                    Download PDF
+                  </a>
                   <DeleteTemplateButton id={t.id} name={t.name} />
                 </div>
                 {preview ? <ItineraryDisplay itinerary={preview} collapsible /> : <p style={{ ...sans, color:"#9B3A2A" }}>Could not parse this template's content.</p>}
