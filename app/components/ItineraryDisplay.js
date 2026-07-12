@@ -125,7 +125,6 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
                   ⚠️ Book in advance
                 </div>
               )}
-              {day.title && <div style={{ fontSize:"1.05rem", fontWeight:400, marginBottom:"0.4rem" }}>{day.title}</div>}
               {day.description && <p style={{ ...body, margin:0 }}><LinkedText text={day.description} /></p>}
               {day.options?.length > 0 && (
                 <div style={{ marginTop:"0.5rem" }}>
