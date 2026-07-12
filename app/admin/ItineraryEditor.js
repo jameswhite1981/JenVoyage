@@ -163,7 +163,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
     <div style={{ maxWidth:820 }}>
       <Field label="Title" value={draft.title} onChange={v => upd("title", v)} />
       <p style={{ ...sans, fontSize:"0.72rem", color:C.stone, margin:"-0.5rem 0 0.9rem" }}>
-        Tip: in any text field below, write <code>[link text](https://…)</code> to add a clickable link.
+        Tip: in any text field below, write <code>[link text](https://…)</code> to add a clickable link, or <code>**text**</code> to make it bold.
       </p>
       <Field label="Intro" textarea value={draft.intro} onChange={v => upd("intro", v)} placeholder="You asked for a trip that included…" />
 

@@ -44,14 +44,15 @@ function LegRow({ leg }) {
 }
 
 // Renders free text with any [label](https://...) markdown-style links as
-// real clickable <a> tags — lets narrative fields (whyHere, day
-// descriptions, etc.) reference a link without a separate structured field.
+// real clickable <a> tags, and **text** as bold — lets narrative fields
+// (whyHere, day descriptions, pre-trip notes, etc.) reference a link or
+// emphasise something without a separate structured field.
 function LinkedText({ text }) {
-  return linkifySegments(text).map((seg, i) =>
-    seg.type === "link"
-      ? <a key={i} href={seg.url} target="_blank" rel="noopener noreferrer" style={{ color:"inherit", textDecoration:"underline" }}>{seg.label}</a>
-      : <span key={i}>{seg.value}</span>
-  );
+  return linkifySegments(text).map((seg, i) => {
+    if (seg.type === "link") return <a key={i} href={seg.url} target="_blank" rel="noopener noreferrer" style={{ color:"inherit", textDecoration:"underline" }}>{seg.label}</a>;
+    if (seg.type === "bold") return <strong key={i}>{seg.value}</strong>;
+    return <span key={i}>{seg.value}</span>;
+  });
 }
 
 function OptionRow({ opt, recommended }) {
