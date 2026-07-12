@@ -93,17 +93,29 @@ export default function ItineraryEditor({ draft, setDraft }) {
     return next;
   };
 
-  const addRegion = () => setDraft(prev => ({
-    ...prev,
-    regions: [...(prev.regions || []), { name:"New region", whyHere:"", accommodation:{ nights:"", note:"", options:[] }, gettingThereNote:"", days:[] }],
-  }));
-  const removeRegion = (ri) => setDraft(prev => renumberDays({ ...prev, regions: prev.regions.filter((_, i) => i !== ri) }));
+  // Regions still on their default "Region N" name are kept numbered to
+  // match their actual position, so removing/reordering one never leaves a
+  // gap or duplicate. Custom-named regions (Bangkok, Tuscany, etc.) are
+  // left alone.
+  const renumberDefaultRegions = (itinerary) => {
+    const next = structuredClone(itinerary);
+    next.regions = (next.regions || []).map((r, i) =>
+      /^Region \d+$/.test(r.name || "") ? { ...r, name: `Region ${i + 1}` } : r
+    );
+    return next;
+  };
+
+  const addRegion = () => setDraft(prev => {
+    const regions = prev.regions || [];
+    return { ...prev, regions: [...regions, { name:`Region ${regions.length + 1}`, whyHere:"", accommodation:{ nights:"", note:"", options:[] }, gettingThereNote:"", days:[] }] };
+  });
+  const removeRegion = (ri) => setDraft(prev => renumberDefaultRegions(renumberDays({ ...prev, regions: prev.regions.filter((_, i) => i !== ri) })));
   const moveRegion = (ri, dir) => setDraft(prev => {
     const target = ri + dir;
     if (target < 0 || target >= prev.regions.length) return prev;
     const next = structuredClone(prev);
     [next.regions[ri], next.regions[target]] = [next.regions[target], next.regions[ri]];
-    return renumberDays(next);
+    return renumberDefaultRegions(renumberDays(next));
   });
 
   const addAccomOption = (ri) => setDraft(prev => {
