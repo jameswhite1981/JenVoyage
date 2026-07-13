@@ -851,14 +851,14 @@ export default function JenVoyagePage() {
           </div>
         </>
       )}
-      <div style={{ maxWidth:720, margin:"0 auto", padding:"3rem 1.5rem 5rem" }}>
-        <div style={{ paddingBottom:"2rem", borderBottom:`1px solid ${COLORS.stone}`, marginBottom:"2.5rem", display:"flex", alignItems:"flex-start", gap:"2rem" }}>
-          <div style={{ width:200, height:200, borderRadius:"50%", overflow:"hidden", position:"relative", background:COLORS.sand, flexShrink:0 }}>
+      <div style={{ maxWidth:720, margin:"0 auto", padding:"1.5rem 1.5rem 5rem" }}>
+        <div style={{ paddingBottom:"1rem", borderBottom:`1px solid ${COLORS.stone}`, marginBottom:"1.25rem", display:"flex", alignItems:"center", gap:"1.25rem" }}>
+          <div style={{ width:88, height:88, borderRadius:"50%", overflow:"hidden", position:"relative", background:COLORS.sand, flexShrink:0 }}>
             <Image src="/logo.jpg" alt="Jen Voyage" width={340} height={340} style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:340, height:340, objectFit:"cover", mixBlendMode:"multiply" }} />
           </div>
-          <div style={{ paddingTop:"0.5rem" }}>
-            <h2 style={{ fontSize:"clamp(1.8rem,4vw,2.8rem)", fontWeight:300, lineHeight:1.1, marginBottom:"0.5rem", color:"#1C3461" }}>Plan your journey</h2>
-            <p style={{ ...sans, fontSize:"0.88rem", color:COLORS.dusk, fontWeight:300, margin:0 }}>A few questions to build your perfect itinerary.</p>
+          <div>
+            <h2 style={{ fontSize:"clamp(1.3rem,3vw,1.9rem)", fontWeight:300, lineHeight:1.1, marginBottom:"0.25rem", color:"#1C3461" }}>Plan your journey</h2>
+            <p style={{ ...sans, fontSize:"0.82rem", color:COLORS.dusk, fontWeight:300, margin:0 }}>A few questions to build your perfect itinerary.</p>
           </div>
         </div>
 
@@ -869,16 +869,16 @@ export default function JenVoyagePage() {
             ← Home
           </button>
         </div>
-        <div style={{ width:"100%", height:"2px", background:COLORS.stone, marginBottom:"2.5rem" }}>
+        <div style={{ width:"100%", height:"2px", background:COLORS.stone, marginBottom:"1.5rem" }}>
           <div style={{ height:"100%", background:COLORS.gold, width:`${step/6*100}%`, transition:"width 0.4s" }} />
         </div>
 
         {/* STEP 1 — Destination */}
         {step===1 && (
           <div>
-            <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"1.5rem" }}>Where are you dreaming of?</h3>
+            <h3 style={{ fontSize:"clamp(1.3rem,3vw,1.8rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.85rem" }}>Where are you dreaming of?</h3>
 
-            <div style={{ marginBottom:"2rem" }}>
+            <div style={{ marginBottom:"1rem" }}>
               <label style={label}>Country</label>
               <select style={{...inp,appearance:"none"}} value={form.otherCountry} onChange={e=>{ const c=e.target.value; setDest(c ? "somewhere_else" : null); upd("otherCountry",c); upd("continent", continentForCountry(c)||""); }}>
                 <option value="">Select a country…</option>
@@ -887,14 +887,14 @@ export default function JenVoyagePage() {
             </div>
 
             {form.otherCountry && (
-              <div style={{ display:"flex", alignItems:"center", gap:"1rem", marginBottom:"1.25rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.85rem 1rem" }}>
-                <div style={{ width:56, height:56, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.6rem", flexShrink:0 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"0.85rem", marginBottom:"0.75rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.6rem 0.85rem" }}>
+                <div style={{ width:44, height:44, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.3rem", flexShrink:0 }}>
                   {flagEmoji(form.otherCountry)}
                 </div>
                 <div style={{ flex:1, minWidth:200 }}>
-                  <div style={{ fontSize:"0.95rem", fontWeight:500, marginBottom:"0.2rem" }}>{form.otherCountry}</div>
+                  <div style={{ fontSize:"0.88rem", fontWeight:500, marginBottom:"0.15rem" }}>{form.otherCountry}</div>
                   {countryKnownFor(form.otherCountry).length>0 && (
-                    <div style={{ ...sans, fontSize:"0.72rem", color:COLORS.dusk }}>
+                    <div style={{ ...sans, fontSize:"0.68rem", color:COLORS.dusk }}>
                       <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
                       {countryKnownFor(form.otherCountry).join("  ·  ")}
                     </div>
@@ -904,8 +904,8 @@ export default function JenVoyagePage() {
             )}
 
             {form.additionalCountries.map((country, i) => (
-              <div key={i} style={{ marginBottom:"1.25rem" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom: country ? "0.75rem" : 0 }}>
+              <div key={i} style={{ marginBottom:"0.75rem" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom: country ? "0.5rem" : 0 }}>
                   <select style={{...inp,appearance:"none", flex:1}} value={country} onChange={e=>updAdditionalCountry(i, e.target.value)}>
                     <option value="">Select another country…</option>
                     {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
@@ -913,14 +913,14 @@ export default function JenVoyagePage() {
                   <button onClick={()=>removeAdditionalCountry(i)} style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove country">✕</button>
                 </div>
                 {country && (
-                  <div style={{ display:"flex", alignItems:"center", gap:"1rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.85rem 1rem" }}>
-                    <div style={{ width:56, height:56, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.6rem", flexShrink:0 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:"0.85rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.6rem 0.85rem" }}>
+                    <div style={{ width:44, height:44, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.3rem", flexShrink:0 }}>
                       {flagEmoji(country)}
                     </div>
                     <div style={{ flex:1, minWidth:200 }}>
-                      <div style={{ fontSize:"0.95rem", fontWeight:500, marginBottom:"0.2rem" }}>{country}</div>
+                      <div style={{ fontSize:"0.88rem", fontWeight:500, marginBottom:"0.15rem" }}>{country}</div>
                       {countryKnownFor(country).length>0 && (
-                        <div style={{ ...sans, fontSize:"0.72rem", color:COLORS.dusk }}>
+                        <div style={{ ...sans, fontSize:"0.68rem", color:COLORS.dusk }}>
                           <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
                           {countryKnownFor(country).join("  ·  ")}
                         </div>
@@ -932,7 +932,7 @@ export default function JenVoyagePage() {
             ))}
 
             {form.otherCountry && (
-              <button onClick={addAdditionalCountry} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.5rem 1rem", cursor:"pointer", marginBottom:"2rem" }}>
+              <button onClick={addAdditionalCountry} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.5rem 1rem", cursor:"pointer", marginBottom:"1rem" }}>
                 + Add another country
               </button>
             )}
