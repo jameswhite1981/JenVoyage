@@ -30,13 +30,13 @@ function BookLink({ href }) {
   );
 }
 
-function LegRow({ leg, hideRoute }) {
+function LegRow({ leg, internal }) {
   if (!leg) return null;
   return (
     <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem 1.25rem", padding:"0.75rem 0", borderBottom:`1px solid ${C.mist}`, alignItems:"center" }}>
-      <div style={{ ...sans, fontSize:"0.78rem", fontWeight:500, color:C.ink, minWidth:110 }}>{leg.label}</div>
+      <div style={{ ...sans, fontSize:"0.78rem", fontWeight:500, color:C.ink, minWidth:110 }}>{internal ? "Internal flight" : leg.label}</div>
       {leg.date  && <div style={{ ...sans, fontSize:"0.78rem", color:C.dusk }}>{leg.date}</div>}
-      {leg.route && !hideRoute && <div style={{ ...sans, fontSize:"0.78rem", color:C.dusk, flex:1 }}>{leg.route}</div>}
+      {leg.route && !internal && <div style={{ ...sans, fontSize:"0.78rem", color:C.dusk, flex:1 }}>{leg.route}</div>}
       {leg.cost  && <div style={{ ...sans, fontSize:"0.78rem", color:C.ink, fontWeight:500 }}>{leg.cost}</div>}
       <BookLink href={leg.link} />
     </div>
@@ -89,7 +89,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
       {(d.flights?.outbound || d.flights?.return || d.flights?.internal?.length > 0) && (
         <Section collapsible={collapsible} defaultOpen={defaultOpen} title="Flights">
           <LegRow leg={d.flights.outbound} />
-          {d.flights.internal?.map((leg, i) => <LegRow key={i} leg={leg} hideRoute />)}
+          {d.flights.internal?.map((leg, i) => <LegRow key={i} leg={leg} internal />)}
           <LegRow leg={d.flights.return} />
         </Section>
       )}
