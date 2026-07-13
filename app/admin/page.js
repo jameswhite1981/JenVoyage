@@ -2,6 +2,7 @@ import { listEnquiries } from "../../lib/storage.js";
 import Link from "next/link";
 import DeleteEnquiryButton from "./DeleteEnquiryButton.js";
 import ResendEmailButton from "./ResendEmailButton.js";
+import GetShareLinkButton from "./GetShareLinkButton.js";
 
 // This dashboard shows live enquiry data behind auth middleware — it must
 // never be statically prerendered/cached, or it would freeze on whatever
@@ -90,6 +91,9 @@ export default async function AdminDashboard() {
                   </Link>
                   {e.status === "published" && (
                     <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} />
+                  )}
+                  {e.status === "published" && (
+                    <GetShareLinkButton email={e.email} />
                   )}
                   <DeleteEnquiryButton id={e.id} name={displayName} />
                 </div>

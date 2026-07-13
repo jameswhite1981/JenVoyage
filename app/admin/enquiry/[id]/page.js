@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveDraft, publishEnquiry } from "./actions.js";
-import { resendItineraryEmail } from "../../actions.js";
+import { resendItineraryEmail, getShareableLink } from "../../actions.js";
 import { emptyItinerary, normalizeItinerary, parseItineraryJSON } from "../../../../lib/itinerary.js";
 import ItineraryDisplay from "../../../components/ItineraryDisplay.js";
 import ItineraryEditor from "../../ItineraryEditor.js";
@@ -21,6 +21,8 @@ export default function EnquiryEditor() {
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [resending, setResending] = useState(false);
+  const [gettingLink, setGettingLink] = useState(false);
+  const [shareLink, setShareLink] = useState(null);
   const [msg, setMsg] = useState("");
   const [templates, setTemplates] = useState([]);
   const [savingTemplate, setSavingTemplate] = useState(false);
@@ -104,6 +106,16 @@ export default function EnquiryEditor() {
     setResending(false);
   };
 
+  const handleGetLink = async () => {
+    setGettingLink(true); setMsg("");
+    try {
+      const link = await getShareableLink(enquiry.email);
+      setShareLink(link);
+      try { await navigator.clipboard.writeText(link); setMsg("Link copied to clipboard."); } catch { setMsg("Link ready below."); }
+    } catch (e) { setMsg(`Error: ${e.message}`); }
+    setGettingLink(false);
+  };
+
   if (!enquiry) return <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.stone }}>Loading…</div>;
 
   return (
@@ -145,8 +157,20 @@ export default function EnquiryEditor() {
                 {resending ? "Sending…" : "Re-send email"}
               </button>
             )}
+            {enquiry.status === "published" && (
+              <button onClick={handleGetLink} disabled={gettingLink} style={smallBtn}>
+                {gettingLink ? "Generating…" : "Get shareable link"}
+              </button>
+            )}
           </div>
         </div>
+
+        {shareLink && (
+          <div style={{ ...sans, background:C.mist, border:`1px solid ${C.stone}`, padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem", display:"flex", alignItems:"center", gap:"1rem", flexWrap:"wrap" }}>
+            <span style={{ color:C.dusk }}>Share this manually (e.g. WhatsApp, text) in case the automated email doesn&apos;t land — single-use, expires in 7 days:</span>
+            <code style={{ ...sans, background:C.white, border:`1px solid ${C.stone}`, padding:"0.4rem 0.6rem", wordBreak:"break-all", flex:"1 1 300px" }}>{shareLink}</code>
+          </div>
+        )}
 
         {enquiry.status === "wants_to_proceed" && (
           <div style={{ ...sans, background:"#e9f3ea", border:"1px solid #b7d6ba", color:"#2F6B3A", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
