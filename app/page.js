@@ -387,7 +387,7 @@ export default function JenVoyagePage() {
     activities:[], landmarks:[], regions:[],
     dietary:[], accessibility:"", notes:"",
     firstName:"", lastName:"", email:"", phone:"", referral:"",
-    continent:"", otherCountry:""
+    continent:"", otherCountry:"", additionalCountries:[]
   });
 
   const upd = (k,v) => setForm(f => ({...f,[k]:v}));
@@ -396,10 +396,27 @@ export default function JenVoyagePage() {
     return {...f,[key]: arr.includes(val) ? arr.filter(x=>x!==val) : [...arr,val]};
   });
 
+  // Multi-country trip support — "+ Add another country" on Step 1.
+  const addAdditionalCountry = () => setForm(f => ({ ...f, additionalCountries: [...f.additionalCountries, ""] }));
+  const updAdditionalCountry = (i, v) => setForm(f => {
+    const next = [...f.additionalCountries];
+    next[i] = v;
+    return { ...f, additionalCountries: next };
+  });
+  const removeAdditionalCountry = (i) => setForm(f => ({ ...f, additionalCountries: f.additionalCountries.filter((_, idx) => idx !== i) }));
+
   const goNext = () => {
     if (step===1 && !dest) { alert("Please select a destination."); return; }
     if (step===1 && dest==="somewhere_else" && !form.otherCountry) { alert("Please select a country."); return; }
     if (step<6) setStep(s=>s+1);
+  };
+
+  // All countries selected for this trip — the primary country plus any
+  // "+ Add another country" slots — joined for display/AI purposes.
+  const selectedCountries = () => [form.otherCountry, ...form.additionalCountries].filter(Boolean);
+  const destinationLabel = () => {
+    if (dest !== "somewhere_else") return DESTINATIONS[dest]?.name || dest;
+    return selectedCountries().join(" & ") || form.otherCountry;
   };
 
   const submit = async () => {
@@ -417,7 +434,7 @@ export default function JenVoyagePage() {
           phone: form.phone,
           referral: form.referral,
           destination: form.otherCountry || dest,
-          destinationName: form.otherCountry || d?.name || dest,
+          destinationName: destinationLabel(),
           continent: form.continent,
           brief: {
             departDate: form.departDate,
@@ -659,7 +676,7 @@ export default function JenVoyagePage() {
         <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", padding:"3rem 1.5rem" }}>
           <div style={{ width:44, height:44, borderRadius:"50%", border:`3px solid ${COLORS.stone}`, borderTopColor:COLORS.gold, animation:"spin 0.9s linear infinite", marginBottom:"2rem" }} />
           <h2 style={{ fontSize:"clamp(1.6rem,4vw,2.4rem)", fontWeight:300, lineHeight:1.1, maxWidth:"20ch", marginBottom:"1rem" }}>
-            Crafting your {dest==="somewhere_else" ? form.otherCountry : d?.name} itinerary
+            Crafting your {destinationLabel()} itinerary
           </h2>
           <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"40ch", lineHeight:1.8 }}>
             This usually takes less than a minute. Please don&apos;t close this page.
@@ -762,7 +779,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
             Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight recommendations.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[] }); }}>
             Back to home
           </button>
         </div>
@@ -784,7 +801,7 @@ export default function JenVoyagePage() {
             Thank you {form.firstName}
           </h2>
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"0.75rem" }}>
-            We've received everything we need to start planning your {dest==="somewhere_else" ? form.otherCountry : d?.name} itinerary.
+            We've received everything we need to start planning your {destinationLabel()} itinerary.
           </p>
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"0.75rem" }}>
             Your personalised itinerary will be ready within <strong style={{ color:COLORS.ink, fontWeight:500 }}>48 hours</strong>. We'll send it directly to <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong>, along with a few options for us to speak through the detail together.
@@ -792,7 +809,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"0.88rem", fontWeight:300, color:COLORS.stone, maxWidth:"40ch", lineHeight:1.8, marginBottom:"3rem" }}>
             In the meantime, if you have anything to add or want to get in touch sooner, just reply to the confirmation email you'll receive shortly.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[] }); }}>
             Back to home
           </button>
         </div>
@@ -802,9 +819,21 @@ export default function JenVoyagePage() {
 
   // ── FORM ─────────────────────────────────────────────────────────────────
   const d = DESTINATIONS[dest];
-  const d3 = dest === "somewhere_else"
-    ? (COUNTRY_DATA[form.otherCountry] || CONTINENT_DATA[form.continent] || d)
-    : d;
+  // Merges activity/landmark/region chips across every selected country (not
+  // just the primary one), so a multi-country trip surfaces suggestions for
+  // all of them in Step 4, deduplicated.
+  const d3 = (() => {
+    if (dest !== "somewhere_else") return d;
+    const countries = selectedCountries();
+    const sources = (countries.length ? countries : [form.otherCountry])
+      .map(c => COUNTRY_DATA[c] || CONTINENT_DATA[continentForCountry(c)] || d);
+    const dedupe = (arr) => [...new Set(arr)];
+    return {
+      general: dedupe(sources.flatMap(s => s?.general || [])),
+      landmarks: dedupe(sources.flatMap(s => s?.landmarks || [])),
+      regions: dedupe(sources.flatMap(s => s?.regions || [])),
+    };
+  })();
   return (
     <div style={page}>
       {showScrollHint && (
@@ -836,7 +865,7 @@ export default function JenVoyagePage() {
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.4rem" }}>
           <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk }}>Step {step} of 6</div>
           <button style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, cursor:"pointer", padding:"0.3rem 0.75rem" }}
-            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"" }); }}>
+            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[] }); }}>
             ← Home
           </button>
         </div>
@@ -874,6 +903,40 @@ export default function JenVoyagePage() {
               </div>
             )}
 
+            {form.additionalCountries.map((country, i) => (
+              <div key={i} style={{ marginBottom:"1.25rem" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom: country ? "0.75rem" : 0 }}>
+                  <select style={{...inp,appearance:"none", flex:1}} value={country} onChange={e=>updAdditionalCountry(i, e.target.value)}>
+                    <option value="">Select another country…</option>
+                    {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
+                  </select>
+                  <button onClick={()=>removeAdditionalCountry(i)} style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove country">✕</button>
+                </div>
+                {country && (
+                  <div style={{ display:"flex", alignItems:"center", gap:"1rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.85rem 1rem" }}>
+                    <div style={{ width:56, height:56, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.6rem", flexShrink:0 }}>
+                      {flagEmoji(country)}
+                    </div>
+                    <div style={{ flex:1, minWidth:200 }}>
+                      <div style={{ fontSize:"0.95rem", fontWeight:500, marginBottom:"0.2rem" }}>{country}</div>
+                      {countryKnownFor(country).length>0 && (
+                        <div style={{ ...sans, fontSize:"0.72rem", color:COLORS.dusk }}>
+                          <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
+                          {countryKnownFor(country).join("  ·  ")}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {form.otherCountry && (
+              <button onClick={addAdditionalCountry} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.5rem 1rem", cursor:"pointer", marginBottom:"2rem" }}>
+                + Add another country
+              </button>
+            )}
+
             <div style={formNav}>
               <span />
               <button style={btnNext} onClick={goNext}>Continue →</button>
@@ -886,7 +949,7 @@ export default function JenVoyagePage() {
           <div>
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 2</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Any regions or states in mind?</h3>
-            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>If you already know which parts of {form.otherCountry || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
+            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>If you already know which parts of {destinationLabel() || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
             <div style={fieldGroup}>
               <label style={label}>Regions, states or areas you'd like to include (optional)</label>
               <textarea style={{...inp,minHeight:110,resize:"vertical"}} value={form.specificRegions} onChange={e=>upd("specificRegions",e.target.value)} placeholder="e.g. Tuscany, the Amalfi Coast, maybe Sicily if time allows..." />
@@ -970,7 +1033,7 @@ export default function JenVoyagePage() {
         {step===4 && d3 && (
           <div>
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 4</div>
-            <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Your {dest==="somewhere_else" ? form.otherCountry : d.name} preferences</h3>
+            <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Your {destinationLabel()} preferences</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Select everything that appeals, and we'll weave it into your itinerary.</p>
             <div style={chipSecLbl}>Activities & experiences</div>
             <ChipGroup items={d3.general} selected={form.activities} onToggle={v=>toggleArr("activities",v)} />
