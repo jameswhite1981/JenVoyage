@@ -131,7 +131,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
 
   const addDay = (ri) => setDraft(prev => {
     const next = structuredClone(prev);
-    next.regions[ri].days.push({ day: 0, description:"", bookInAdvance:false, options:[] });
+    next.regions[ri].days.push({ day: 0, title:"", description:"", bookInAdvance:false, options:[] });
     return renumberDays(next);
   });
   const removeDay = (ri, di) => setDraft(prev => {
@@ -251,6 +251,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
           <div style={{ ...sans, fontSize:"0.68rem", fontWeight:500, color:C.dusk, textTransform:"uppercase", margin:"1rem 0 0.5rem" }}>Day by day</div>
           {(region.days || []).map((day, di) => (
             <div key={di} style={{ border:`1px solid ${C.mist}`, padding:"0.85rem 1rem", marginBottom:"0.6rem" }}>
+              <Field label="Day heading (optional)" value={day.title} onChange={v => upd(`regions.${ri}.days.${di}.title`, v)} placeholder="e.g. Arrival & First Taste of Bangkok" />
               <Field label="Day notes" textarea value={day.description} onChange={v => upd(`regions.${ri}.days.${di}.description`, v)} placeholder="Write the whole day out freely, e.g. 27th March: arrive Bangkok, transfer to hotel, evening street food walk near Chinatown…" />
               <label style={{ ...sans, fontSize:"0.78rem", color:C.dusk, display:"flex", alignItems:"center", gap:"0.4rem", marginBottom:"0.6rem" }}>
                 <input type="checkbox" checked={!!day.bookInAdvance} onChange={e => upd(`regions.${ri}.days.${di}.bookInAdvance`, e.target.checked)} />
