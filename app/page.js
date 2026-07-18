@@ -977,17 +977,24 @@ export default function JenVoyagePage() {
             <div style={fieldRow}>
               <div style={fieldGroup}>
                 <label style={label}>Departure country</label>
-                <select style={{...inp,appearance:"none"}} value={form.departCountry} onChange={e=>{ upd("departCountry",e.target.value); upd("preferredAirport",""); upd("preferredAirportOther",""); }}>
+                <select style={{...inp,appearance:"none"}} value={form.departCountry} onChange={e=>{ const v=e.target.value; upd("departCountry",v); upd("preferredAirport", v==="N/A" ? "N/A" : ""); upd("preferredAirportOther",""); }}>
                   <option value="">Select a country…</option>
+                  <option value="N/A">N/A (not leaving my country)</option>
                   {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
                 </select>
               </div>
               <div style={fieldGroup}>
                 <label style={label}>Preferred airport</label>
-                <select style={{...inp,appearance:"none"}} value={form.preferredAirport} onChange={e=>{ upd("preferredAirport",e.target.value); upd("preferredAirportOther",""); }} disabled={!form.departCountry}>
-                  <option value="">{form.departCountry ? "Select an airport…" : "Choose a country first"}</option>
-                  {airportOptionsFor(form.departCountry).map(a=><option key={a}>{a}</option>)}
-                </select>
+                {form.departCountry === "N/A" ? (
+                  <select style={{...inp,appearance:"none"}} disabled>
+                    <option>N/A (not leaving my country)</option>
+                  </select>
+                ) : (
+                  <select style={{...inp,appearance:"none"}} value={form.preferredAirport} onChange={e=>{ upd("preferredAirport",e.target.value); upd("preferredAirportOther",""); }} disabled={!form.departCountry}>
+                    <option value="">{form.departCountry ? "Select an airport…" : "Choose a country first"}</option>
+                    {airportOptionsFor(form.departCountry).map(a=><option key={a}>{a}</option>)}
+                  </select>
+                )}
                 {form.preferredAirport===OTHER_AIRPORT && (
                   <input type="text" style={{...inp,marginTop:"0.5rem"}} value={form.preferredAirportOther} onChange={e=>upd("preferredAirportOther",e.target.value)} placeholder="Please specify your airport" />
                 )}
