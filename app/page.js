@@ -387,7 +387,8 @@ export default function JenVoyagePage() {
     activities:[], landmarks:[], regions:[],
     dietary:[], accessibility:"", notes:"",
     firstName:"", lastName:"", email:"", phone:"", referral:"",
-    continent:"", otherCountry:"", additionalCountries:[]
+    continent:"", otherCountry:"", additionalCountries:[],
+    agreedToTerms:false
   });
 
   const upd = (k,v) => setForm(f => ({...f,[k]:v}));
@@ -408,6 +409,7 @@ export default function JenVoyagePage() {
   const goNext = () => {
     if (step===1 && !dest) { alert("Please select a destination."); return; }
     if (step===1 && dest==="somewhere_else" && !form.otherCountry) { alert("Please select a country."); return; }
+    if (step===1 && !form.agreedToTerms) { alert("Please confirm you understand how Jen Voyage works before continuing."); return; }
     if (step<6) setStep(s=>s+1);
   };
 
@@ -779,7 +781,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
             Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight recommendations.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[] }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             Back to home
           </button>
         </div>
@@ -809,7 +811,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"0.88rem", fontWeight:300, color:COLORS.stone, maxWidth:"40ch", lineHeight:1.8, marginBottom:"3rem" }}>
             In the meantime, if you have anything to add or want to get in touch sooner, just reply to the confirmation email you'll receive shortly.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[] }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             Back to home
           </button>
         </div>
@@ -865,7 +867,7 @@ export default function JenVoyagePage() {
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.4rem" }}>
           <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk }}>Step {step} of 6</div>
           <button style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, cursor:"pointer", padding:"0.3rem 0.75rem" }}
-            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[] }); }}>
+            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             ← Home
           </button>
         </div>
@@ -936,6 +938,11 @@ export default function JenVoyagePage() {
                 + Add another country
               </button>
             )}
+
+            <label style={{ ...sans, display:"flex", alignItems:"flex-start", gap:"0.6rem", fontSize:"0.8rem", color:COLORS.dusk, fontWeight:300, lineHeight:1.6, marginTop:"0.5rem", cursor:"pointer" }}>
+              <input type="checkbox" checked={form.agreedToTerms} onChange={e=>upd("agreedToTerms",e.target.checked)} style={{ marginTop:"0.2rem", flexShrink:0 }} />
+              I understand that Jen Voyage provides curated recommendations and direct booking links so I can book my flights, accommodation and trips independently, my way. This is not a travel agency that books on my behalf.
+            </label>
 
             <div style={formNav}>
               <span />
