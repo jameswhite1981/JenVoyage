@@ -20,7 +20,7 @@ export async function GET(request, { params }) {
     return new Response("Itinerary not yet published", { status: 404 });
   }
 
-  const pdfBuffer = await generatePdf(enquiry.published_content, enquiry.first_name, enquiry.destination_name);
+  const pdfBuffer = await generatePdf(enquiry.published_content, enquiry.first_name);
   const filename = `${enquiry.destination_name.toLowerCase().replace(/\s+/g, "-")}-itinerary.pdf`;
 
   return new Response(pdfBuffer, {

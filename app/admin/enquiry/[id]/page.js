@@ -264,7 +264,7 @@ export default function EnquiryEditor() {
 
         {draft && tab === "preview" && (
           <div style={{ maxWidth:700 }}>
-            <ItineraryDisplay itinerary={draft} collapsible destinationName={enquiry.destination_name} />
+            <ItineraryDisplay itinerary={draft} collapsible />
           </div>
         )}
       </div>

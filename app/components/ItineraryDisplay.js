@@ -69,30 +69,16 @@ function OptionRow({ opt, recommended }) {
   );
 }
 
-export default function ItineraryDisplay({ itinerary, collapsible = false, defaultOpen = false, destinationName }) {
+export default function ItineraryDisplay({ itinerary, collapsible = false, defaultOpen = false }) {
   const raw = typeof itinerary === "string" ? parseItineraryJSON(itinerary) : itinerary;
   const d = normalizeItinerary(raw);
   if (!d) return null;
   const quickLinks = buildQuickLinks(d);
-  const regionNames = (d.regions || []).map((r) => r.name).filter(Boolean);
-  const mapSrc = regionNames.length > 0
-    ? `/api/map?destination=${encodeURIComponent(destinationName || "")}&regions=${encodeURIComponent(regionNames.join("|"))}`
-    : null;
 
   return (
     <div>
       <h2 style={{ fontSize:"clamp(1.6rem,3.5vw,2.4rem)", fontWeight:300, marginBottom:"0.5rem" }}>{d.title}</h2>
       {d.intro && <p style={{ ...body, marginBottom:"1rem" }}><LinkedText text={d.intro} /></p>}
-
-      {mapSrc && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={mapSrc}
-          alt={`Route map${destinationName ? ` of ${destinationName}` : ""}`}
-          style={{ width:"100%", height:"auto", display:"block", border:`1px solid ${C.stone}`, marginBottom:"1rem" }}
-          loading="lazy"
-        />
-      )}
 
       {d.preTripNotes?.length > 0 && (
         <div style={{ background:C.mist, border:`1px solid ${C.stone}`, padding:"1rem 1.25rem", marginBottom:"1rem" }}>

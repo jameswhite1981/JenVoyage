@@ -56,7 +56,7 @@ export default async function TemplatesPage() {
                   </a>
                   <DeleteTemplateButton id={t.id} name={t.name} />
                 </div>
-                {preview ? <ItineraryDisplay itinerary={preview} collapsible destinationName={t.destination_name} /> : <p style={{ ...sans, color:"#9B3A2A" }}>Could not parse this template's content.</p>}
+                {preview ? <ItineraryDisplay itinerary={preview} collapsible /> : <p style={{ ...sans, color:"#9B3A2A" }}>Could not parse this template's content.</p>}
               </Accordion>
             );
           })}
