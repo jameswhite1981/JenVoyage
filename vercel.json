@@ -5,7 +5,15 @@
       "memory": 512
     },
     "app/api/portal/download/[id]/route.js": {
-      "maxDuration": 30,
+      "maxDuration": 45,
+      "memory": 1024
+    },
+    "app/api/admin/templates/[id]/download/route.js": {
+      "maxDuration": 45,
+      "memory": 1024
+    },
+    "app/api/map/route.js": {
+      "maxDuration": 45,
       "memory": 1024
     }
   }
