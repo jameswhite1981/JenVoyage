@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Nav from "./components/Nav";
 import DateRangePicker from "./components/DateRangePicker";
+import TypeaheadSelect from "./components/TypeaheadSelect";
 
 const COLORS = {
   sand: "#F2EDE4", stone: "#C8BFB0", ink: "#1C1A17", dusk: "#4A3F35",
@@ -70,6 +71,11 @@ function countryKnownFor(country) {
 }
 
 const ALL_COUNTRIES = [...new Set(Object.values(CONTINENTS_COUNTRIES).flat())].sort((a, b) => a.localeCompare(b));
+const COUNTRY_ITEMS = ALL_COUNTRIES.map(c => ({ value:c, label:c }));
+const DEPART_COUNTRY_ITEMS = [
+  { value:"N/A", label:"N/A (not leaving my country)" },
+  ...ALL_COUNTRIES.map(c => ({ value:c, label:c })),
+];
 
 const OTHER_AIRPORT = "Other (not listed)";
 
@@ -882,10 +888,12 @@ export default function JenVoyagePage() {
 
             <div style={{ marginBottom:"1rem" }}>
               <label style={label}>Country</label>
-              <select style={{...inp,appearance:"none"}} value={form.otherCountry} onChange={e=>{ const c=e.target.value; setDest(c ? "somewhere_else" : null); upd("otherCountry",c); upd("continent", continentForCountry(c)||""); }}>
-                <option value="">Select a country…</option>
-                {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
-              </select>
+              <TypeaheadSelect
+                items={COUNTRY_ITEMS}
+                value={form.otherCountry}
+                onChange={c=>{ setDest(c ? "somewhere_else" : null); upd("otherCountry",c); upd("continent", continentForCountry(c)||""); }}
+                placeholder="Start typing a country…"
+              />
             </div>
 
             {form.otherCountry && (
@@ -908,10 +916,13 @@ export default function JenVoyagePage() {
             {form.additionalCountries.map((country, i) => (
               <div key={i} style={{ marginBottom:"0.75rem" }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom: country ? "0.5rem" : 0 }}>
-                  <select style={{...inp,appearance:"none", flex:1}} value={country} onChange={e=>updAdditionalCountry(i, e.target.value)}>
-                    <option value="">Select another country…</option>
-                    {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
-                  </select>
+                  <TypeaheadSelect
+                    items={COUNTRY_ITEMS}
+                    value={country}
+                    onChange={c=>updAdditionalCountry(i, c)}
+                    placeholder="Start typing another country…"
+                    wrapStyle={{ flex:1 }}
+                  />
                   <button onClick={()=>removeAdditionalCountry(i)} style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove country">✕</button>
                 </div>
                 {country && (
@@ -984,11 +995,12 @@ export default function JenVoyagePage() {
             <div className="jv-field-row" style={fieldRow}>
               <div style={fieldGroup}>
                 <label style={label}>Departure country</label>
-                <select style={{...inp,appearance:"none"}} value={form.departCountry} onChange={e=>{ const v=e.target.value; upd("departCountry",v); upd("preferredAirport", v==="N/A" ? "N/A" : ""); upd("preferredAirportOther",""); }}>
-                  <option value="">Select a country…</option>
-                  <option value="N/A">N/A (not leaving my country)</option>
-                  {ALL_COUNTRIES.map(c=><option key={c}>{c}</option>)}
-                </select>
+                <TypeaheadSelect
+                  items={DEPART_COUNTRY_ITEMS}
+                  value={form.departCountry}
+                  onChange={v=>{ upd("departCountry",v); upd("preferredAirport", v==="N/A" ? "N/A" : ""); upd("preferredAirportOther",""); }}
+                  placeholder="Start typing a country…"
+                />
               </div>
               <div style={fieldGroup}>
                 <label style={label}>Preferred airport</label>
