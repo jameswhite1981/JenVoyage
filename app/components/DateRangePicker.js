@@ -76,7 +76,7 @@ export default function DateRangePicker({ startDate, endDate, onChange, label = 
       </div>
 
       {open && (
-        <div style={{ position:"absolute", top:"100%", left:0, marginTop:4, zIndex:20, background:COLORS.white, border:`1.5px solid ${COLORS.stone}`, padding:"1rem", boxShadow:"0 8px 24px rgba(28,26,23,0.12)", width:300 }}>
+        <div style={{ position:"absolute", top:"100%", left:0, marginTop:4, zIndex:20, background:COLORS.white, border:`1.5px solid ${COLORS.stone}`, padding:"1rem", boxShadow:"0 8px 24px rgba(28,26,23,0.12)", width:"min(300px, calc(100vw - 3rem))" }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.75rem" }}>
             <button type="button" onClick={() => setViewDate(v => new Date(v.getFullYear(), v.getMonth()-1, 1))} style={{ ...sans, background:"none", border:"none", cursor:"pointer", fontSize:"1rem", color:COLORS.dusk, padding:"0.2rem 0.5rem" }}>‹</button>
             <span style={{ ...sans, fontSize:"0.82rem", fontWeight:500, color:COLORS.ink }}>{MONTHS[viewDate.getMonth()]} {viewDate.getFullYear()}</span>

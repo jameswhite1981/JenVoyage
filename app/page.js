@@ -553,11 +553,11 @@ export default function JenVoyagePage() {
   // ── HERO ─────────────────────────────────────────────────────────────────
   if (screen==="hero") return (
     <div style={page}>
-      <div style={{ minHeight:"100vh", position:"relative", display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"center", textAlign:"center", padding:"5rem 1.5rem 3rem", backgroundImage:"url('/map-bg.svg')", backgroundSize:"cover", backgroundPosition:"center" }}>
+      <div className="jv-hero-wrap" style={{ minHeight:"100vh", position:"relative", display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"center", textAlign:"center", padding:"5rem 1.5rem 3rem", backgroundImage:"url('/map-bg.svg')", backgroundSize:"cover", backgroundPosition:"center" }}>
         <div style={{ position:"absolute", inset:0, background:"rgba(242,237,228,0.52)" }} />
 
-        {/* Nav links floating top-right */}
-        <div style={{ position:"absolute", top:"1.25rem", right:"2rem", display:"flex", alignItems:"center", gap:"2rem", zIndex:2 }}>
+        {/* Nav links floating top-right (stacks inline above the hero content on mobile) */}
+        <div className="jv-hero-nav" style={{ position:"absolute", top:"1.25rem", right:"2rem", display:"flex", alignItems:"center", gap:"2rem", zIndex:2 }}>
           <a href="/inspiration" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>Inspiration</a>
           <a href="/about" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>About</a>
           <a href="/reviews" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>Reviews</a>
@@ -981,7 +981,7 @@ export default function JenVoyagePage() {
                 onChange={({ start, end }) => setForm(f => ({ ...f, departDate:start, returnDate:end }))}
               />
             </div>
-            <div style={fieldRow}>
+            <div className="jv-field-row" style={fieldRow}>
               <div style={fieldGroup}>
                 <label style={label}>Departure country</label>
                 <select style={{...inp,appearance:"none"}} value={form.departCountry} onChange={e=>{ const v=e.target.value; upd("departCountry",v); upd("preferredAirport", v==="N/A" ? "N/A" : ""); upd("preferredAirportOther",""); }}>
@@ -1007,7 +1007,7 @@ export default function JenVoyagePage() {
                 )}
               </div>
             </div>
-            <div style={fieldRow}>
+            <div className="jv-field-row" style={fieldRow}>
               <div style={fieldGroup}><label style={label}>Adults</label><input type="number" style={inp} min="1" max="20" value={form.adults} onChange={e=>upd("adults",e.target.value)} /></div>
               <div style={fieldGroup}><label style={label}>Children</label><input type="number" style={inp} min="0" max="10" value={form.children} onChange={e=>upd("children",e.target.value)} /></div>
             </div>
@@ -1025,7 +1025,7 @@ export default function JenVoyagePage() {
               <label style={label}>Accommodation style</label>
               <RadioChips options={[{value:"airbnb",label:"🏠 Airbnb style"},{value:"hotels",label:"🏩 Hotels"},{value:"all-inclusive",label:"🌴 All Inclusive"},{value:"everything",label:"🌟 I'd like to see everything"}]} value={form.accom} onChange={v=>upd("accom",v)} />
             </div>
-            <div style={fieldRow}>
+            <div className="jv-field-row" style={fieldRow}>
               <div style={fieldGroup}><label style={label}>Number of rooms</label><input type="number" style={inp} min="1" max="20" value={form.rooms} onChange={e=>upd("rooms",e.target.value)} /></div>
               <div style={fieldGroup}><label style={label}>Number of beds</label><input type="number" style={inp} min="1" max="20" value={form.beds} onChange={e=>upd("beds",e.target.value)} /></div>
             </div>
@@ -1087,7 +1087,7 @@ export default function JenVoyagePage() {
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 6</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Almost there</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>Leave your details and we'll generate your draft itinerary instantly.</p>
-            <div style={fieldRow}>
+            <div className="jv-field-row" style={fieldRow}>
               <div style={fieldGroup}><label style={label}>First name</label><input type="text" style={inp} value={form.firstName} onChange={e=>upd("firstName",e.target.value)} placeholder="Sarah" /></div>
               <div style={fieldGroup}><label style={label}>Last name</label><input type="text" style={inp} value={form.lastName} onChange={e=>upd("lastName",e.target.value)} placeholder="Mitchell" /></div>
             </div>
