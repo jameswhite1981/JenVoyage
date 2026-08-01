@@ -100,7 +100,7 @@ export default function EnquiryEditor() {
     if (!confirm(`Re-send the itinerary-ready email to ${enquiry.email}?`)) return;
     setResending(true); setMsg("");
     try {
-      await resendItineraryEmail(enquiry.email, enquiry.first_name, enquiry.destination_name);
+      await resendItineraryEmail(enquiry.email, enquiry.first_name, enquiry.destination_name, id);
       setMsg("Email re-sent.");
     } catch (e) { setMsg(`Error: ${e.message}`); }
     setResending(false);
@@ -109,7 +109,7 @@ export default function EnquiryEditor() {
   const handleGetLink = async () => {
     setGettingLink(true); setMsg("");
     try {
-      const link = await getShareableLink(enquiry.email);
+      const link = await getShareableLink(enquiry.email, id);
       setShareLink(link);
       try { await navigator.clipboard.writeText(link); setMsg("Link copied to clipboard."); } catch { setMsg("Link ready below."); }
     } catch (e) { setMsg(`Error: ${e.message}`); }
