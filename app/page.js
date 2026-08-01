@@ -4,6 +4,7 @@ import Image from "next/image";
 import Nav from "./components/Nav";
 import DateRangePicker from "./components/DateRangePicker";
 import TypeaheadSelect from "./components/TypeaheadSelect";
+import TravelAdvisoryNotice from "./components/TravelAdvisoryNotice";
 
 const COLORS = {
   sand: "#F2EDE4", stone: "#C8BFB0", ink: "#1C1A17", dusk: "#4A3F35",
@@ -900,20 +901,25 @@ export default function JenVoyagePage() {
             </div>
 
             {form.otherCountry && (
-              <div style={{ display:"flex", alignItems:"center", gap:"0.85rem", marginBottom:"0.75rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.6rem 0.85rem" }}>
-                <div style={{ width:44, height:44, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.3rem", flexShrink:0 }}>
-                  {flagEmoji(form.otherCountry)}
+              <>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.85rem", marginBottom:"0.25rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.6rem 0.85rem" }}>
+                  <div style={{ width:44, height:44, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.3rem", flexShrink:0 }}>
+                    {flagEmoji(form.otherCountry)}
+                  </div>
+                  <div style={{ flex:1, minWidth:200 }}>
+                    <div style={{ fontSize:"0.88rem", fontWeight:500, marginBottom:"0.15rem" }}>{form.otherCountry}</div>
+                    {countryKnownFor(form.otherCountry).length>0 && (
+                      <div style={{ ...sans, fontSize:"0.68rem", color:COLORS.dusk }}>
+                        <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
+                        {countryKnownFor(form.otherCountry).join("  ·  ")}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div style={{ flex:1, minWidth:200 }}>
-                  <div style={{ fontSize:"0.88rem", fontWeight:500, marginBottom:"0.15rem" }}>{form.otherCountry}</div>
-                  {countryKnownFor(form.otherCountry).length>0 && (
-                    <div style={{ ...sans, fontSize:"0.68rem", color:COLORS.dusk }}>
-                      <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
-                      {countryKnownFor(form.otherCountry).join("  ·  ")}
-                    </div>
-                  )}
+                <div style={{ marginBottom:"0.75rem" }}>
+                  <TravelAdvisoryNotice country={form.otherCountry} />
                 </div>
-              </div>
+              </>
             )}
 
             {form.additionalCountries.map((country, i) => (
@@ -929,20 +935,23 @@ export default function JenVoyagePage() {
                   <button onClick={()=>removeAdditionalCountry(i)} style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove country">✕</button>
                 </div>
                 {country && (
-                  <div style={{ display:"flex", alignItems:"center", gap:"0.85rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.6rem 0.85rem" }}>
-                    <div style={{ width:44, height:44, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.3rem", flexShrink:0 }}>
-                      {flagEmoji(country)}
+                  <>
+                    <div style={{ display:"flex", alignItems:"center", gap:"0.85rem", flexWrap:"wrap", border:`1px solid ${COLORS.stone}`, background:COLORS.white, padding:"0.6rem 0.85rem" }}>
+                      <div style={{ width:44, height:44, borderRadius:"50%", background:COLORS.sand, border:`1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.3rem", flexShrink:0 }}>
+                        {flagEmoji(country)}
+                      </div>
+                      <div style={{ flex:1, minWidth:200 }}>
+                        <div style={{ fontSize:"0.88rem", fontWeight:500, marginBottom:"0.15rem" }}>{country}</div>
+                        {countryKnownFor(country).length>0 && (
+                          <div style={{ ...sans, fontSize:"0.68rem", color:COLORS.dusk }}>
+                            <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
+                            {countryKnownFor(country).join("  ·  ")}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div style={{ flex:1, minWidth:200 }}>
-                      <div style={{ fontSize:"0.88rem", fontWeight:500, marginBottom:"0.15rem" }}>{country}</div>
-                      {countryKnownFor(country).length>0 && (
-                        <div style={{ ...sans, fontSize:"0.68rem", color:COLORS.dusk }}>
-                          <span style={{ letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold }}>Known for </span>
-                          {countryKnownFor(country).join("  ·  ")}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                    <TravelAdvisoryNotice country={country} />
+                  </>
                 )}
               </div>
             ))}
