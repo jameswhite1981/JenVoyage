@@ -22,5 +22,5 @@ export async function POST(request) {
   if (!link) return Response.json({ error: "invalid" }, { status: 400 });
 
   await createSession(link.email, "user");
-  return Response.json({ ok: true });
+  return Response.json({ ok: true, enquiryId: link.enquiry_id });
 }

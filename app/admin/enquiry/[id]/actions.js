@@ -13,6 +13,6 @@ export async function publishEnquiry(id, content, email, firstName, destinationN
     published_at: new Date().toISOString(),
   });
 
-  const token = await createMagicLink(email);
+  const token = await createMagicLink(email, id);
   await sendItineraryReady(email, firstName, destinationName, token);
 }

@@ -4,7 +4,7 @@ import { resendItineraryEmail } from "./actions.js";
 
 const sans = { fontFamily:"system-ui,sans-serif" };
 
-export default function ResendEmailButton({ email, firstName, destinationName }) {
+export default function ResendEmailButton({ email, firstName, destinationName, enquiryId }) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -12,7 +12,7 @@ export default function ResendEmailButton({ email, firstName, destinationName })
     if (!confirm(`Re-send the itinerary-ready email to ${email}?`)) return;
     setSending(true);
     try {
-      await resendItineraryEmail(email, firstName, destinationName);
+      await resendItineraryEmail(email, firstName, destinationName, enquiryId);
       setSent(true);
     } catch {
       alert("Couldn't send the email, please try again.");

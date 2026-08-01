@@ -49,6 +49,12 @@ CREATE TABLE magic_links (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email       TEXT NOT NULL,
   token       TEXT NOT NULL UNIQUE,
+  -- Which trip this link should open on arrival — a customer can have
+  -- several enquiries under one email, so the email address alone isn't
+  -- enough to know which itinerary to show. Nullable: the customer's own
+  -- "send me a login link" flow doesn't know which trip they mean either,
+  -- and just falls back to listing all of them.
+  enquiry_id  UUID REFERENCES enquiries(id),
   expires_at  TIMESTAMPTZ NOT NULL,
   used_at     TIMESTAMPTZ,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()

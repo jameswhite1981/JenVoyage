@@ -5,14 +5,14 @@ import { getShareableLink } from "./actions.js";
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35" };
 const sans = { fontFamily:"system-ui,sans-serif" };
 
-export default function GetShareLinkButton({ email }) {
+export default function GetShareLinkButton({ email, enquiryId }) {
   const [loading, setLoading] = useState(false);
   const [link, setLink] = useState(null);
 
   const handleClick = async () => {
     setLoading(true);
     try {
-      const url = await getShareableLink(email);
+      const url = await getShareableLink(email, enquiryId);
       setLink(url);
       try { await navigator.clipboard.writeText(url); } catch {}
     } catch {

@@ -90,10 +90,10 @@ export default async function AdminDashboard() {
                     <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
                   </Link>
                   {e.status === "published" && (
-                    <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} />
+                    <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} enquiryId={e.id} />
                   )}
                   {e.status === "published" && (
-                    <GetShareLinkButton email={e.email} />
+                    <GetShareLinkButton email={e.email} enquiryId={e.id} />
                   )}
                   <DeleteEnquiryButton id={e.id} name={displayName} />
                 </div>

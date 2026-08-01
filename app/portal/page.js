@@ -20,11 +20,15 @@ function fmtDate(s) {
   return new Date(s).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" });
 }
 
-export default async function PortalPage() {
+export default async function PortalPage({ searchParams }) {
   const session = await getSession();
   if (!session || session.role !== "user") redirect("/portal/login");
 
-  const enquiries = await listEnquiriesByEmail(session.email);
+  const { enquiry: focusId } = await searchParams;
+  const allEnquiries = await listEnquiriesByEmail(session.email);
+  const focused = focusId ? allEnquiries.filter(e => e.id === focusId) : null;
+  const enquiries = focused?.length ? focused : allEnquiries;
+  const isFiltered = enquiries !== allEnquiries;
 
   return (
     <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", color:C.ink }}>
@@ -39,7 +43,10 @@ export default async function PortalPage() {
         </div>
 
         <h1 style={{ fontSize:"clamp(1.8rem,4vw,2.8rem)", fontWeight:300, lineHeight:1.1, marginBottom:"0.5rem" }}>Your trips</h1>
-        <p style={{ ...sans, fontSize:"0.88rem", color:C.dusk, fontWeight:300, marginBottom:"2.5rem" }}>{session.email}</p>
+        <p style={{ ...sans, fontSize:"0.88rem", color:C.dusk, fontWeight:300, marginBottom: isFiltered ? "0.75rem" : "2.5rem" }}>{session.email}</p>
+        {isFiltered && allEnquiries.length > 1 && (
+          <Link href="/portal" style={{ ...sans, display:"inline-block", fontSize:"0.78rem", letterSpacing:"0.06em", color:C.gold, textDecoration:"none", marginBottom:"2rem" }}>← View all your trips</Link>
+        )}
 
         {!enquiries?.length && (
           <p style={{ ...sans, color:C.dusk }}>No enquiries found. <Link href="/" style={{ color:C.gold }}>Start planning</Link></p>

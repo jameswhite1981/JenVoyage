@@ -5,8 +5,8 @@ import { sendItineraryReady } from "../../lib/email.js";
 // Re-sends the "itinerary ready" email for an already-published enquiry —
 // e.g. the customer lost the original email or their magic link expired.
 // Doesn't touch published_content or status, just issues a fresh magic link.
-export async function resendItineraryEmail(email, firstName, destinationName) {
-  const token = await createMagicLink(email);
+export async function resendItineraryEmail(email, firstName, destinationName, enquiryId) {
+  const token = await createMagicLink(email, enquiryId);
   await sendItineraryReady(email, firstName, destinationName, token);
 }
 
@@ -14,7 +14,7 @@ export async function resendItineraryEmail(email, firstName, destinationName) {
 // it — a manual fallback for when the automated email isn't reliable, so
 // Jen can paste the link into WhatsApp/text/a different email herself. Same
 // single-use, 7-day-expiry link the automated email would have sent.
-export async function getShareableLink(email) {
-  const token = await createMagicLink(email);
+export async function getShareableLink(email, enquiryId) {
+  const token = await createMagicLink(email, enquiryId);
   return `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${token}`;
 }

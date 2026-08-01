@@ -20,7 +20,8 @@ export default function VerifyPage({ searchParams }) {
         body: JSON.stringify({ token }),
       });
       if (!res.ok) { setStatus("error"); return; }
-      router.push("/portal");
+      const { enquiryId } = await res.json();
+      router.push(enquiryId ? `/portal?enquiry=${enquiryId}` : "/portal");
     } catch {
       setStatus("error");
     }
