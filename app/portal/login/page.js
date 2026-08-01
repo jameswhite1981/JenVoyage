@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
 const sans = { fontFamily:"system-ui,sans-serif" };
 
 export default function PortalLogin({ searchParams }) {
+  const { error } = use(searchParams);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [err, setErr] = useState("");
@@ -48,9 +49,9 @@ export default function PortalLogin({ searchParams }) {
             <p style={{ ...sans, fontSize:"0.92rem", color:C.dusk, lineHeight:1.75, marginBottom:"2rem" }}>
               Enter the email address you used when submitting your brief and we'll send you a login link.
             </p>
-            {searchParams?.error && (
+            {error && (
               <div style={{ ...sans, background:"#fdf0ee", border:"1px solid #e8c4bb", color:"#9B3A2A", padding:"0.85rem 1rem", fontSize:"0.84rem", marginBottom:"1.25rem" }}>
-                {searchParams.error === "invalid" ? "This link has expired or already been used. Please request a new one." : "An error occurred. Please try again."}
+                {error === "invalid" ? "This link has expired or already been used. Please request a new one." : "An error occurred. Please try again."}
               </div>
             )}
             <form onSubmit={send}>

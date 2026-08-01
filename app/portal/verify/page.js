@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ const sans = { fontFamily:"system-ui,sans-serif" };
 
 export default function VerifyPage({ searchParams }) {
   const router = useRouter();
-  const token = searchParams?.token;
+  const { token } = use(searchParams);
   const [status, setStatus] = useState("idle"); // idle | loading | error
 
   const confirm = async () => {
