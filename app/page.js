@@ -10,6 +10,8 @@ const COLORS = {
   gold: "#B8962E", mist: "#EAE4DA", white: "#FDFBF8"
 };
 
+const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from%20Jen%20Voyage%20website";
+
 const HERO_INFO = {
   what: {
     label: "What do we do?",
@@ -569,6 +571,7 @@ export default function JenVoyagePage() {
           <a href="/reviews" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>Reviews</a>
           <a href="/faq" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>FAQ</a>
           <button onClick={()=>setScreen("pricing")} style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, background:"none", border:"none", cursor:"pointer", padding:0 }}>Pricing</button>
+          <a href={CONTACT_MAILTO} style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none", border:`1px solid ${COLORS.dusk}`, padding:"0.4rem 0.9rem" }}>Contact</a>
         </div>
 
         <div style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:"0.75rem" }}>
