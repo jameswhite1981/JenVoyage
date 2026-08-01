@@ -25,7 +25,7 @@ export async function proxy(request) {
   }
 
   if (pathname.startsWith("/portal")) {
-    if (pathname === "/portal/login") return NextResponse.next();
+    if (pathname === "/portal/login" || pathname === "/portal/verify") return NextResponse.next();
     if (!payload || payload.role !== "user") {
       return NextResponse.redirect(new URL("/portal/login", request.url));
     }
