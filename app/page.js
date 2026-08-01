@@ -5,6 +5,7 @@ import Nav from "./components/Nav";
 import DateRangePicker from "./components/DateRangePicker";
 import TypeaheadSelect from "./components/TypeaheadSelect";
 import TravelAdvisoryNotice from "./components/TravelAdvisoryNotice";
+import Footer from "./components/Footer";
 
 const COLORS = {
   sand: "#F2EDE4", stone: "#C8BFB0", ink: "#1C1A17", dusk: "#4A3F35",
@@ -615,6 +616,8 @@ export default function JenVoyagePage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 
