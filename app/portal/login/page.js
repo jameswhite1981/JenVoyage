@@ -6,7 +6,7 @@ const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold
 const sans = { fontFamily:"system-ui,sans-serif" };
 
 export default function PortalLogin({ searchParams }) {
-  const { error } = use(searchParams);
+  const { error, enquiry: enquiryId } = use(searchParams);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [err, setErr] = useState("");
@@ -19,7 +19,7 @@ export default function PortalLogin({ searchParams }) {
       const res = await fetch("/api/portal/magic-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, enquiryId }),
       });
       const data = await res.json();
       if (!res.ok) { setErr(data.error || "Something went wrong."); setStatus("error"); return; }

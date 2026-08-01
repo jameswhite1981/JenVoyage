@@ -1,4 +1,4 @@
-import { claimMagicLink } from "../../../../lib/storage.js";
+import { claimMagicLink, getMagicLinkEnquiryId } from "../../../../lib/storage.js";
 import { createSession } from "../../../../lib/session.js";
 
 // GET only forwards to the confirmation page — it must not claim the token
@@ -19,7 +19,13 @@ export async function POST(request) {
   if (!token) return Response.json({ error: "missing" }, { status: 400 });
 
   const link = await claimMagicLink(token);
-  if (!link) return Response.json({ error: "invalid" }, { status: 400 });
+  if (!link) {
+    // Token's already used or expired — pass along which trip it was for
+    // (if any) so "request a new link" can stay specific to that trip
+    // instead of falling back to the customer's full trip list.
+    const enquiryId = await getMagicLinkEnquiryId(token);
+    return Response.json({ error: "invalid", enquiryId }, { status: 400 });
+  }
 
   await createSession(link.email, "user");
   return Response.json({ ok: true, enquiryId: link.enquiry_id });

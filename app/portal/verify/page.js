@@ -10,6 +10,7 @@ export default function VerifyPage({ searchParams }) {
   const router = useRouter();
   const { token } = use(searchParams);
   const [status, setStatus] = useState("idle"); // idle | loading | error
+  const [expiredEnquiryId, setExpiredEnquiryId] = useState(null);
 
   const confirm = async () => {
     setStatus("loading");
@@ -19,13 +20,15 @@ export default function VerifyPage({ searchParams }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
-      if (!res.ok) { setStatus("error"); return; }
-      const { enquiryId } = await res.json();
-      router.push(enquiryId ? `/portal?enquiry=${enquiryId}` : "/portal");
+      const data = await res.json();
+      if (!res.ok) { setExpiredEnquiryId(data.enquiryId || null); setStatus("error"); return; }
+      router.push(data.enquiryId ? `/portal?enquiry=${data.enquiryId}` : "/portal");
     } catch {
       setStatus("error");
     }
   };
+
+  const newLinkHref = expiredEnquiryId ? `/portal/login?enquiry=${expiredEnquiryId}` : "/portal/login";
 
   return (
     <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"2rem" }}>
@@ -38,7 +41,7 @@ export default function VerifyPage({ searchParams }) {
             <p style={{ ...sans, fontSize:"0.9rem", color:C.dusk, lineHeight:1.75, marginBottom:"1.5rem" }}>
               It may have already been used, or it's more than 7 days old.
             </p>
-            <Link href="/portal/login" style={{ ...sans, color:C.ink, fontSize:"0.82rem", textDecoration:"underline" }}>Request a new link</Link>
+            <Link href={newLinkHref} style={{ ...sans, color:C.ink, fontSize:"0.82rem", textDecoration:"underline" }}>Request a new link</Link>
           </>
         ) : (
           <>

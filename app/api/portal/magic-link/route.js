@@ -2,7 +2,7 @@ import { listEnquiriesByEmail, createMagicLink } from "../../../../lib/storage.j
 import { sendMagicLink } from "../../../../lib/email.js";
 
 export async function POST(request) {
-  const { email } = await request.json();
+  const { email, enquiryId } = await request.json();
   if (!email) return Response.json({ error: "Email required." }, { status: 400 });
 
   // Check the email has an enquiry
@@ -12,7 +12,11 @@ export async function POST(request) {
     return Response.json({ ok: true });
   }
 
-  const token = await createMagicLink(email);
+  // Only honour enquiryId if it actually belongs to this email — otherwise
+  // someone could pass an arbitrary enquiry id from a different account.
+  const validEnquiryId = enquiryId && enquiries.some(e => e.id === enquiryId) ? enquiryId : null;
+
+  const token = await createMagicLink(email, validEnquiryId);
   await sendMagicLink(email, token);
 
   return Response.json({ ok: true });
