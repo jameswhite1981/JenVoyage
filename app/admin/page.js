@@ -30,6 +30,41 @@ function fmtDate(s) {
   return new Date(s).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" });
 }
 
+function EnquiryRow({ e }) {
+  const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
+  const contact = CONTACT_METHOD_LABEL[e.unsure_contact_method];
+  const contactDetail = e.unsure_contact_method === "email" ? e.email : (e.phone || e.email);
+  const displayName = `${e.first_name} ${e.last_name || ""}`.trim();
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem", background:C.white, border:`1px solid ${contact ? C.gold : C.stone}`, padding:"1.1rem 1.5rem", transition:"border-color 0.15s" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
+        <Link href={`/admin/enquiry/${e.id}`} style={{ flex:1, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"0.75rem", textDecoration:"none", color:C.ink, minWidth:0 }}>
+          <div>
+            <div style={{ fontSize:"1rem", fontWeight:400 }}>{displayName}</div>
+            <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{e.email}</div>
+          </div>
+          <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
+          <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
+          <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
+        </Link>
+        {e.status === "published" && (
+          <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} enquiryId={e.id} />
+        )}
+        {e.status === "published" && (
+          <GetShareLinkButton email={e.email} enquiryId={e.id} />
+        )}
+        <DeleteEnquiryButton id={e.id} name={displayName} />
+      </div>
+      {contact && (
+        <div style={{ ...sans, fontSize:"0.78rem", color:"#8a6416", background:"#fdf3e3", border:"1px solid #e8d3a0", padding:"0.5rem 0.85rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+          <span>{contact.icon} {contact.text}:</span>
+          <strong>{contactDetail}</strong>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default async function AdminDashboard() {
   const enquiries = await listEnquiries();
 
@@ -39,6 +74,9 @@ export default async function AdminDashboard() {
     if (counts[e.status] !== undefined) counts[e.status]++;
     if (e.unsure_contact_method) wantsContact++;
   });
+
+  const activeEnquiries = enquiries?.filter(e => e.status !== "published") || [];
+  const publishedEnquiries = enquiries?.filter(e => e.status === "published") || [];
 
   return (
     <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", color:C.ink }}>
@@ -68,45 +106,23 @@ export default async function AdminDashboard() {
           ))}
         </div>
 
-        {/* Enquiry table */}
-        <h2 style={{ fontSize:"1.4rem", fontWeight:300, marginBottom:"1.25rem" }}>All enquiries</h2>
-        {!enquiries?.length && <p style={{ ...sans, color:C.dusk }}>No enquiries yet.</p>}
-        <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem" }}>
-          {enquiries?.map(e => {
-            const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
-            const contact = CONTACT_METHOD_LABEL[e.unsure_contact_method];
-            const contactDetail = e.unsure_contact_method === "email" ? e.email : (e.phone || e.email);
-            const displayName = `${e.first_name} ${e.last_name || ""}`.trim();
-            return (
-              <div key={e.id} style={{ display:"flex", flexDirection:"column", gap:"0.5rem", background:C.white, border:`1px solid ${contact ? C.gold : C.stone}`, padding:"1.1rem 1.5rem", transition:"border-color 0.15s" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
-                  <Link href={`/admin/enquiry/${e.id}`} style={{ flex:1, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"0.75rem", textDecoration:"none", color:C.ink, minWidth:0 }}>
-                    <div>
-                      <div style={{ fontSize:"1rem", fontWeight:400 }}>{displayName}</div>
-                      <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{e.email}</div>
-                    </div>
-                    <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
-                    <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
-                    <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
-                  </Link>
-                  {e.status === "published" && (
-                    <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} enquiryId={e.id} />
-                  )}
-                  {e.status === "published" && (
-                    <GetShareLinkButton email={e.email} enquiryId={e.id} />
-                  )}
-                  <DeleteEnquiryButton id={e.id} name={displayName} />
-                </div>
-                {contact && (
-                  <div style={{ ...sans, fontSize:"0.78rem", color:"#8a6416", background:"#fdf3e3", border:"1px solid #e8d3a0", padding:"0.5rem 0.85rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
-                    <span>{contact.icon} {contact.text}:</span>
-                    <strong>{contactDetail}</strong>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        {/* Active enquiries */}
+        <h2 style={{ fontSize:"1.4rem", fontWeight:300, marginBottom:"1.25rem" }}>Active enquiries</h2>
+        {!activeEnquiries.length && <p style={{ ...sans, color:C.dusk, marginBottom:"2.5rem" }}>No active enquiries.</p>}
+        {!!activeEnquiries.length && (
+          <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem", marginBottom:"3rem" }}>
+            {activeEnquiries.map(e => <EnquiryRow key={e.id} e={e} />)}
+          </div>
+        )}
+
+        {/* Published */}
+        <h2 style={{ fontSize:"1.4rem", fontWeight:300, marginBottom:"1.25rem" }}>Published</h2>
+        {!publishedEnquiries.length && <p style={{ ...sans, color:C.dusk }}>No published itineraries yet.</p>}
+        {!!publishedEnquiries.length && (
+          <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem" }}>
+            {publishedEnquiries.map(e => <EnquiryRow key={e.id} e={e} />)}
+          </div>
+        )}
       </div>
     </div>
   );
