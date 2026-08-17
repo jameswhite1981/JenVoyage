@@ -120,7 +120,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
 
   const addAccomOption = (ri) => setDraft(prev => {
     const next = structuredClone(prev);
-    next.regions[ri].accommodation.options.push({ label:"Option", name:"", cost:"", link:"" });
+    next.regions[ri].accommodation.options.push({ label:"Option", name:"", cost:"", link:"", rating:"" });
     return next;
   });
   const removeAccomOption = (ri, oi) => setDraft(prev => {
@@ -236,6 +236,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
                 <Field label="Property name" value={opt.name} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.name`, v)} />
                 <Field label="Cost" value={opt.cost} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.cost`, v)} placeholder="£XXX" />
                 <Field label="Link" value={opt.link} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.link`, v)} placeholder="https://…" />
+                <Field label="Rating" value={opt.rating} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.rating`, v)} placeholder="4.5★ (1,200 reviews)" />
               </div>
               <button style={removeBtn} onClick={() => removeAccomOption(ri, oi)}>Remove option</button>
             </div>

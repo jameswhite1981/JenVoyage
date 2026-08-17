@@ -59,7 +59,7 @@ function OptionRow({ opt, recommended }) {
   return (
     <div style={{ display:"flex", justifyContent:"space-between", gap:"1rem", padding:"0.5rem 0", borderBottom:`1px solid ${C.mist}`, alignItems:"center" }}>
       <div style={{ ...sans, fontSize:"0.8rem", color:C.ink }}>
-        {opt.label}{opt.name ? `: ${opt.name}` : ""}{recommended && opt.recommended ? <span style={{ color:C.gold, fontWeight:500 }}> ★ Recommended</span> : null}
+        {opt.label}{opt.name ? `: ${opt.name}` : ""}{opt.rating ? <span style={{ color:C.stone }}> ({opt.rating})</span> : null}{recommended && opt.recommended ? <span style={{ color:C.gold, fontWeight:500 }}> ★ Recommended</span> : null}
       </div>
       <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", flexShrink:0 }}>
         {opt.cost && <span style={{ ...sans, fontSize:"0.8rem", color:C.dusk, whiteSpace:"nowrap" }}>{opt.cost}</span>}
