@@ -55,11 +55,11 @@ function LinkedText({ text }) {
   });
 }
 
-function OptionRow({ opt, recommended }) {
+function OptionRow({ opt }) {
   return (
     <div style={{ display:"flex", justifyContent:"space-between", gap:"1rem", padding:"0.5rem 0", borderBottom:`1px solid ${C.mist}`, alignItems:"center" }}>
       <div style={{ ...sans, fontSize:"0.8rem", color:C.ink }}>
-        {opt.label}{opt.name ? `: ${opt.name}` : ""}{opt.rating ? <span style={{ color:C.stone }}> ({opt.rating})</span> : null}{recommended && opt.recommended ? <span style={{ color:C.gold, fontWeight:500 }}> ★ Recommended</span> : null}
+        {opt.label}{opt.name ? `: ${opt.name}` : ""}{opt.rating ? <span style={{ color:C.stone }}> ({opt.rating})</span> : null}
       </div>
       <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", flexShrink:0 }}>
         {opt.cost && <span style={{ ...sans, fontSize:"0.8rem", color:C.dusk, whiteSpace:"nowrap" }}>{opt.cost}</span>}
@@ -110,7 +110,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
                 Accommodation {region.accommodation.nights ? `: ${region.accommodation.nights}` : ""}
               </div>
               {region.accommodation.note && <p style={{ ...sans, fontSize:"0.78rem", color:C.stone, fontStyle:"italic", marginBottom:"0.5rem" }}><LinkedText text={region.accommodation.note} /></p>}
-              {region.accommodation.options.map((opt, i) => <OptionRow key={i} opt={opt} recommended />)}
+              {region.accommodation.options.map((opt, i) => <OptionRow key={i} opt={opt} />)}
             </div>
           )}
 
@@ -176,7 +176,6 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
               <div style={{ ...sans, fontSize:"0.75rem", fontWeight:500, color:C.ink, marginBottom:"0.3rem" }}>{g.group}</div>
               {g.items.map((item, j) => (
                 <div key={j} style={{ ...sans, fontSize:"0.78rem", color:C.dusk, padding:"0.15rem 0" }}>
-                  {item.recommended && <span style={{ color:C.gold }}>★ </span>}
                   {item.link ? <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color:C.gold, textDecoration:"underline" }}>{item.label}</a> : item.label}
                   {item.note ? `: ${item.note}` : ""}
                 </div>
