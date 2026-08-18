@@ -11,7 +11,36 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 
 const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from%20Jen%20Voyage%20website";
 
-export default function LegalPageLayout({ eyebrow = "Legal", title, draftNotice, sections }) {
+const pText = { ...sans, fontSize: "0.88rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.75, margin: "0 0 0.75rem" };
+
+// A section can be either a plain { title, body } paragraph, or richer
+// { title, blocks } content — "p" and "list" blocks, list items either a
+// plain string or { bold, text, sub } for a bold lead-in with optional
+// nested sub-bullets — needed for content like GDPR rights lists.
+function Block({ block }) {
+  if (block.type === "list") {
+    return (
+      <ul style={{ margin: "0 0 0.75rem", paddingLeft: "1.4rem" }}>
+        {block.items.map((item, i) => {
+          const rich = typeof item === "object";
+          return (
+            <li key={i} style={{ ...pText, margin: "0 0 0.35rem" }}>
+              {rich ? <><strong style={{ fontWeight: 500, color: COLORS.ink }}>{item.bold}</strong>{item.text ? ` ${item.text}` : ""}</> : item}
+              {rich && item.sub && (
+                <ul style={{ margin: "0.35rem 0 0", paddingLeft: "1.4rem" }}>
+                  {item.sub.map((s, j) => <li key={j} style={pText}>{s}</li>)}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+  return <p style={pText}>{block.text}</p>;
+}
+
+export default function LegalPageLayout({ eyebrow = "Legal", title, subtitle, draftNotice, sections }) {
   return (
     <div style={{ fontFamily: "Georgia,serif", backgroundImage: `linear-gradient(rgba(242,237,228,0.88),rgba(242,237,228,0.88)),url('/map-bg.svg')`, backgroundSize: "cover", backgroundAttachment: "fixed", minHeight: "100vh", color: COLORS.ink }}>
       <div className="jv-nav" style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"1.5rem 2rem", borderBottom:`1px solid ${COLORS.stone}` }}>
@@ -32,6 +61,7 @@ export default function LegalPageLayout({ eyebrow = "Legal", title, draftNotice,
         <div>
           <div style={{ ...sans, fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.gold, marginBottom: "0.75rem" }}>{eyebrow}</div>
           <h1 style={{ fontSize: "clamp(1.75rem,4vw,2.5rem)", fontWeight: 300, lineHeight: 1.1, margin: 0 }}>{title}</h1>
+          {subtitle && <div style={{ ...sans, fontSize: "0.75rem", color: COLORS.stone, marginTop: "0.6rem" }}>{subtitle}</div>}
         </div>
       </div>
 
@@ -45,7 +75,7 @@ export default function LegalPageLayout({ eyebrow = "Legal", title, draftNotice,
         {sections.map((s) => (
           <div key={s.title} style={{ marginBottom: "1.75rem" }}>
             <h2 style={{ fontSize: "1.05rem", fontWeight: 400, marginBottom: "0.5rem" }}>{s.title}</h2>
-            <p style={{ ...sans, fontSize: "0.88rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.75, margin: 0 }}>{s.body}</p>
+            {s.blocks ? s.blocks.map((b, i) => <Block key={i} block={b} />) : <p style={pText}>{s.body}</p>}
           </div>
         ))}
       </div>
