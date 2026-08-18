@@ -2,6 +2,7 @@ import { waitUntil } from "@vercel/functions";
 import { createEnquiry, updateEnquiry } from "../../../lib/storage.js";
 import { generateItinerary, generateTeaser } from "../../../lib/ai.js";
 import { sendConfirmation } from "../../../lib/email.js";
+import { notifyNewEnquiry } from "../../../lib/discord.js";
 
 export async function POST(request) {
   try {
@@ -26,6 +27,11 @@ export async function POST(request) {
     sendConfirmation(email, firstName, destinationName || destination).catch(() => {});
 
     const enquiryId = enquiry.id;
+
+    notifyNewEnquiry({
+      id: enquiryId, firstName, lastName, email, phone,
+      destinationName: destinationName || destination,
+    }).catch((err) => console.error("[discord] notify failed for", enquiryId, "—", err?.message || err));
 
     // Fast teaser (small output, quick model) so the customer sees something
     // in seconds, independent of the full itinerary generation below.
