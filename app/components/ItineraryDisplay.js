@@ -1,4 +1,4 @@
-import { buildQuickLinks, normalizeItinerary, parseItineraryJSON, linkifySegments } from "../../lib/itinerary.js";
+import { buildQuickLinks, normalizeItinerary, parseItineraryJSON, linkifySegments, starStates, STAR_PATH, STAR_PATH_LEFT_HALF } from "../../lib/itinerary.js";
 import Accordion from "./Accordion.js";
 
 const C = { sand:"#F2EDE4", stone:"#C8BFB0", ink:"#1C1A17", dusk:"#4A3F35", gold:"#B8962E", white:"#FDFBF8", mist:"#EAE4DA" };
@@ -55,11 +55,33 @@ function LinkedText({ text }) {
   });
 }
 
+// Draws real vector stars (not text glyphs) so the same icon renders
+// identically here and in the PDF, regardless of font glyph coverage. Half
+// stars are a literal half-shaped path painted over a full one, rather than
+// an SVG clipPath — react-pdf accepts a clipPath prop without error but
+// doesn't actually apply it, so this keeps both renderers on the same
+// plain-fill mechanism that's known to work in both.
+function StarRating({ value }) {
+  const states = starStates(value);
+  if (!states.length) return null;
+  return (
+    <span style={{ display:"inline-flex", gap:1, verticalAlign:"middle", marginLeft:"0.4rem" }}>
+      {states.map((state, i) => (
+        <svg key={i} width={13} height={13} viewBox="0 0 24 24">
+          <path d={STAR_PATH} fill={C.mist} />
+          {state !== "empty" && <path d={state === "half" ? STAR_PATH_LEFT_HALF : STAR_PATH} fill={C.gold} />}
+        </svg>
+      ))}
+    </span>
+  );
+}
+
 function OptionRow({ opt }) {
   return (
     <div style={{ display:"flex", justifyContent:"space-between", gap:"1rem", padding:"0.5rem 0", borderBottom:`1px solid ${C.mist}`, alignItems:"center" }}>
-      <div style={{ ...sans, fontSize:"0.8rem", color:C.ink }}>
-        {opt.label}{opt.name ? `: ${opt.name}` : ""}{opt.rating ? <span style={{ color:C.stone }}> ({opt.rating})</span> : null}
+      <div style={{ ...sans, fontSize:"0.8rem", color:C.ink, display:"flex", alignItems:"center" }}>
+        {opt.label}{opt.name ? `: ${opt.name}` : ""}
+        <StarRating value={opt.rating} />
       </div>
       <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", flexShrink:0 }}>
         {opt.cost && <span style={{ ...sans, fontSize:"0.8rem", color:C.dusk, whiteSpace:"nowrap" }}>{opt.cost}</span>}

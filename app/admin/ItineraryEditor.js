@@ -24,13 +24,13 @@ const COST_SUMMARY_LABELS = [
   "Total per person",
 ];
 
-function Field({ label, value, onChange, textarea, placeholder }) {
+function Field({ label, value, onChange, textarea, placeholder, type, min, max, step }) {
   return (
     <div style={field}>
       <label style={lbl}>{label}</label>
       {textarea
         ? <textarea style={{ ...ta, minHeight:70 }} value={value || ""} onChange={e => onChange(e.target.value)} placeholder={placeholder} />
-        : <input style={inp} value={value || ""} onChange={e => onChange(e.target.value)} placeholder={placeholder} />}
+        : <input type={type || "text"} min={min} max={max} step={step} style={inp} value={value ?? ""} onChange={e => onChange(e.target.value)} placeholder={placeholder} />}
     </div>
   );
 }
@@ -236,7 +236,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
                 <Field label="Property name" value={opt.name} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.name`, v)} />
                 <Field label="Cost" value={opt.cost} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.cost`, v)} placeholder="£XXX" />
                 <Field label="Link" value={opt.link} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.link`, v)} placeholder="https://…" />
-                <Field label="Rating" value={opt.rating} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.rating`, v)} placeholder="4.5★ (1,200 reviews)" />
+                <Field label="Rating (0–5)" type="number" min={0} max={5} step={0.5} value={opt.rating} onChange={v => upd(`regions.${ri}.accommodation.options.${oi}.rating`, v === "" ? "" : Number(v))} placeholder="4.5" />
               </div>
               <button style={removeBtn} onClick={() => removeAccomOption(ri, oi)}>Remove option</button>
             </div>
