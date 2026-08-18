@@ -135,7 +135,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
               {region.accommodation.options.map((opt, i) => <OptionRow key={i} opt={opt} />)}
               {region.accommodation.options.some(o => Number(o.rating) > 0) && (
                 <p style={{ ...sans, fontSize:"0.68rem", color:C.stone, fontStyle:"italic", marginTop:"0.4rem" }}>
-                  Ratings shown are sourced from online travel websites, not given by Jen Voyage.
+                  Ratings shown are based on reviews, sourced from online travel websites - not given by Jen Voyage.
                 </p>
               )}
             </div>
