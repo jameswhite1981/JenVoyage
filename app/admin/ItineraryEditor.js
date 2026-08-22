@@ -15,10 +15,15 @@ const groupBox = { border:`1px solid ${C.stone}`, padding:"1.25rem 1.5rem", marg
 const row2 = { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.75rem" };
 const field = { marginBottom:"0.9rem" };
 
+// Drafts generated before the "recommended" -> "suggested" wording change
+// still have the old label — match either so existing in-progress drafts
+// don't lose their value or get duplicated into a second row.
+const LEGACY_COST_LABEL = { "Total suggested activities": "Total recommended activities" };
+
 const COST_SUMMARY_LABELS = [
   "Total flights",
   "Total accommodation",
-  "Total recommended activities",
+  "Total suggested activities",
   "Total transfers",
   "Overall total",
   "Total per person",
@@ -165,8 +170,8 @@ export default function ItineraryEditor({ draft, setDraft }) {
   const updCostValue = (label, value) => setDraft(prev => {
     const next = structuredClone(prev);
     const list = next.costSummary || (next.costSummary = []);
-    const row = list.find(r => r.label === label);
-    if (row) row.value = value;
+    const row = list.find(r => r.label === label || r.label === LEGACY_COST_LABEL[label]);
+    if (row) { row.label = label; row.value = value; }
     else list.push({ label, value });
     return next;
   });
@@ -278,7 +283,7 @@ export default function ItineraryEditor({ draft, setDraft }) {
       {/* Cost summary — fixed six line items, values only */}
       <div style={sectionHead}>Cost summary</div>
       {COST_SUMMARY_LABELS.map(label => {
-        const row = (draft.costSummary || []).find(r => r.label === label);
+        const row = (draft.costSummary || []).find(r => r.label === label || r.label === LEGACY_COST_LABEL[label]);
         return (
           <Field key={label} label={label} value={row?.value} onChange={v => updCostValue(label, v)} placeholder="£X,XXX" />
         );

@@ -729,7 +729,7 @@ export default function JenVoyagePage() {
 
           <div style={{ textAlign:"center", borderTop:`1px solid ${COLORS.stone}`, paddingTop:"2.25rem" }}>
             <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"46ch", margin:"0 auto 1.5rem", lineHeight:1.8 }}>
-              Here&apos;s what your first day might look like, but to see a fully personalised itinerary – including accommodation, flights and recommendations on trips or places to visit (all complete with links for easy, instant booking) – please continue to payment.
+              Here&apos;s what your first day might look like, but to see a fully personalised itinerary – including accommodation, flights and suggestions on trips or places to visit (all complete with links for easy, instant booking) – please continue to payment.
             </p>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap" }}>
               <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
@@ -792,7 +792,7 @@ export default function JenVoyagePage() {
             Wonderful, {form.firstName}
           </h2>
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
-            Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight recommendations.
+            Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight suggestions.
           </p>
           <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             Back to home
@@ -967,7 +967,7 @@ export default function JenVoyagePage() {
 
             <label style={{ ...sans, display:"flex", alignItems:"flex-start", gap:"0.6rem", fontSize:"0.8rem", color:COLORS.dusk, fontWeight:300, lineHeight:1.6, marginTop:"0.5rem", cursor:"pointer" }}>
               <input type="checkbox" checked={form.agreedToTerms} onChange={e=>upd("agreedToTerms",e.target.checked)} style={{ marginTop:"0.2rem", flexShrink:0 }} />
-              I understand that Jen Voyage provides curated recommendations and direct booking links so I can book my flights, accommodation and trips independently, my way. This is not a travel agency that books on my behalf.
+              I understand that Jen Voyage provides curated suggestions and direct booking links so I can book my flights, accommodation and trips independently, my way. This is not a travel agency that books on my behalf.
             </label>
 
             <div style={formNav}>
