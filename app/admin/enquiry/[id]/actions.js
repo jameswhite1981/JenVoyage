@@ -1,6 +1,7 @@
 "use server";
 import { updateEnquiry, createMagicLink } from "../../../../lib/storage.js";
 import { sendItineraryReady } from "../../../../lib/email.js";
+import { generatePdf } from "../../../../lib/pdf.js";
 
 export async function saveDraft(id, content) {
   await updateEnquiry(id, { published_content: content });
@@ -15,5 +16,6 @@ export async function publishEnquiry(id, content, email, firstName, destinationN
   });
 
   const token = await createMagicLink(email, id);
-  await sendItineraryReady(email, firstName, destinationName, token, personalMessage);
+  const pdfBuffer = await generatePdf(content, firstName);
+  await sendItineraryReady(email, firstName, destinationName, token, personalMessage, pdfBuffer);
 }
