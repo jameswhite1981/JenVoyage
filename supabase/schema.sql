@@ -38,7 +38,11 @@ CREATE TABLE enquiries (
 
   -- Jen's customised version (raw JSON string — same schema as ai_draft)
   published_content TEXT,
-  published_at      TIMESTAMPTZ
+  published_at      TIMESTAMPTZ,
+
+  -- Personal note from Jen included in the itinerary-ready email, editable
+  -- and reused if that email is resent
+  personal_message  TEXT
 );
 
 CREATE INDEX enquiries_email_idx   ON enquiries (email);

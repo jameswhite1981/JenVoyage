@@ -26,12 +26,14 @@ export default function EnquiryEditor() {
   const [msg, setMsg] = useState("");
   const [templates, setTemplates] = useState([]);
   const [savingTemplate, setSavingTemplate] = useState(false);
+  const [personalMessage, setPersonalMessage] = useState("");
 
   useEffect(() => {
     fetch(`/api/admin/enquiry/${id}`)
       .then(r => r.json())
       .then(data => {
         setEnquiry(data);
+        setPersonalMessage(data.personal_message || "");
         const raw = data.published_content || data.ai_draft || "";
         try { setDraft(normalizeItinerary(parseItineraryJSON(raw))); } catch { setDraft(null); }
       });
@@ -89,7 +91,7 @@ export default function EnquiryEditor() {
     if (!confirm(`Publish this itinerary and email ${enquiry.email}?`)) return;
     setPublishing(true); setMsg("");
     try {
-      await publishEnquiry(id, JSON.stringify(draft), enquiry.email, enquiry.first_name, enquiry.destination_name);
+      await publishEnquiry(id, JSON.stringify(draft), enquiry.email, enquiry.first_name, enquiry.destination_name, personalMessage);
       setMsg("Published! Customer has been emailed.");
       router.refresh();
     } catch (e) { setMsg(`Error: ${e.message}`); }
@@ -100,7 +102,7 @@ export default function EnquiryEditor() {
     if (!confirm(`Re-send the itinerary-ready email to ${enquiry.email}?`)) return;
     setResending(true); setMsg("");
     try {
-      await resendItineraryEmail(enquiry.email, enquiry.first_name, enquiry.destination_name, id);
+      await resendItineraryEmail(enquiry.email, enquiry.first_name, enquiry.destination_name, id, personalMessage);
       setMsg("Email re-sent.");
     } catch (e) { setMsg(`Error: ${e.message}`); }
     setResending(false);
@@ -163,6 +165,18 @@ export default function EnquiryEditor() {
               </button>
             )}
           </div>
+        </div>
+
+        <div style={{ marginBottom:"1.5rem" }}>
+          <label style={{ ...sans, display:"block", fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", color:C.dusk, marginBottom:"0.4rem" }}>
+            Personal message (included in the itinerary-ready email)
+          </label>
+          <textarea
+            value={personalMessage}
+            onChange={e => setPersonalMessage(e.target.value)}
+            placeholder="Optional note to this customer — e.g. a highlight you're excited about, or something specific to their brief."
+            style={{ width:"100%", minHeight:80, background:C.white, border:`1.5px solid ${C.stone}`, color:C.ink, fontFamily:"system-ui", fontSize:"0.85rem", padding:"0.75rem 0.9rem", boxSizing:"border-box", resize:"vertical" }}
+          />
         </div>
 
         {shareLink && (

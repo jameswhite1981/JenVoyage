@@ -48,7 +48,7 @@ function EnquiryRow({ e }) {
           <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
         </Link>
         {e.status === "published" && (
-          <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} enquiryId={e.id} />
+          <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} enquiryId={e.id} personalMessage={e.personal_message} />
         )}
         {e.status === "published" && (
           <GetShareLinkButton email={e.email} enquiryId={e.id} />
