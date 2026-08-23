@@ -133,8 +133,11 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
               </div>
               {region.accommodation.note && <p style={{ ...sans, fontSize:"0.78rem", color:C.stone, fontStyle:"italic", marginBottom:"0.5rem" }}><LinkedText text={region.accommodation.note} /></p>}
               {region.accommodation.options.map((opt, i) => <OptionRow key={i} opt={opt} />)}
+              <p style={{ ...sans, fontSize:"0.68rem", color:C.stone, fontStyle:"italic", marginTop:"0.4rem" }}>
+                Prices shown are subject to change and should be confirmed before booking.
+              </p>
               {region.accommodation.options.some(o => Number(o.rating) > 0) && (
-                <p style={{ ...sans, fontSize:"0.68rem", color:C.stone, fontStyle:"italic", marginTop:"0.4rem" }}>
+                <p style={{ ...sans, fontSize:"0.68rem", color:C.stone, fontStyle:"italic", marginTop:"0.2rem" }}>
                   Ratings shown are based on reviews, sourced from online travel websites - not given by Jen Voyage.
                 </p>
               )}
