@@ -42,7 +42,12 @@ CREATE TABLE enquiries (
 
   -- Personal note from Jen included in the itinerary-ready email, editable
   -- and reused if that email is resent
-  personal_message  TEXT
+  personal_message  TEXT,
+
+  -- Set once the 30-day-after-publish purge (see lib/storage.js
+  -- purgeExpiredPersonalData) has redacted this enquiry's personal data —
+  -- prevents reprocessing and gives an audit trail of when it happened.
+  personal_data_purged_at TIMESTAMPTZ
 );
 
 CREATE INDEX enquiries_email_idx   ON enquiries (email);

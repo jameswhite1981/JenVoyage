@@ -70,7 +70,7 @@ const SECTIONS = [
   {
     title: "6. How long we keep information",
     blocks: [
-      { type: "p", text: "Personal information will be deleted after 28 days. Although your holiday template will remain for Jen Voyage, your contact details and access to the online itinerary will be deleted. It is important to download the PDF to keep your Jen Voyage data." },
+      { type: "p", text: "Personal information is deleted 30 days after your itinerary is published. Although your holiday template will remain for Jen Voyage, your contact details and access to the online itinerary will be deleted. It is important to download the PDF to keep your Jen Voyage data." },
     ],
   },
   {
