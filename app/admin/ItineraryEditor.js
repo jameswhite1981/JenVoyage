@@ -189,27 +189,36 @@ export default function ItineraryEditor({ draft, setDraft }) {
         <StringListEditor items={draft.preTripNotes} onChange={v => upd("preTripNotes", v)} placeholder="e.g. Do I need vaccinations? Yes, ask your GP." />
       </div>
 
-      {/* Flights */}
-      <Accordion title="Flights" subtitle={`${2 + (draft.flights?.internal?.length || 0)} legs`}>
-        <div style={groupBox}>
-          <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Outbound</div>
-          <LegEditor leg={draft.flights?.outbound} onChange={v => upd("flights.outbound", v)} />
-        </div>
-        {(draft.flights?.internal || []).map((leg, i) => (
-          <div key={i} style={groupBox}>
-            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.5rem" }}>
-              <span style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase" }}>Internal flight {i+1}</span>
-              <button style={removeBtn} onClick={() => removeInternalLeg(i)}>Remove</button>
-            </div>
-            <LegEditor leg={leg} onChange={v => upd(`flights.internal.${i}`, v)} />
+      {/* Flights — removable for trips that don't need any, e.g. a UK-only
+          break where the customer isn't flying */}
+      {draft.flights ? (
+        <Accordion title="Flights" subtitle={`${2 + (draft.flights?.internal?.length || 0)} legs`}>
+          <button style={{ ...removeBtn, marginBottom:"1rem" }} onClick={() => upd("flights", null)}>Remove flights section</button>
+          <div style={groupBox}>
+            <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Outbound</div>
+            <LegEditor leg={draft.flights?.outbound} onChange={v => upd("flights.outbound", v)} />
           </div>
-        ))}
-        <button style={{ ...smallBtn, marginBottom:"1.25rem" }} onClick={addInternalLeg}>+ Add internal flight</button>
-        <div style={groupBox}>
-          <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Return</div>
-          <LegEditor leg={draft.flights?.return} onChange={v => upd("flights.return", v)} />
+          {(draft.flights?.internal || []).map((leg, i) => (
+            <div key={i} style={groupBox}>
+              <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.5rem" }}>
+                <span style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase" }}>Internal flight {i+1}</span>
+                <button style={removeBtn} onClick={() => removeInternalLeg(i)}>Remove</button>
+              </div>
+              <LegEditor leg={leg} onChange={v => upd(`flights.internal.${i}`, v)} />
+            </div>
+          ))}
+          <button style={{ ...smallBtn, marginBottom:"1.25rem" }} onClick={addInternalLeg}>+ Add internal flight</button>
+          <div style={groupBox}>
+            <div style={{ ...sans, fontSize:"0.7rem", fontWeight:500, color:C.gold, textTransform:"uppercase", marginBottom:"0.5rem" }}>Return</div>
+            <LegEditor leg={draft.flights?.return} onChange={v => upd("flights.return", v)} />
+          </div>
+        </Accordion>
+      ) : (
+        <div style={{ ...groupBox, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <span style={{ ...sans, fontSize:"0.8rem", color:C.dusk }}>No flights section for this trip.</span>
+          <button style={smallBtn} onClick={() => upd("flights", { outbound: emptyLeg(), internal: [], return: emptyLeg() })}>+ Add flights section</button>
         </div>
-      </Accordion>
+      )}
 
       {/* Regions */}
       <div style={sectionHead}>Regions & day-by-day</div>

@@ -108,7 +108,7 @@ export default function ItineraryDisplay({ itinerary, collapsible = false, defau
         </div>
       )}
 
-      {(d.flights?.outbound || d.flights?.return || d.flights?.internal?.length > 0) && (
+      {(d.flights?.outbound?.route || d.flights?.return?.route || d.flights?.internal?.length > 0) && (
         <Section collapsible={collapsible} defaultOpen={defaultOpen} title="Flights">
           <LegRow leg={d.flights.outbound} />
           {d.flights.internal?.map((leg, i) => <LegRow key={i} leg={leg} internal />)}
