@@ -28,7 +28,7 @@ const TRIPS = [
     title: "Islands, Jungle & Old City",
     route: "Bangkok → Chiang Mai → Koh Lanta",
     nights: 10,
-    videoUrl: "/videos/thailand.mp4",
+    videoUrl: "https://youtube.com/shorts/d4OgJFgQ8Ys",
     tags: ["Families", "First-timers", "Adventure"],
     description: "Three very different sides of Thailand in one trip. Bangkok for the temples, street food, and the chaos you'll love. Chiang Mai for cooking classes, elephant sanctuaries, and jungle trails. Then south to the quieter islands of the Andaman coast before the crowds find them.",
   },
