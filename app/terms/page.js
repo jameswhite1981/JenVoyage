@@ -39,7 +39,6 @@ export default function TermsPage() {
   return (
     <LegalPageLayout
       title="Terms & Conditions"
-      draftNotice={<><strong>Draft placeholder.</strong> This page has not been reviewed by a solicitor and should not be relied on as your binding terms. Replace this text with reviewed terms before treating it as legally in effect.</>}
       sections={SECTIONS}
     />
   );
