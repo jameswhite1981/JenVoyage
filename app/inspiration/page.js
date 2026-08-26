@@ -48,7 +48,6 @@ const TRIPS = [
     title: "Inca Trail & Amazon Depths",
     route: "Lima → Cusco → Sacred Valley → Machu Picchu → Amazon Basin",
     nights: 14,
-    videoUrl: "/videos/peru.mp4",
     tags: ["Bucket list", "History", "Nature"],
     description: "This is a trip that takes some planning to get right: the altitude, the logistics, the balance between the Inca sites and the jungle. Done well, it's one of the most rewarding journeys on earth. We build in acclimatisation days, keep the Inca Trail permit in mind, and end with two nights in the Amazon to decompress.",
   },
@@ -68,7 +67,6 @@ const TRIPS = [
     title: "Tea Hills & Wildlife Safari",
     route: "Colombo → Kandy → Ella → Yala → Galle",
     nights: 12,
-    videoUrl: "/videos/sri-lanka.mp4",
     tags: ["Families", "Nature", "First-timers"],
     description: "Sri Lanka is one of the most manageable long-haul destinations, compact enough to cover properly in under two weeks. The route takes you up through the hill country by scenic train, across tea-terraced hillsides to Ella, then south to Yala for leopard safaris, finishing in the colonial fort city of Galle.",
   },
@@ -133,9 +131,11 @@ export default function InspirationPage() {
               {/* Card footer */}
               <div style={{ padding: "1rem 1.75rem 1.5rem", borderTop: `1px solid ${COLORS.mist}`, display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.75rem" }}>
                 <div style={{ ...sans, fontSize: "0.72rem", color: COLORS.stone, letterSpacing: "0.06em" }}>{t.nights} nights</div>
-                <a href={t.videoUrl} target="_blank" rel="noopener noreferrer" style={{ ...sans, background: "none", border: `1.5px solid ${COLORS.stone}`, color: COLORS.dusk, fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.6rem 1rem", textDecoration: "none" }}>
-                  ▶ Watch
-                </a>
+                {t.videoUrl && (
+                  <a href={t.videoUrl} target="_blank" rel="noopener noreferrer" style={{ ...sans, background: "none", border: `1.5px solid ${COLORS.stone}`, color: COLORS.dusk, fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.6rem 1rem", textDecoration: "none" }}>
+                    ▶ Watch
+                  </a>
+                )}
               </div>
             </div>
           ))}
