@@ -38,7 +38,7 @@ const TRIPS = [
     title: "Sahara, Souks & High Atlas",
     route: "Marrakech → Fes → Merzouga → Ait Benhaddou",
     nights: 8,
-    videoUrl: "/videos/morocco.mp4",
+    videoUrl: "https://youtube.com/shorts/4nX0GmlpgqM",
     tags: ["Solo travellers", "Culture", "Adventure"],
     description: "Four days is not enough for Morocco, eight barely is. This route covers the sensory overload of Marrakech's medina, the more authentic maze of Fes, an overnight in the Sahara dunes, and the dramatic kasbahs of the south. Allow time to simply sit in a café and watch the world move differently.",
   },
