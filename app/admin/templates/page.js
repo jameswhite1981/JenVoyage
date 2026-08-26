@@ -51,6 +51,9 @@ export default async function TemplatesPage() {
                 subtitle={`${t.destination_name || "N/A"} · saved ${fmtDate(t.created_at)}`}
               >
                 <div style={{ display:"flex", justifyContent:"flex-end", alignItems:"center", gap:"1.25rem", marginBottom:"1rem" }}>
+                  <Link href={`/admin/templates/${t.id}`} style={{ ...sans, fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", color:C.dusk, textDecoration:"none", border:`1.5px solid ${C.stone}`, padding:"0.4rem 0.8rem" }}>
+                    Edit
+                  </Link>
                   <a href={`/api/admin/templates/${t.id}/download`} style={{ ...sans, fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", color:C.dusk, textDecoration:"none", border:`1.5px solid ${C.stone}`, padding:"0.4rem 0.8rem" }}>
                     Download PDF
                   </a>
