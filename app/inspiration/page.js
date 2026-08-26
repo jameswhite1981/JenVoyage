@@ -57,7 +57,7 @@ const TRIPS = [
     title: "Valletta, Gozo & the Blue Lagoon",
     route: "Valletta → Mdina → Gozo → Comino",
     nights: 7,
-    videoUrl: "/videos/malta.mp4",
+    videoUrl: "https://youtu.be/OqNrZlJHpdc",
     tags: ["Family", "Beach", "Culture"],
     description: "Malta punches well above its size. A Baroque walled capital in Valletta, the silent honey-stone streets of Mdina, then a short ferry to Gozo for a slower pace and Comino for the Blue Lagoon's impossibly clear water. Compact enough that you're never far from the next swim stop, with flights under three hours from the UK.",
   },
