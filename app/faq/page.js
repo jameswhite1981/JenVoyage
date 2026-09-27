@@ -32,6 +32,19 @@ const FAQS = [
     q: "Isn't this all just done using AI?",
     a: "Absolutely not. I'd be lying if I said that AI wasn't involved, and I'd also probably be a bit naive. Most of what you see pre-payment is AI generated. However, all that changes once I look into your request: accommodation, trips and flights are personally picked, by a real person!",
   },
+  {
+    q: "What should I expect?",
+    a: "Your finished itinerary is a single page you can view online or download as a PDF. Here's what's in it:",
+    list: [
+      "A short intro explaining the trip we've built and why, plus key things to know about your destination (visas, vaccinations, local tips) right at the top.",
+      "Flights, then each region or island you're visiting, laid out in easy, drop-down sections.",
+      "Your suggested flights, each with a direct link to Skyscanner or the airline to book.",
+      "Suggested accommodation with direct booking links. Reviews have been checked, but it's imperative you double-check the property yourself before booking to make sure you're fully happy with your choice.",
+      "A day-by-day plan with activities in the area you might enjoy, based on your original request, each with a direct link and cost. These are just suggestions: you're always fully in charge of what you do and when.",
+      "A full cost summary: flights, accommodation, recommended activities and transfers, so the total is genuinely all-inclusive with no surprises.",
+      "A comparison against similar packages from other operators, so you can see how it stacks up. They won't be bespoke to you, but they may still work out cheaper.",
+    ],
+  },
 ];
 
 const DIFFERENCES = [
@@ -71,13 +84,20 @@ export default function FaqPage() {
 
       {/* FAQs */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "1.5rem 1.5rem", borderBottom: `1px solid ${COLORS.stone}` }}>
-        {FAQS.map(({ q, a }, i) => (
+        {FAQS.map(({ q, a, list }, i) => (
           <details key={i} style={{ borderTop: i === 0 ? "none" : `1px solid ${COLORS.stone}`, padding: "1.25rem 0" }}>
             <summary style={{ ...sans, fontSize: "0.95rem", fontWeight: 500, color: COLORS.ink, cursor: "pointer", listStyle: "none", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
               {q}
               <span style={{ fontSize: "1.2rem", color: COLORS.gold, flexShrink: 0 }}>+</span>
             </summary>
             <p style={{ ...sans, fontSize: "0.88rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.8, margin: "1rem 0 0", maxWidth: "60ch" }}>{a}</p>
+            {list && (
+              <ul style={{ margin: "0.75rem 0 0", paddingLeft: "1.4rem", maxWidth: "60ch" }}>
+                {list.map((item, j) => (
+                  <li key={j} style={{ ...sans, fontSize: "0.88rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.8, marginBottom: "0.5rem" }}>{item}</li>
+                ))}
+              </ul>
+            )}
           </details>
         ))}
         <div style={{ borderTop: `1px solid ${COLORS.stone}` }} />
