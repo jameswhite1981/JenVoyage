@@ -44,6 +44,11 @@ const FAQS = [
       "A full cost summary: flights, accommodation, recommended activities and transfers, so the total is genuinely all-inclusive with no surprises.",
       "A comparison against similar packages from other operators, so you can see how it stacks up. They won't be bespoke to you, but they may still work out cheaper.",
     ],
+    images: [
+      { src: "/examples/sample-itinerary-overview.png", width: 1985, height: 2274, alt: "Sample itinerary overview: key country info, drop-down sections per location, full cost summary, and a comparison against other operators' packages" },
+      { src: "/examples/sample-itinerary-flights-accommodation.png", width: 1985, height: 2491, alt: "Sample itinerary flights and accommodation sections, each suggestion with a direct booking link" },
+      { src: "/examples/sample-itinerary-daily-plan.png", width: 1985, height: 2291, alt: "Sample day-by-day itinerary with suggested activities, links and costs" },
+    ],
   },
 ];
 
@@ -84,7 +89,7 @@ export default function FaqPage() {
 
       {/* FAQs */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "1.5rem 1.5rem", borderBottom: `1px solid ${COLORS.stone}` }}>
-        {FAQS.map(({ q, a, list }, i) => (
+        {FAQS.map(({ q, a, list, images }, i) => (
           <details key={i} style={{ borderTop: i === 0 ? "none" : `1px solid ${COLORS.stone}`, padding: "1.25rem 0" }}>
             <summary style={{ ...sans, fontSize: "0.95rem", fontWeight: 500, color: COLORS.ink, cursor: "pointer", listStyle: "none", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
               {q}
@@ -97,6 +102,13 @@ export default function FaqPage() {
                   <li key={j} style={{ ...sans, fontSize: "0.88rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.8, marginBottom: "0.5rem" }}>{item}</li>
                 ))}
               </ul>
+            )}
+            {images && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginTop: "1.5rem" }}>
+                {images.map((img, j) => (
+                  <Image key={j} src={img.src} alt={img.alt} width={img.width} height={img.height} style={{ width: "100%", height: "auto", border: `1px solid ${COLORS.stone}` }} />
+                ))}
+              </div>
             )}
           </details>
         ))}
