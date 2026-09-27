@@ -13,6 +13,24 @@ const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from
 
 const FAQS = [
   {
+    q: "What should I expect?",
+    a: "Your finished itinerary is a single page you can view online or download as a PDF. Here's what's in it:",
+    list: [
+      "A short intro explaining the trip we've built and why, plus key things to know about your destination (visas, vaccinations, local tips) right at the top.",
+      "Flights, then each region or island you're visiting, laid out in easy, drop-down sections.",
+      "Your suggested flights, each with a direct link to Skyscanner or the airline to book.",
+      "Suggested accommodation with direct booking links. Reviews have been checked, but it's imperative you double-check the property yourself before booking to make sure you're fully happy with your choice.",
+      "A day-by-day plan with activities in the area you might enjoy, based on your original request, each with a direct link and cost. These are just suggestions: you're always fully in charge of what you do and when.",
+      "A full cost summary: flights, accommodation, recommended activities and transfers, so the total is genuinely all-inclusive with no surprises.",
+      "A comparison against similar packages from other operators, so you can see how it stacks up. They won't be bespoke to you, but they may still work out cheaper.",
+    ],
+    images: [
+      { src: "/examples/sample-itinerary-overview.png", width: 1985, height: 2274, alt: "Sample itinerary overview: key country info, drop-down sections per location, full cost summary, and a comparison against other operators' packages" },
+      { src: "/examples/sample-itinerary-flights-accommodation.png", width: 1985, height: 2491, alt: "Sample itinerary flights and accommodation sections, each suggestion with a direct booking link" },
+      { src: "/examples/sample-itinerary-daily-plan.png", width: 1985, height: 2291, alt: "Sample day-by-day itinerary with suggested activities, links and costs" },
+    ],
+  },
+  {
     q: "Why should I pay you to design my itinerary when I can just do it myself?",
     a: "You absolutely can do it yourself, but scrolling through hundreds of flights, reading endless hotel reviews and comparing activities takes hours. It can quickly get overwhelming and take the joy out of the build up. Think of Jen Voyage as your personal travel research team. For a one-off fee we do all the heavy lifting, price matching and scheduling to fit your exact budget and vibe. We save you time and stress, putting the fun back into your travel planning.",
   },
@@ -31,24 +49,6 @@ const FAQS = [
   {
     q: "Isn't this all just done using AI?",
     a: "Absolutely not. I'd be lying if I said that AI wasn't involved, and I'd also probably be a bit naive. Most of what you see pre-payment is AI generated. However, all that changes once I look into your request: accommodation, trips and flights are personally picked, by a real person!",
-  },
-  {
-    q: "What should I expect?",
-    a: "Your finished itinerary is a single page you can view online or download as a PDF. Here's what's in it:",
-    list: [
-      "A short intro explaining the trip we've built and why, plus key things to know about your destination (visas, vaccinations, local tips) right at the top.",
-      "Flights, then each region or island you're visiting, laid out in easy, drop-down sections.",
-      "Your suggested flights, each with a direct link to Skyscanner or the airline to book.",
-      "Suggested accommodation with direct booking links. Reviews have been checked, but it's imperative you double-check the property yourself before booking to make sure you're fully happy with your choice.",
-      "A day-by-day plan with activities in the area you might enjoy, based on your original request, each with a direct link and cost. These are just suggestions: you're always fully in charge of what you do and when.",
-      "A full cost summary: flights, accommodation, recommended activities and transfers, so the total is genuinely all-inclusive with no surprises.",
-      "A comparison against similar packages from other operators, so you can see how it stacks up. They won't be bespoke to you, but they may still work out cheaper.",
-    ],
-    images: [
-      { src: "/examples/sample-itinerary-overview.png", width: 1985, height: 2274, alt: "Sample itinerary overview: key country info, drop-down sections per location, full cost summary, and a comparison against other operators' packages" },
-      { src: "/examples/sample-itinerary-flights-accommodation.png", width: 1985, height: 2491, alt: "Sample itinerary flights and accommodation sections, each suggestion with a direct booking link" },
-      { src: "/examples/sample-itinerary-daily-plan.png", width: 1985, height: 2291, alt: "Sample day-by-day itinerary with suggested activities, links and costs" },
-    ],
   },
 ];
 
