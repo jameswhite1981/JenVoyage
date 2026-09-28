@@ -451,6 +451,7 @@ export default function JenVoyagePage() {
           brief: {
             departDate: form.departDate,
             returnDate: form.returnDate,
+            additionalCountries: form.additionalCountries.filter(Boolean),
             departCountry: form.departCountry,
             preferredAirport: form.preferredAirport===OTHER_AIRPORT ? form.preferredAirportOther : form.preferredAirport,
             adults: form.adults,
@@ -521,11 +522,31 @@ export default function JenVoyagePage() {
   const proceedToPayment = async () => {
     setProceeding(true);
     try {
-      await fetch(`/api/enquiry/${enquiryId}/proceed`, { method: "POST" });
+      const res = await fetch(`/api/enquiry/${enquiryId}/proceed`, { method: "POST" });
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url; // off to Stripe Checkout — leave 'proceeding' true while the page navigates away
+        return;
+      }
     } catch {}
     setProceeding(false);
-    setScreen("proceeded");
+    alert("Something went wrong starting payment. Please try again, or get in touch and we'll sort it out.");
   };
+
+  // Stripe redirects back here after Checkout — actual payment confirmation
+  // comes from the webhook (app/api/stripe/webhook), this is just what the
+  // customer sees. Runs once on mount, then cleans the URL so a refresh
+  // doesn't re-trigger it.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const payment = params.get("payment");
+    if (payment === "success") {
+      setScreen("proceeded");
+      window.history.replaceState({}, "", "/");
+    } else if (payment === "cancelled") {
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
 
   const requestContact = async (method) => {
     setRequestingContact(true);
@@ -789,10 +810,10 @@ export default function JenVoyagePage() {
         <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", padding:"3rem 1.5rem" }}>
           <div style={{ marginBottom:"2.5rem", width:40, height:1, background:COLORS.gold }} />
           <h2 style={{ fontSize:"clamp(2rem,5vw,3.5rem)", fontWeight:300, lineHeight:1.1, maxWidth:"18ch", marginBottom:"1.25rem" }}>
-            Wonderful, {form.firstName}
+            Payment received, thank you
           </h2>
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
-            Jen will be in touch with <strong style={{ color:COLORS.ink, fontWeight:500 }}>{form.email}</strong> shortly to take payment and get started on your fully personalised itinerary, complete with accommodation and flight suggestions.
+            Jen will be in touch shortly to get started on your fully personalised itinerary, complete with accommodation and flight suggestions.
           </p>
           <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             Back to home

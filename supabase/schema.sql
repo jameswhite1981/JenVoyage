@@ -47,7 +47,14 @@ CREATE TABLE enquiries (
   -- Set once the 30-day-after-publish purge (see lib/storage.js
   -- purgeExpiredPersonalData) has redacted this enquiry's personal data —
   -- prevents reprocessing and gives an audit trail of when it happened.
-  personal_data_purged_at TIMESTAMPTZ
+  personal_data_purged_at TIMESTAMPTZ,
+
+  -- Set by the Stripe webhook (app/api/stripe/webhook) once Checkout
+  -- confirms payment — never by the success page, which isn't a
+  -- reliable signal on its own. amount_paid is in pence (Stripe's own unit).
+  paid_at           TIMESTAMPTZ,
+  stripe_session_id TEXT,
+  amount_paid       INTEGER
 );
 
 CREATE INDEX enquiries_email_idx   ON enquiries (email);

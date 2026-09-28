@@ -210,6 +210,7 @@ export default function EnquiryEditor() {
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))", gap:"1rem", marginBottom: (enquiry.brief.notes || enquiry.brief.accomNotes || [...(enquiry.brief.activities||[]),...(enquiry.brief.landmarks||[]),...(enquiry.brief.regions||[])].length) ? "1.25rem" : 0 }}>
               {[
                 ["Dates", `${enquiry.brief.departDate || "N/A"} → ${enquiry.brief.returnDate || "N/A"}`],
+                ["Other destinations", (enquiry.brief.additionalCountries || []).join(", ") || "None"],
                 ["Departure", `${enquiry.brief.departCountry || "N/A"}${enquiry.brief.preferredAirport ? `, ${enquiry.brief.preferredAirport}` : ""}`],
                 ["Party", `${enquiry.brief.adults} adults, ${enquiry.brief.children || 0} children${enquiry.brief.childrenAges ? ` (ages ${enquiry.brief.childrenAges})` : ""}`],
                 ["Budget", `£${Number(enquiry.brief.budget) >= 10000 ? "10,000+" : Number(enquiry.brief.budget).toLocaleString()} pp`],

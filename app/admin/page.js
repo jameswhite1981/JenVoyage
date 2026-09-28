@@ -46,6 +46,11 @@ function EnquiryRow({ e }) {
           <div style={{ ...sans, fontSize:"0.88rem", color:C.dusk }}>{e.destination_name}</div>
           <div style={{ ...sans, fontSize:"0.75rem", color:C.stone }}>{fmtDate(e.created_at)}</div>
           <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:badge.bg, color:badge.color, padding:"0.3rem 0.7rem" }}>{badge.text}</span>
+          {e.paid_at && (
+            <span style={{ ...sans, fontSize:"0.65rem", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", background:"#2F6B3A", color:"#FDFBF8", padding:"0.3rem 0.7rem" }}>
+              Paid £{(e.amount_paid / 100).toFixed(2)}
+            </span>
+          )}
         </Link>
         {e.status === "published" && (
           <ResendEmailButton email={e.email} firstName={e.first_name} destinationName={e.destination_name} enquiryId={e.id} personalMessage={e.personal_message} />
