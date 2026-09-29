@@ -841,7 +841,7 @@ export default function JenVoyagePage() {
       <div style={page}>
         <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", padding:"3rem 1.5rem" }}>
           <div style={{ width:200, height:200, borderRadius:"50%", overflow:"hidden", position:"relative", background:COLORS.sand, marginBottom:"1.5rem", flexShrink:0 }}>
-            <Image src="/logo.jpg" alt="Jen Voyage" width={340} height={340} style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:340, height:340, objectFit:"cover", mixBlendMode:"multiply" }} />
+            <Image src="/logo.jpg" alt="Jen Voyage" width={200} height={200} style={{ objectFit:"contain", mixBlendMode:"multiply" }} />
           </div>
           <div style={{ marginBottom:"2.5rem", width:40, height:1, background:COLORS.gold }} />
           <h2 style={{ fontSize:"clamp(2rem,5vw,3.5rem)", fontWeight:300, lineHeight:1.1, maxWidth:"18ch", marginBottom:"1.25rem" }}>
@@ -901,7 +901,7 @@ export default function JenVoyagePage() {
       <div style={{ maxWidth:720, margin:"0 auto", padding:"1.5rem 1.5rem 5rem" }}>
         <div style={{ paddingBottom:"1rem", borderBottom:`1px solid ${COLORS.stone}`, marginBottom:"1.25rem", display:"flex", alignItems:"center", gap:"1.25rem" }}>
           <div style={{ width:88, height:88, borderRadius:"50%", overflow:"hidden", position:"relative", background:COLORS.sand, flexShrink:0 }}>
-            <Image src="/logo.jpg" alt="Jen Voyage" width={340} height={340} style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:340, height:340, objectFit:"cover", mixBlendMode:"multiply" }} />
+            <Image src="/logo.jpg" alt="Jen Voyage" width={88} height={88} style={{ objectFit:"contain", mixBlendMode:"multiply" }} />
           </div>
           <div>
             <h2 style={{ fontSize:"clamp(1.3rem,3vw,1.9rem)", fontWeight:300, lineHeight:1.1, marginBottom:"0.25rem", color:"#1C3461" }}>Plan your journey</h2>

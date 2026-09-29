@@ -56,7 +56,7 @@ export default function LegalPageLayout({ eyebrow = "Legal", title, subtitle, dr
 
       <div className="jv-page-header" style={{ maxWidth: 760, margin: "0 auto", padding: "2rem 1.5rem", borderBottom: `1px solid ${COLORS.stone}`, display:"flex", alignItems:"center", gap:"2rem" }}>
         <div className="jv-header-logo" style={{ width:120, height:120, borderRadius:"50%", overflow:"hidden", position:"relative", background:COLORS.sand, flexShrink:0, border:`1.5px solid ${COLORS.stone}` }}>
-          <Image src="/logo.jpg" alt="Jen Voyage" width={200} height={200} style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:200, height:200, objectFit:"cover", mixBlendMode:"multiply" }} />
+          <Image src="/logo.jpg" alt="Jen Voyage" width={120} height={120} style={{ objectFit:"contain", mixBlendMode:"multiply" }} />
         </div>
         <div>
           <div style={{ ...sans, fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.gold, marginBottom: "0.75rem" }}>{eyebrow}</div>
