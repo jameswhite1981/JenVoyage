@@ -1005,6 +1005,9 @@ export default function JenVoyagePage() {
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Any regions or states in mind?</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>If you already know which parts of {destinationLabel() || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
             {d3 && d3.regions.length>0 && <><div style={chipSecLbl}>Regions of interest</div>
+            <p style={{ ...sans, fontSize:"0.72rem", color:COLORS.stone, margin:"0 0 0.75rem" }}>
+              Selecting more than one region classes your trip as an Epic Adventure.
+            </p>
             <ChipGroup items={d3.regions} selected={form.regions} onToggle={v=>toggleArr("regions",v)} /></>}
             <div style={fieldGroup}>
               <label style={label}>{d3 && d3.regions.length>0 ? "Anything else — regions, states or areas not listed above (optional)" : "Regions, states or areas you'd like to include (optional)"}</label>
