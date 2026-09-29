@@ -1023,14 +1023,14 @@ export default function JenVoyagePage() {
             <div style={fieldGroup}>
               <label style={label}>{d3 && d3.regions.length>0 ? "Anything else — regions, states or areas not listed above (optional)" : "Regions, states or areas you'd like to include (optional)"}</label>
               {form.specificRegions.map((r, i) => (
-                <div key={i} style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"0.6rem" }}>
+                <div key={i} className="jv-region-row" style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"0.6rem" }}>
                   <input type="text" style={{...inp, flex:1}} value={r} onChange={e=>updSpecificRegion(i, e.target.value)} placeholder="e.g. Tuscany" />
                   {form.specificRegions.length>1 && (
-                    <button onClick={()=>removeSpecificRegion(i)} style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove region">✕</button>
+                    <button onClick={()=>removeSpecificRegion(i)} className="jv-region-remove" style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove region">✕</button>
                   )}
                 </div>
               ))}
-              <button onClick={addSpecificRegion} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.5rem 1rem", cursor:"pointer" }}>
+              <button onClick={addSpecificRegion} className="jv-add-region" style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.5rem 1rem", cursor:"pointer" }}>
                 + Add another region
               </button>
             </div>

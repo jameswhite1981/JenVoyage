@@ -50,4 +50,19 @@ body {
   .jv-field-row {
     grid-template-columns: 1fr !important;
   }
+  .jv-region-row {
+    gap: 0.35rem !important;
+    margin-bottom: 0.85rem !important;
+  }
+  .jv-region-remove {
+    /* Bumps the tap target closer to the ~44px minimum without changing
+       the desktop layout, where a mouse pointer doesn't need it. */
+    padding: 0.65rem !important;
+    font-size: 1rem !important;
+  }
+  .jv-add-region {
+    width: 100% !important;
+    padding: 0.85rem 1rem !important;
+    text-align: center !important;
+  }
 }
