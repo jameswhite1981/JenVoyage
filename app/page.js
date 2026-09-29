@@ -1004,8 +1004,10 @@ export default function JenVoyagePage() {
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 2</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Any regions or states in mind?</h3>
             <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>If you already know which parts of {destinationLabel() || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
+            {d3 && d3.regions.length>0 && <><div style={chipSecLbl}>Regions of interest</div>
+            <ChipGroup items={d3.regions} selected={form.regions} onToggle={v=>toggleArr("regions",v)} /></>}
             <div style={fieldGroup}>
-              <label style={label}>Regions, states or areas you'd like to include (optional)</label>
+              <label style={label}>{d3 && d3.regions.length>0 ? "Anything else — regions, states or areas not listed above (optional)" : "Regions, states or areas you'd like to include (optional)"}</label>
               <textarea style={{...inp,minHeight:110,resize:"vertical"}} value={form.specificRegions} onChange={e=>upd("specificRegions",e.target.value)} placeholder="e.g. Tuscany, the Amalfi Coast, maybe Sicily if time allows..." />
             </div>
             <div style={formNav}>
@@ -1101,8 +1103,6 @@ export default function JenVoyagePage() {
             <ChipGroup items={d3.general} selected={form.activities} onToggle={v=>toggleArr("activities",v)} />
             {d3.landmarks.length>0 && <><div style={chipSecLbl}>Landmarks & iconic sites</div>
             <ChipGroup items={d3.landmarks} selected={form.landmarks} onToggle={v=>toggleArr("landmarks",v)} /></>}
-            {d3.regions.length>0 && <><div style={chipSecLbl}>Regions of interest</div>
-            <ChipGroup items={d3.regions} selected={form.regions} onToggle={v=>toggleArr("regions",v)} /></>}
             <div style={formNav}>
               <button style={btnBack} onClick={()=>setStep(s=>s-1)}>← Back</button>
               <button style={btnNext} onClick={goNext}>Continue →</button>
