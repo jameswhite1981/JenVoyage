@@ -393,7 +393,7 @@ export default function JenVoyagePage() {
     departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"",
     adults:"2", children:"0", childrenAges:"",
     pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500,
-    specificRegions:"",
+    specificRegions:[""],
     activities:[], landmarks:[], regions:[],
     dietary:[], accessibility:"", notes:"",
     firstName:"", lastName:"", email:"", phone:"", referral:"",
@@ -415,6 +415,17 @@ export default function JenVoyagePage() {
     return { ...f, additionalCountries: next };
   });
   const removeAdditionalCountry = (i) => setForm(f => ({ ...f, additionalCountries: f.additionalCountries.filter((_, idx) => idx !== i) }));
+
+  // Named regions typed in free-text on Step 2 — same "+ Add another" shape
+  // as additionalCountries, so typed-in regions count toward multi-stop
+  // pricing the same way selected region chips do.
+  const addSpecificRegion = () => setForm(f => ({ ...f, specificRegions: [...f.specificRegions, ""] }));
+  const updSpecificRegion = (i, v) => setForm(f => {
+    const next = [...f.specificRegions];
+    next[i] = v;
+    return { ...f, specificRegions: next };
+  });
+  const removeSpecificRegion = (i) => setForm(f => ({ ...f, specificRegions: f.specificRegions.filter((_, idx) => idx !== i) }));
 
   const goNext = () => {
     if (step===1 && !dest) { alert("Please select a destination."); return; }
@@ -460,7 +471,7 @@ export default function JenVoyagePage() {
             rooms: form.rooms,
             beds: form.beds,
             accomNotes: form.accomNotes,
-            specificRegions: form.specificRegions,
+            specificRegions: form.specificRegions.filter(Boolean),
             pace: form.pace,
             accom: form.accom,
             budget: form.budget,
@@ -815,7 +826,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"1rem", fontWeight:300, color:COLORS.dusk, maxWidth:"44ch", lineHeight:1.8, marginBottom:"3rem" }}>
             Jen will be in touch shortly to get started on your fully personalised itinerary, complete with accommodation and flight suggestions.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setEnquiryId(null); setPreview(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:[""], activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             Back to home
           </button>
         </div>
@@ -845,7 +856,7 @@ export default function JenVoyagePage() {
           <p style={{ ...sans, fontSize:"0.88rem", fontWeight:300, color:COLORS.stone, maxWidth:"40ch", lineHeight:1.8, marginBottom:"3rem" }}>
             In the meantime, if you have anything to add or want to get in touch sooner, just reply to the confirmation email you'll receive shortly.
           </p>
-          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
+          <button style={btnPrimary} onClick={() => { setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:[""], activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             Back to home
           </button>
         </div>
@@ -901,7 +912,7 @@ export default function JenVoyagePage() {
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.4rem" }}>
           <div style={{ ...sans, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk }}>Step {step} of 6</div>
           <button style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, fontSize:"0.72rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, cursor:"pointer", padding:"0.3rem 0.75rem" }}
-            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:"", activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
+            onClick={()=>{ setScreen("hero"); setStep(1); setDest(null); setForm({ departDate:"", returnDate:"", departCountry:"", preferredAirport:"", preferredAirportOther:"", adults:"2", children:"0", childrenAges:"", pace:"", accom:"", rooms:"1", beds:"1", accomNotes:"", budget:2500, specificRegions:[""], activities:[], landmarks:[], regions:[], dietary:[], accessibility:"", notes:"", firstName:"", lastName:"", email:"", phone:"", referral:"", continent:"", otherCountry:"", additionalCountries:[], agreedToTerms:false }); }}>
             ← Home
           </button>
         </div>
@@ -1003,15 +1014,25 @@ export default function JenVoyagePage() {
           <div>
             <div style={{ ...sans, fontSize:"0.68rem", letterSpacing:"0.2em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.75rem" }}>Step 2</div>
             <h3 style={{ fontSize:"clamp(1.5rem,3.5vw,2.2rem)", fontWeight:400, lineHeight:1.2, marginBottom:"0.4rem" }}>Any regions or states in mind?</h3>
-            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"2rem" }}>If you already know which parts of {destinationLabel() || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
-            {d3 && d3.regions.length>0 && <><div style={chipSecLbl}>Regions of interest</div>
-            <p style={{ ...sans, fontSize:"0.72rem", color:COLORS.stone, margin:"0 0 0.75rem" }}>
-              Selecting more than one region classes your trip as an Epic Adventure.
+            <p style={{ ...sans, fontSize:"0.86rem", color:COLORS.dusk, fontWeight:300, marginBottom:"0.5rem" }}>If you already know which parts of {destinationLabel() || "your destination"} you'd like to visit, tell us here. Leave blank and we'll suggest a route for you.</p>
+            <p style={{ ...sans, fontSize:"0.72rem", color:COLORS.stone, marginBottom:"2rem" }}>
+              Naming or selecting more than one region in total (below and/or from the list) classes your trip as an Epic Adventure.
             </p>
+            {d3 && d3.regions.length>0 && <><div style={chipSecLbl}>Regions of interest</div>
             <ChipGroup items={d3.regions} selected={form.regions} onToggle={v=>toggleArr("regions",v)} /></>}
             <div style={fieldGroup}>
               <label style={label}>{d3 && d3.regions.length>0 ? "Anything else — regions, states or areas not listed above (optional)" : "Regions, states or areas you'd like to include (optional)"}</label>
-              <textarea style={{...inp,minHeight:110,resize:"vertical"}} value={form.specificRegions} onChange={e=>upd("specificRegions",e.target.value)} placeholder="e.g. Tuscany, the Amalfi Coast, maybe Sicily if time allows..." />
+              {form.specificRegions.map((r, i) => (
+                <div key={i} style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"0.6rem" }}>
+                  <input type="text" style={{...inp, flex:1}} value={r} onChange={e=>updSpecificRegion(i, e.target.value)} placeholder="e.g. Tuscany" />
+                  {form.specificRegions.length>1 && (
+                    <button onClick={()=>removeSpecificRegion(i)} style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.75rem", cursor:"pointer", padding:"0.4rem" }} title="Remove region">✕</button>
+                  )}
+                </div>
+              ))}
+              <button onClick={addSpecificRegion} style={{ ...sans, background:"none", border:`1px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.75rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.5rem 1rem", cursor:"pointer" }}>
+                + Add another region
+              </button>
             </div>
             <div style={formNav}>
               <button style={btnBack} onClick={()=>setStep(s=>s-1)}>← Back</button>

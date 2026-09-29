@@ -234,10 +234,12 @@ export default function EnquiryEditor() {
               </div>
             )}
 
-            {enquiry.brief.specificRegions && (
+            {(Array.isArray(enquiry.brief.specificRegions) ? enquiry.brief.specificRegions.join(", ") : enquiry.brief.specificRegions) && (
               <div style={{ marginBottom:"1rem" }}>
                 <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:C.gold }}>Specific regions/states requested</div>
-                <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>{enquiry.brief.specificRegions}</div>
+                <div style={{ ...sans, fontSize:"0.84rem", color:C.ink, marginTop:"0.2rem" }}>
+                  {Array.isArray(enquiry.brief.specificRegions) ? enquiry.brief.specificRegions.join(", ") : enquiry.brief.specificRegions}
+                </div>
               </div>
             )}
 
