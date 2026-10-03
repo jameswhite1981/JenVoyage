@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveDraft, publishEnquiry } from "./actions.js";
-import { resendItineraryEmail, getShareableLink } from "../../actions.js";
+import { resendItineraryEmail, getShareableLink, generatePaymentLink } from "../../actions.js";
 import { emptyItinerary, normalizeItinerary, parseItineraryJSON } from "../../../../lib/itinerary.js";
+import { pickPricingTier, TIERS } from "../../../../lib/pricing.js";
 import ItineraryDisplay from "../../../components/ItineraryDisplay.js";
 import ItineraryEditor from "../../ItineraryEditor.js";
 
@@ -23,6 +24,9 @@ export default function EnquiryEditor() {
   const [resending, setResending] = useState(false);
   const [gettingLink, setGettingLink] = useState(false);
   const [shareLink, setShareLink] = useState(null);
+  const [tierKey, setTierKey] = useState("main");
+  const [sendingPaymentLink, setSendingPaymentLink] = useState(false);
+  const [paymentLink, setPaymentLink] = useState(null);
   const [msg, setMsg] = useState("");
   const [templates, setTemplates] = useState([]);
   const [savingTemplate, setSavingTemplate] = useState(false);
@@ -34,6 +38,7 @@ export default function EnquiryEditor() {
       .then(data => {
         setEnquiry(data);
         setPersonalMessage(data.personal_message || "");
+        if (data.brief) setTierKey(pickPricingTier(data.brief).key);
         const raw = data.published_content || data.ai_draft || "";
         try { setDraft(normalizeItinerary(parseItineraryJSON(raw))); } catch { setDraft(null); }
       });
@@ -118,6 +123,16 @@ export default function EnquiryEditor() {
     setGettingLink(false);
   };
 
+  const handleSendPaymentLink = async () => {
+    setSendingPaymentLink(true); setMsg("");
+    try {
+      const link = await generatePaymentLink(id, tierKey);
+      setPaymentLink(link);
+      try { await navigator.clipboard.writeText(link); setMsg("Payment link copied to clipboard."); } catch { setMsg("Payment link ready below."); }
+    } catch (e) { setMsg(`Error: ${e.message}`); }
+    setSendingPaymentLink(false);
+  };
+
   if (!enquiry) return <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.stone }}>Loading…</div>;
 
   return (
@@ -164,6 +179,22 @@ export default function EnquiryEditor() {
                 {gettingLink ? "Generating…" : "Get shareable link"}
               </button>
             )}
+            {!enquiry.paid_at && (
+              <>
+                <select
+                  value={tierKey}
+                  onChange={e => setTierKey(e.target.value)}
+                  style={{ ...sans, background:C.white, border:`1.5px solid ${C.stone}`, color:C.dusk, fontSize:"0.72rem", fontWeight:500, letterSpacing:"0.05em", textTransform:"uppercase", padding:"0.55rem 0.7rem", cursor:"pointer" }}
+                >
+                  {Object.values(TIERS).map(t => (
+                    <option key={t.key} value={t.key}>{t.name} — £{t.amountGBP}</option>
+                  ))}
+                </select>
+                <button onClick={handleSendPaymentLink} disabled={sendingPaymentLink} style={smallBtn}>
+                  {sendingPaymentLink ? "Generating…" : "Get payment link"}
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -183,6 +214,13 @@ export default function EnquiryEditor() {
           <div style={{ ...sans, background:C.mist, border:`1px solid ${C.stone}`, padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem", display:"flex", alignItems:"center", gap:"1rem", flexWrap:"wrap" }}>
             <span style={{ color:C.dusk }}>Share this manually (e.g. WhatsApp, text) in case the automated email doesn&apos;t land — single-use, expires in 7 days:</span>
             <code style={{ ...sans, background:C.white, border:`1px solid ${C.stone}`, padding:"0.4rem 0.6rem", wordBreak:"break-all", flex:"1 1 300px" }}>{shareLink}</code>
+          </div>
+        )}
+
+        {paymentLink && (
+          <div style={{ ...sans, background:C.mist, border:`1px solid ${C.stone}`, padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem", display:"flex", alignItems:"center", gap:"1rem", flexWrap:"wrap" }}>
+            <span style={{ color:C.dusk }}>Send this to the customer to take payment directly (e.g. if Jen has spoken to them and they want to pay there and then):</span>
+            <code style={{ ...sans, background:C.white, border:`1px solid ${C.stone}`, padding:"0.4rem 0.6rem", wordBreak:"break-all", flex:"1 1 300px" }}>{paymentLink}</code>
           </div>
         )}
 
