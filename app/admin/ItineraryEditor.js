@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { emptyLeg } from "../../lib/itinerary.js";
 import Accordion from "../components/Accordion.js";
 
@@ -69,6 +70,56 @@ function LegEditor({ leg, onChange }) {
       <div style={{ gridColumn:"1 / -1" }}>
         <Field label="Booking link" value={l.link} onChange={v => set("link", v)} placeholder="https://…" />
       </div>
+    </div>
+  );
+}
+
+// Lets Jen type a plain-English instruction ("make Sintra a day trip from
+// Lisbon, not a separate stop") instead of hand-editing every field it
+// touches. Sends the whole current draft to Claude, which returns a revised
+// draft in the same schema; this just swaps it in wholesale, so a bad edit
+// is one more instruction (or a page refresh, since nothing's saved until
+// "Save draft") away from being undone, rather than destructive in place.
+function AIEditPanel({ draft, setDraft }) {
+  const [instruction, setInstruction] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const apply = async () => {
+    if (!instruction.trim()) return;
+    setLoading(true); setMsg("");
+    try {
+      const res = await fetch("/api/admin/ai-edit-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ draft, instruction }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Edit failed.");
+      setDraft(data.draft);
+      setInstruction("");
+      setMsg("Applied. Review the changes below, then Save draft when you're happy.");
+    } catch (e) { setMsg(`Error: ${e.message}`); }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{ ...groupBox, background:C.mist, marginBottom:"1.75rem" }}>
+      <label style={lbl}>Ask AI to edit this draft</label>
+      <div style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
+        <input
+          style={{ ...inp, flex:"1 1 320px" }}
+          value={instruction}
+          onChange={e => setInstruction(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter" && !loading) apply(); }}
+          placeholder="e.g. Make Sintra a day trip from Lisbon, not a separate stop"
+          disabled={loading}
+        />
+        <button style={smallBtn} onClick={apply} disabled={loading || !instruction.trim()}>
+          {loading ? "Thinking…" : "Apply"}
+        </button>
+      </div>
+      {msg && <div style={{ ...sans, fontSize:"0.78rem", color: msg.startsWith("Error") ? "#9B3A2A" : C.dusk, marginTop:"0.6rem" }}>{msg}</div>}
     </div>
   );
 }
@@ -178,6 +229,8 @@ export default function ItineraryEditor({ draft, setDraft }) {
 
   return (
     <div style={{ maxWidth:820 }}>
+      <AIEditPanel draft={draft} setDraft={setDraft} />
+
       <Field label="Title" value={draft.title} onChange={v => upd("title", v)} />
       <p style={{ ...sans, fontSize:"0.72rem", color:C.stone, margin:"-0.5rem 0 0.9rem" }}>
         Tip: in any text field below, write <code>[link text](https://…)</code> to add a clickable link, or <code>**text**</code> to make it bold.
