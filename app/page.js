@@ -6,6 +6,7 @@ import DateRangePicker from "./components/DateRangePicker";
 import TypeaheadSelect from "./components/TypeaheadSelect";
 import TravelAdvisoryNotice from "./components/TravelAdvisoryNotice";
 import Footer from "./components/Footer";
+import { pickPricingTier } from "../lib/pricing.js";
 
 const COLORS = {
   sand: "#F2EDE4", stone: "#C8BFB0", ink: "#1C1A17", dusk: "#4A3F35",
@@ -442,6 +443,17 @@ export default function JenVoyagePage() {
     return selectedCountries().join(" & ") || form.otherCountry;
   };
 
+  // Mirrors the brief shape sent to /api/enquiry so the price shown on the
+  // preview screen matches exactly what pickPricingTier will charge at
+  // checkout — computed from the same live form state, not a guess.
+  const currentTier = () => pickPricingTier({
+    departDate: form.departDate,
+    returnDate: form.returnDate,
+    additionalCountries: form.additionalCountries.filter(Boolean),
+    specificRegions: form.specificRegions.filter(Boolean),
+    regions: form.regions,
+  });
+
   const submit = async () => {
     if (!form.firstName || !form.email) { alert("Please enter your name and email."); return; }
     const d = DESTINATIONS[dest];
@@ -736,6 +748,7 @@ export default function JenVoyagePage() {
   // ── PREVIEW ──────────────────────────────────────────────────────────────
   if (screen==="preview" && preview) {
     const day1 = preview.day1;
+    const tier = currentTier();
     return (
       <div style={page}>
         <div style={{ maxWidth:640, margin:"0 auto", padding:"4rem 1.5rem 5rem" }}>
@@ -763,6 +776,9 @@ export default function JenVoyagePage() {
             <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, maxWidth:"46ch", margin:"0 auto 1.5rem", lineHeight:1.8 }}>
               Here&apos;s what your first day might look like, but to see a fully personalised itinerary – including accommodation, flights and suggestions on trips or places to visit (all complete with links for easy, instant booking) – please continue to payment.
             </p>
+            <div style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.05em", color:COLORS.dusk, marginBottom:"1.75rem" }}>
+              Based on your trip, this is <strong style={{ color:COLORS.ink }}>{tier.name}</strong>, priced at <strong style={{ color:COLORS.ink }}>£{tier.amountGBP}</strong>.
+            </div>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap" }}>
               <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
                 {proceeding ? "One moment…" : "Proceed to payment →"}
