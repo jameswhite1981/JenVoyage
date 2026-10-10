@@ -230,6 +230,18 @@ export default function EnquiryEditor() {
           </div>
         )}
 
+        {enquiry.paid_at && enquiry.cancellation_choice === "waive_48h" && (
+          <div style={{ ...sans, background:"#e9f3ea", border:"1px solid #b7d6ba", color:"#2F6B3A", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
+            Customer waived their 14-day cancellation right and asked to start straight away — deliver the itinerary within 48 hours of payment, by <strong>{new Date(new Date(enquiry.paid_at).getTime() + 48*60*60*1000).toLocaleString("en-GB", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" })}</strong>.
+          </div>
+        )}
+
+        {enquiry.paid_at && enquiry.cancellation_choice === "wait_14_days" && (
+          <div style={{ ...sans, background:"#fdf3e3", border:"1px solid #e8d3a0", color:"#8a6416", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
+            Customer chose to keep their 14-day cancellation right — deliver the itinerary within 2 weeks of payment, by <strong>{new Date(new Date(enquiry.paid_at).getTime() + 14*24*60*60*1000).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" })}</strong>.
+          </div>
+        )}
+
         {enquiry.unsure_contact_method && (
           <div style={{ ...sans, background:"#fdf3e3", border:"1px solid #e8d3a0", color:"#8a6416", padding:"1rem 1.5rem", fontSize:"0.84rem", marginBottom:"1.5rem" }}>
             This customer wasn&apos;t sure about the process and asked Jen to reach out by <strong>{enquiry.unsure_contact_method}</strong>, using the phone/email shown above.

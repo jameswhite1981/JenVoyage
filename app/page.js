@@ -388,6 +388,7 @@ export default function JenVoyagePage() {
   const [enquiryId, setEnquiryId] = useState(null);
   const [preview, setPreview]     = useState(null);
   const [proceeding, setProceeding] = useState(false);
+  const [cancellationChoice, setCancellationChoice] = useState(null);
   const [contactMethod, setContactMethod] = useState(null);
   const [requestingContact, setRequestingContact] = useState(false);
   const [form, setForm]   = useState({
@@ -543,9 +544,14 @@ export default function JenVoyagePage() {
   }, [screen, enquiryId]);
 
   const proceedToPayment = async () => {
+    if (!cancellationChoice) { alert("Please choose how you'd like to receive your itinerary before continuing."); return; }
     setProceeding(true);
     try {
-      const res = await fetch(`/api/enquiry/${enquiryId}/proceed`, { method: "POST" });
+      const res = await fetch(`/api/enquiry/${enquiryId}/proceed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cancellationChoice }),
+      });
       const data = await res.json();
       if (data?.url) {
         window.location.href = data.url; // off to Stripe Checkout — leave 'proceeding' true while the page navigates away
@@ -779,8 +785,23 @@ export default function JenVoyagePage() {
             <div style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.05em", color:COLORS.dusk, marginBottom:"1.75rem" }}>
               Based on your trip, this is <strong style={{ color:COLORS.ink }}>{tier.name}</strong>, priced at <strong style={{ color:COLORS.ink }}>£{tier.amountGBP}</strong>.
             </div>
+
+            <div style={{ ...sans, textAlign:"left", background:COLORS.white, border:`1px solid ${COLORS.stone}`, padding:"1.5rem 1.75rem", marginBottom:"1.75rem" }}>
+              <p style={{ fontSize:"0.82rem", color:COLORS.dusk, fontWeight:300, lineHeight:1.7, margin:"0 0 1rem" }}>
+                In the EU, consumers generally have a 14-day right to cancel certain purchases without giving a reason, known as the cooling-off period. You can opt out of this and receive your itinerary within 48 hours (this is a legal requirement and does NOT come with extra cost). Otherwise due to EU law, you will receive your itinerary in 2 weeks.
+              </p>
+              <label style={{ display:"flex", alignItems:"flex-start", gap:"0.6rem", marginBottom:"0.75rem", cursor:"pointer" }}>
+                <input type="radio" name="cancellationChoice" checked={cancellationChoice==="waive_48h"} onChange={()=>setCancellationChoice("waive_48h")} style={{ marginTop:"0.2rem", flexShrink:0 }} />
+                <span style={{ fontSize:"0.85rem", color:COLORS.ink, lineHeight:1.6 }}>Start work on my itinerary straight away and receive it within 48 hours. I understand this waives my 14-day right to cancel.</span>
+              </label>
+              <label style={{ display:"flex", alignItems:"flex-start", gap:"0.6rem", cursor:"pointer" }}>
+                <input type="radio" name="cancellationChoice" checked={cancellationChoice==="wait_14_days"} onChange={()=>setCancellationChoice("wait_14_days")} style={{ marginTop:"0.2rem", flexShrink:0 }} />
+                <span style={{ fontSize:"0.85rem", color:COLORS.ink, lineHeight:1.6 }}>Wait to adhere to the 14-day consumer cooling-off period and receive my itinerary in 2 weeks.</span>
+              </label>
+            </div>
+
             <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"1rem", flexWrap:"wrap" }}>
-              <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding}>
+              <button style={btnPrimary} onClick={proceedToPayment} disabled={proceeding || !cancellationChoice}>
                 {proceeding ? "One moment…" : "Proceed to payment →"}
               </button>
               <button onClick={()=>setScreen("unsure")} style={btnPrimary}>

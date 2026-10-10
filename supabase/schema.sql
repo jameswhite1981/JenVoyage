@@ -31,6 +31,13 @@ CREATE TABLE enquiries (
   -- Set when the customer clicks "proceed to payment" on the preview
   proceed_requested_at TIMESTAMPTZ,
 
+  -- The customer's required choice, shown before payment, between waiving
+  -- their EU 14-day cooling-off/cancellation right (in exchange for
+  -- starting work and delivering within 48 hours) or keeping that right
+  -- and waiting the full 14 days.
+  cancellation_choice    TEXT CHECK (cancellation_choice IN ('waive_48h', 'wait_14_days')),
+  cancellation_consent_at TIMESTAMPTZ,
+
   -- Set when the customer isn't sure and asks Jen to reach out instead —
   -- contacted using the phone/email already given above, not a new address
   unsure_contact_method TEXT CHECK (unsure_contact_method IN ('call', 'whatsapp', 'email')),

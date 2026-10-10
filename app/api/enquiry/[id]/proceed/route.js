@@ -11,12 +11,19 @@ function randomLetters(n) {
 
 export async function POST(request, { params }) {
   const { id } = await params;
+  const { cancellationChoice } = await request.json().catch(() => ({}));
+  if (!["waive_48h", "wait_14_days"].includes(cancellationChoice)) {
+    return Response.json({ error: "Please choose a cancellation option." }, { status: 400 });
+  }
+
   const enquiry = await getEnquiry(id);
   if (!enquiry) return Response.json({ error: "Not found" }, { status: 404 });
 
   await updateEnquiry(id, {
     status: "wants_to_proceed",
     proceed_requested_at: new Date().toISOString(),
+    cancellation_choice: cancellationChoice,
+    cancellation_consent_at: new Date().toISOString(),
   });
 
   const tier = pickPricingTier(enquiry.brief);
