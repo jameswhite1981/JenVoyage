@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "../components/Footer";
+import ReviewForm from "./ReviewForm.js";
+import { listApprovedReviews } from "../../lib/storage.js";
 
 const COLORS = {
   sand: "#F2EDE4", stone: "#C8BFB0", ink: "#1C1A17", dusk: "#4A3F35",
@@ -11,25 +13,13 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 
 const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from%20Jen%20Voyage%20website";
 
-const REVIEWS = [
-  {
-    quote: "Jen planned our honeymoon in Japan and it was absolutely faultless. Every detail had been thought through, and we didn't have to worry about a thing from the moment we landed.",
-    name: "Sophie & Tom",
-    trip: "Tokyo & Kyoto, 12 nights",
-  },
-  {
-    quote: "I've used big travel agencies before and the difference is night and day. Jen actually listens, then builds something around you rather than fitting you into a template.",
-    name: "Marcus H.",
-    trip: "Peru & Machu Picchu, 14 nights",
-  },
-  {
-    quote: "The Thailand itinerary had something for every member of the family: the kids loved the elephant sanctuary, we loved the cooking class in Chiang Mai. Genuinely magical.",
-    name: "Claire W.",
-    trip: "Thailand, family of four, 10 nights",
-  },
-];
+// Shown live approved customer reviews behind auth-free but DB-backed
+// content — never statically cached, or a newly approved review wouldn't
+// appear until the next deploy.
+export const dynamic = "force-dynamic";
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  const REVIEWS = await listApprovedReviews();
   return (
     <div style={{ fontFamily: "Georgia,serif", backgroundImage: `linear-gradient(rgba(242,237,228,0.88),rgba(242,237,228,0.88)),url('/map-bg.svg')`, backgroundSize: "cover", backgroundAttachment: "fixed", minHeight: "100vh", color: COLORS.ink }}>
 
@@ -60,13 +50,28 @@ export default function ReviewsPage() {
 
       {/* Reviews */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "4rem 1.5rem 6rem" }}>
-        {REVIEWS.map((r, i) => (
-          <div key={i} style={{ borderLeft: `2px solid ${COLORS.gold}`, paddingLeft: "2rem", marginBottom: "3.5rem" }}>
+        {REVIEWS.length === 0 && (
+          <p style={{ ...sans, fontSize: "0.9rem", fontWeight: 300, color: COLORS.dusk, textAlign: "center" }}>
+            Be the first to leave a review below.
+          </p>
+        )}
+        {REVIEWS.map((r) => (
+          <div key={r.id} style={{ borderLeft: `2px solid ${COLORS.gold}`, paddingLeft: "2rem", marginBottom: "3.5rem" }}>
+            <div style={{ color: COLORS.gold, letterSpacing: "2px", marginBottom: "0.6rem" }}>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
             <p style={{ fontSize: "1.15rem", fontWeight: 300, lineHeight: 1.9, color: COLORS.ink, margin: "0 0 1.25rem" }}>"{r.quote}"</p>
             <div style={{ ...sans, fontSize: "0.85rem", fontWeight: 500, color: COLORS.dusk }}>{r.name}</div>
-            <div style={{ ...sans, fontSize: "0.75rem", color: COLORS.stone, marginTop: "0.25rem" }}>{r.trip}</div>
+            {r.trip && <div style={{ ...sans, fontSize: "0.75rem", color: COLORS.stone, marginTop: "0.25rem" }}>{r.trip}</div>}
           </div>
         ))}
+      </div>
+
+      {/* Leave a review */}
+      <div style={{ borderTop: `1px solid ${COLORS.stone}`, padding: "4rem 1.5rem" }}>
+        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+          <div style={{ ...sans, fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.gold, marginBottom: "0.75rem" }}>Travelled with us?</div>
+          <h2 style={{ fontSize: "clamp(1.6rem,4vw,2.2rem)", fontWeight: 300, color: "#1C3461" }}>Leave a review</h2>
+        </div>
+        <ReviewForm />
       </div>
 
       {/* CTA */}

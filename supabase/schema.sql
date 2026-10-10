@@ -95,10 +95,27 @@ CREATE TABLE itinerary_templates (
   created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Customer-submitted reviews, shown on /reviews once Jen approves them —
+-- public submission but moderated, so nothing fake or abusive goes live
+-- unreviewed. Not linked to an enquiry: review submission has no login, so
+-- there's nothing reliable to key it to.
+CREATE TABLE reviews (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+  name             TEXT NOT NULL,
+  quote            TEXT NOT NULL,
+  rating           INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  trip             TEXT,  -- optional free text, e.g. "Thailand, family of four, 10 nights"
+  approved_at      TIMESTAMPTZ
+);
+
+CREATE INDEX reviews_approved_idx ON reviews (approved_at);
+
 -- Revoke anonymous access — all DB access goes through the service role key on the server
 REVOKE ALL ON enquiries           FROM anon, authenticated;
 REVOKE ALL ON magic_links         FROM anon, authenticated;
 REVOKE ALL ON itinerary_templates FROM anon, authenticated;
+REVOKE ALL ON reviews             FROM anon, authenticated;
 
 -- Enable RLS with no policies — hard default-deny for anon/authenticated.
 -- The server-side service role key bypasses RLS entirely, so the app is
@@ -107,3 +124,4 @@ REVOKE ALL ON itinerary_templates FROM anon, authenticated;
 ALTER TABLE enquiries           ENABLE ROW LEVEL SECURITY;
 ALTER TABLE magic_links          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE itinerary_templates  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews              ENABLE ROW LEVEL SECURITY;
