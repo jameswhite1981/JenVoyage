@@ -23,6 +23,7 @@ const HERO_INFO = {
   how: {
     label: "How does it work?",
     body: "Tell us where you're dreaming of and a few essentials about your trip. You'll get an instant, free first-look preview while we get started. Once you're happy to proceed, Jen personally researches and builds your full itinerary, complete with direct booking links, ready within 48 hours.",
+    videoUrl: "https://www.youtube.com/shorts/NU8lY_mS9oY",
   },
 };
 
@@ -656,7 +657,10 @@ export default function JenVoyagePage() {
                 </button>
                 {heroDropdown==="how" && (
                   <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
-                    <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.how.body}</p>
+                    <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:"0 0 0.85rem" }}>{HERO_INFO.how.body}</p>
+                    <a href={HERO_INFO.how.videoUrl} target="_blank" rel="noopener noreferrer" style={{ ...sans, display:"inline-block", background:"none", border:`1.5px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.72rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.55rem 0.9rem", textDecoration:"none" }}>
+                      ▶ Watch
+                    </a>
                   </div>
                 )}
               </div>
