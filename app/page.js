@@ -19,6 +19,7 @@ const HERO_INFO = {
   what: {
     label: "What do we do?",
     body: "We design fully personalised, bespoke holiday itineraries: real flights, real accommodation and hand-picked activities matched to your exact budget and taste. No templates and no generic packages, just a trip built around your brief by Jen herself.",
+    videoUrl: "https://www.youtube.com/shorts/Mwu2GYQ7JIM",
   },
   how: {
     label: "How does it work?",
@@ -646,7 +647,10 @@ export default function JenVoyagePage() {
                 </button>
                 {heroDropdown==="what" && (
                   <div style={{ position:"absolute", top:"110%", left:"50%", transform:"translateX(-50%)", width:260, background:COLORS.white, border:`1px solid ${COLORS.stone}`, boxShadow:"0 8px 24px rgba(28,26,23,0.15)", padding:"1rem 1.25rem", zIndex:3, textAlign:"left" }}>
-                    <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:0 }}>{HERO_INFO.what.body}</p>
+                    <p style={{ ...sans, fontSize:"0.8rem", color:COLORS.dusk, lineHeight:1.7, margin:"0 0 0.85rem" }}>{HERO_INFO.what.body}</p>
+                    <a href={HERO_INFO.what.videoUrl} target="_blank" rel="noopener noreferrer" style={{ ...sans, display:"inline-block", background:"none", border:`1.5px solid ${COLORS.stone}`, color:COLORS.dusk, fontSize:"0.72rem", fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.55rem 0.9rem", textDecoration:"none" }}>
+                      ▶ Watch
+                    </a>
                   </div>
                 )}
               </div>
