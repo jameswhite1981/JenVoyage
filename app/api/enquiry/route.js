@@ -1,5 +1,5 @@
 import { waitUntil } from "@vercel/functions";
-import { createEnquiry, updateEnquiry } from "../../../lib/storage.js";
+import { createEnquiry, updateEnquiry, getEnquiry } from "../../../lib/storage.js";
 import { generateItinerary, generateTeaser } from "../../../lib/ai.js";
 import { sendConfirmation } from "../../../lib/email.js";
 import { notifyNewEnquiry } from "../../../lib/discord.js";
@@ -54,14 +54,20 @@ export async function POST(request) {
         console.log("[ai] starting generation for", enquiryId);
         const rawText = await generateItinerary(destinationName || destination, brief);
         console.log("[ai] generation complete for", enquiryId);
-        await updateEnquiry(enquiryId, {
-          ai_draft: rawText,
-          ai_generated_at: new Date().toISOString(),
-          status: "ai_ready",
-        });
+        // Don't blindly stamp status "ai_ready" — if the customer already
+        // clicked "Proceed to payment" while this background generation was
+        // still running, status has moved on to "wants_to_proceed" (or
+        // beyond) and this would silently clobber it back.
+        const current = await getEnquiry(enquiryId);
+        const updates = { ai_draft: rawText, ai_generated_at: new Date().toISOString() };
+        if (current?.status === "generating") updates.status = "ai_ready";
+        await updateEnquiry(enquiryId, updates);
       } catch (err) {
         console.error("[ai] generation failed for", enquiryId, "—", err?.message || err);
-        try { await updateEnquiry(enquiryId, { status: "pending" }); } catch {}
+        try {
+          const current = await getEnquiry(enquiryId);
+          if (current?.status === "generating") await updateEnquiry(enquiryId, { status: "pending" });
+        } catch {}
       }
     })());
 
