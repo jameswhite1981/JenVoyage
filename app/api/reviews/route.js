@@ -1,6 +1,11 @@
 import { createReview } from "../../../lib/storage.js";
+import { isRateLimited, clientIp } from "../../../lib/rateLimit.js";
 
 export async function POST(request) {
+  if (isRateLimited(`reviews:${clientIp(request)}`, 5, 10 * 60 * 1000)) {
+    return Response.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+  }
+
   const { name, quote, rating, trip } = await request.json().catch(() => ({}));
 
   if (!name?.trim() || !quote?.trim()) {

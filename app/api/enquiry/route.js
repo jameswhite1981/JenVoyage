@@ -3,8 +3,16 @@ import { createEnquiry, updateEnquiry, getEnquiry } from "../../../lib/storage.j
 import { generateItinerary, generateTeaser } from "../../../lib/ai.js";
 import { sendConfirmation } from "../../../lib/email.js";
 import { notifyNewEnquiry } from "../../../lib/discord.js";
+import { isRateLimited, clientIp } from "../../../lib/rateLimit.js";
 
 export async function POST(request) {
+  // Each enquiry triggers two paid Anthropic calls plus an email send, with
+  // no login required — an unthrottled version of this endpoint is a
+  // billing-abuse vector (scriptable cost attack), not just a spam one.
+  if (isRateLimited(`enquiry:${clientIp(request)}`, 5, 10 * 60 * 1000)) {
+    return Response.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+  }
+
   try {
     const body = await request.json();
     const { firstName, lastName, email, phone, referral, destination, destinationName, continent, brief = {} } = body;
