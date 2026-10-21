@@ -9,6 +9,7 @@ const PAGES = [
   { path: "/faq", changeFrequency: "monthly", priority: 0.6 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/website-terms", changeFrequency: "yearly", priority: 0.3 },
   { path: "/cookies", changeFrequency: "yearly", priority: 0.3 },
 ];
 
