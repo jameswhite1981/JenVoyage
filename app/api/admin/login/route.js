@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
-import { createSession } from "../../../../lib/session.js";
+import { createPendingMfaSession } from "../../../../lib/session.js";
 import { isRateLimited, clientIp } from "../../../../lib/rateLimit.js";
+import { getAdminMfa } from "../../../../lib/storage.js";
 
 // Constant-time comparison — a plain !== lets an attacker on the same
 // network path statistically recover the password character-by-character
@@ -27,6 +28,10 @@ export async function POST(request) {
     return Response.json({ error: "Incorrect password." }, { status: 401 });
   }
 
-  await createSession("admin", "admin");
-  return Response.json({ ok: true });
+  // Password alone never grants the real admin session — only a short-lived
+  // pending state that the MFA step (verify or first-time setup) can
+  // upgrade into one. See lib/session.js.
+  await createPendingMfaSession();
+  const mfa = await getAdminMfa();
+  return Response.json({ ok: true, mfaEnabled: Boolean(mfa?.enabled_at) });
 }

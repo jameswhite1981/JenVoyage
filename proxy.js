@@ -38,9 +38,12 @@ export async function proxy(request) {
   }
 
   // API routes aren't covered by the page-level checks above — enforce the
-  // same session requirement here. Only the login/magic-link endpoints stay
-  // public (there's no session yet when calling them).
-  if (pathname.startsWith("/api/admin") && pathname !== "/api/admin/login") {
+  // same session requirement here. The login endpoint and the MFA
+  // setup/confirm/verify endpoints stay public here (they each do their own
+  // auth check against the short-lived pending-MFA cookie instead, since a
+  // full jv_admin_session doesn't exist yet at that point in the login flow).
+  const MFA_PATHS = ["/api/admin/mfa/setup", "/api/admin/mfa/confirm", "/api/admin/mfa/verify"];
+  if (pathname.startsWith("/api/admin") && pathname !== "/api/admin/login" && !MFA_PATHS.includes(pathname)) {
     const payload = await getPayload(request, "admin");
     if (!payload || payload.role !== "admin") {
       return NextResponse.json({ error: "Unauthorised" }, { status: 401 });

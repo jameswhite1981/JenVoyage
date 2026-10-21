@@ -95,6 +95,22 @@ CREATE TABLE itinerary_templates (
   created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Admin MFA — a singleton row (there's only one admin). totp_secret is only
+-- ever written once enrollment is confirmed (the in-progress, unconfirmed
+-- secret during setup lives only in a short-lived signed cookie, never
+-- persisted). backup_codes holds hashed (not plaintext) one-time codes,
+-- each with a used_at that gets stamped the first time it's redeemed.
+-- Lost access to both the authenticator and the backup codes? Recovery is
+-- `DELETE FROM admin_mfa;` directly in Supabase — the next login prompts
+-- fresh enrollment, same as the very first setup.
+CREATE TABLE admin_mfa (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  totp_secret  TEXT,
+  backup_codes JSONB NOT NULL DEFAULT '[]',  -- [{ hash, used_at }]
+  enabled_at   TIMESTAMPTZ,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- Customer-submitted reviews, shown on /reviews once Jen approves them —
 -- public submission but moderated, so nothing fake or abusive goes live
 -- unreviewed. Not linked to an enquiry: review submission has no login, so
@@ -116,6 +132,7 @@ REVOKE ALL ON enquiries           FROM anon, authenticated;
 REVOKE ALL ON magic_links         FROM anon, authenticated;
 REVOKE ALL ON itinerary_templates FROM anon, authenticated;
 REVOKE ALL ON reviews             FROM anon, authenticated;
+REVOKE ALL ON admin_mfa           FROM anon, authenticated;
 
 -- Enable RLS with no policies — hard default-deny for anon/authenticated.
 -- The server-side service role key bypasses RLS entirely, so the app is
@@ -125,3 +142,4 @@ ALTER TABLE enquiries           ENABLE ROW LEVEL SECURITY;
 ALTER TABLE magic_links          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE itinerary_templates  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews              ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admin_mfa            ENABLE ROW LEVEL SECURITY;
