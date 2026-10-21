@@ -221,6 +221,11 @@ const SECTIONS = [
   },
 ];
 
+export const metadata = {
+  title: "Terms & Conditions",
+  description: "The service terms and conditions for booking a bespoke itinerary-planning service from Jen Voyage.",
+};
+
 export default function TermsPage() {
   return (
     <LegalPageLayout

@@ -126,6 +126,11 @@ const SECTIONS = [
   },
 ];
 
+export const metadata = {
+  title: "Website Terms and Conditions",
+  description: "The terms governing use of the jenvoyage.com website.",
+};
+
 export default function WebsiteTermsPage() {
   return (
     <LegalPageLayout

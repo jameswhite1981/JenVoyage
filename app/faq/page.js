@@ -11,6 +11,11 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 
 const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from%20Jen%20Voyage%20website";
 
+export const metadata = {
+  title: "FAQ",
+  description: "Answers to common questions about how Jen Voyage works, pricing, what's included in your itinerary, and how to book.",
+};
+
 const FAQS = [
   {
     q: "What should I expect?",

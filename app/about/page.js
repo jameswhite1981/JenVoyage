@@ -11,6 +11,11 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 
 const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from%20Jen%20Voyage%20website";
 
+export const metadata = {
+  title: "About",
+  description: "Meet Jen, the travel consultant behind Jen Voyage — why bespoke, human-planned itineraries beat generic packages.",
+};
+
 export default function AboutPage() {
   return (
     <div style={{ fontFamily: "Georgia,serif", backgroundImage: `linear-gradient(rgba(242,237,228,0.88),rgba(242,237,228,0.88)),url('/map-bg.svg')`, backgroundSize: "cover", backgroundAttachment: "fixed", minHeight: "100vh", color: COLORS.ink }}>

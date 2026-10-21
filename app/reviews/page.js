@@ -18,6 +18,11 @@ const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from
 // appear until the next deploy.
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Reviews",
+  description: "What travellers say about their bespoke Jen Voyage itineraries.",
+};
+
 export default async function ReviewsPage() {
   const REVIEWS = await listApprovedReviews();
   return (

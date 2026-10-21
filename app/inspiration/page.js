@@ -11,6 +11,11 @@ const sans = { fontFamily: "system-ui,sans-serif" };
 
 const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from%20Jen%20Voyage%20website";
 
+export const metadata = {
+  title: "Inspiration",
+  description: "Browse real trip itineraries crafted by Jen Voyage — Japan, Thailand, Morocco and more — for ideas on what your own bespoke holiday could look like.",
+};
+
 const TRIPS = [
   {
     flag: "🇯🇵",
