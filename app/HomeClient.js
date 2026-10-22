@@ -1214,7 +1214,7 @@ export default function JenVoyagePage() {
               <label style={label}>How did you hear about Jen Voyage?</label>
               <select style={{...inp,appearance:"none"}} value={form.referral} onChange={e=>upd("referral",e.target.value)}>
                 <option value="">Select…</option>
-                <option>Instagram</option><option>Google search</option><option>Word of mouth</option><option>Travel blog</option><option>Other</option>
+                <option>Instagram</option><option>Google search</option><option>Word of mouth</option><option>Travel blog</option><option>Business card</option><option>Other</option>
               </select>
             </div>
             <div style={formNav}>
