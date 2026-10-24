@@ -1044,7 +1044,7 @@ export default function JenVoyagePage() {
 
             <label style={{ ...sans, display:"flex", alignItems:"flex-start", gap:"0.6rem", fontSize:"0.8rem", color:COLORS.dusk, fontWeight:300, lineHeight:1.6, marginTop:"0.5rem", cursor:"pointer" }}>
               <input type="checkbox" checked={form.agreedToTerms} onChange={e=>upd("agreedToTerms",e.target.checked)} style={{ marginTop:"0.2rem", flexShrink:0 }} />
-              I have read and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{ color:COLORS.ink, textDecoration:"underline" }}>terms and conditions</a>, and understand that Jen Voyage provides curated suggestions and direct booking links so I can book my flights, accommodation and trips independently, my way. This is not a travel agency that books on my behalf.
+              I have read the terms and conditions and understand that Jen Voyage provides curated suggestions and direct booking links so I can book my flights, accommodation and trips independently, my way. This is not a travel agency that books on my behalf.
             </label>
 
             <div style={formNav}>
