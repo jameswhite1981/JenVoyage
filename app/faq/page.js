@@ -14,6 +14,7 @@ const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from
 export const metadata = {
   title: "FAQ",
   description: "Answers to common questions about how Jen Voyage works, pricing, what's included in your itinerary, and how to book.",
+  alternates: { canonical: "/faq" },
 };
 
 const FAQS = [

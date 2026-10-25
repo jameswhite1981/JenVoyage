@@ -14,6 +14,7 @@ const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from
 export const metadata = {
   title: "Inspiration",
   description: "Browse real trip itineraries crafted by Jen Voyage — Japan, Thailand, Morocco and more — for ideas on what your own bespoke holiday could look like.",
+  alternates: { canonical: "/inspiration" },
 };
 
 const TRIPS = [

@@ -166,6 +166,7 @@ const SECTIONS = [
 export const metadata = {
   title: "Privacy Policy",
   description: "How Jen Voyage collects, stores, uses and protects your personal data.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {

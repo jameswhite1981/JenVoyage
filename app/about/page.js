@@ -14,6 +14,7 @@ const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from
 export const metadata = {
   title: "About",
   description: "Meet Jen, the travel consultant behind Jen Voyage — why bespoke, human-planned itineraries beat generic packages.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

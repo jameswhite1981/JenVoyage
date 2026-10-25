@@ -36,6 +36,7 @@ const SECTIONS = [
 export const metadata = {
   title: "Cookies Policy",
   description: "How Jen Voyage uses cookies — strictly necessary login cookies only, no tracking or analytics cookies.",
+  alternates: { canonical: "/cookies" },
 };
 
 export default function CookiesPage() {

@@ -21,6 +21,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Reviews",
   description: "What travellers say about their bespoke Jen Voyage itineraries.",
+  alternates: { canonical: "/reviews" },
 };
 
 export default async function ReviewsPage() {
