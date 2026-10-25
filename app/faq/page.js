@@ -58,6 +58,25 @@ const FAQS = [
   },
 ];
 
+// FAQPage structured data — lets Google show these Q&As directly as an
+// expandable rich result in search, not just a blue link. Built from the
+// same FAQS array that renders the page, so it can never drift out of
+// sync with what's actually shown. Only the plain-text parts (q, a, list)
+// go in; the embedded itinerary screenshots aren't representable as
+// schema.org text and are left out.
+const FAQ_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map(({ q, a, list }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: list ? `${a} ${list.join(" ")}` : a,
+    },
+  })),
+};
+
 const DIFFERENCES = [
   { icon: "📋", title: "Fully costed from the start", body: "Every itinerary includes estimated excursion costs, accommodation ranges, and a per-person total, so no surprises when you arrive." },
   { icon: "🗺️", title: "Geographically smart routing", body: "We plan around the map, not the brochure. Regions are grouped to minimise unnecessary travel days and maximise time in the places that matter." },
@@ -67,6 +86,10 @@ const DIFFERENCES = [
 export default function FaqPage() {
   return (
     <div style={{ fontFamily: "Georgia,serif", backgroundImage: `linear-gradient(rgba(242,237,228,0.88),rgba(242,237,228,0.88)),url('/map-bg.svg')`, backgroundSize: "cover", backgroundAttachment: "fixed", minHeight: "100vh", color: COLORS.ink }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD).replace(/</g, "\\u003c") }}
+      />
 
       {/* Minimal nav */}
       <div className="jv-nav" style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"1.5rem 2rem", borderBottom:`1px solid ${COLORS.stone}` }}>
