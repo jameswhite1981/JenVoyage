@@ -15,6 +15,11 @@ const CONTACT_MAILTO = "mailto:jenvoyageyourway@gmail.com?subject=Enquiry%20from
 // not a screenshot. See app/admin/templates for how Jen manages these.
 const TEMPLATE_ID = "926c37ad-c44b-41c8-9a21-83b078be0abc";
 
+// Fetched live rather than baked in at build time, so an edit to the
+// saved template (via /admin/templates) shows up on next page load
+// instead of needing a redeploy to regenerate the static page.
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Sample Itinerary: New York",
   description: "A full, real example of a bespoke Jen Voyage itinerary — shown exactly as a customer sees it, flights, accommodation, day-by-day plan and all.",
