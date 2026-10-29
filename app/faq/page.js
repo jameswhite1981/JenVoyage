@@ -35,6 +35,7 @@ const FAQS = [
       { src: "/examples/sample-itinerary-flights-accommodation.png", width: 1985, height: 2491, alt: "Sample itinerary flights and accommodation sections, each suggestion with a direct booking link" },
       { src: "/examples/sample-itinerary-daily-plan.png", width: 1985, height: 2291, alt: "Sample day-by-day itinerary with suggested activities, links and costs" },
     ],
+    exampleLink: { href: "/examples/new-york", label: "See a full, live example itinerary (New York) →" },
   },
   {
     q: "Why should I pay you to design my itinerary when I can just do it myself?",
@@ -118,7 +119,7 @@ export default function FaqPage() {
 
       {/* FAQs */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "1.5rem 1.5rem", borderBottom: `1px solid ${COLORS.stone}` }}>
-        {FAQS.map(({ q, a, list, images }, i) => (
+        {FAQS.map(({ q, a, list, images, exampleLink }, i) => (
           <details key={i} style={{ borderTop: i === 0 ? "none" : `1px solid ${COLORS.stone}`, padding: "1.25rem 0" }}>
             <summary style={{ ...sans, fontSize: "0.95rem", fontWeight: 500, color: COLORS.ink, cursor: "pointer", listStyle: "none", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
               {q}
@@ -138,6 +139,11 @@ export default function FaqPage() {
                   <Image key={j} src={img.src} alt={img.alt} width={img.width} height={img.height} style={{ width: "100%", height: "auto", border: `1px solid ${COLORS.stone}` }} />
                 ))}
               </div>
+            )}
+            {exampleLink && (
+              <Link href={exampleLink.href} style={{ ...sans, display: "inline-block", fontSize: "0.82rem", fontWeight: 500, color: COLORS.gold, textDecoration: "underline", marginTop: "1.25rem" }}>
+                {exampleLink.label}
+              </Link>
             )}
           </details>
         ))}
