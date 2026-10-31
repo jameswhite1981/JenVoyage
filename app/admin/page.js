@@ -32,7 +32,9 @@ function fmtDate(s) {
 
 function EnquiryRow({ e }) {
   const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
-  const contact = CONTACT_METHOD_LABEL[e.unsure_contact_method];
+  // Once published, the "customer wants contact" request has already been
+  // acted on — don't keep flagging it as an open item.
+  const contact = e.status !== "published" ? CONTACT_METHOD_LABEL[e.unsure_contact_method] : null;
   const contactDetail = e.unsure_contact_method === "email" ? e.email : (e.phone || e.email);
   const displayName = `${e.first_name} ${e.last_name || ""}`.trim();
   return (
@@ -77,7 +79,7 @@ export default async function AdminDashboard() {
   let wantsContact = 0;
   enquiries?.forEach(e => {
     if (counts[e.status] !== undefined) counts[e.status]++;
-    if (e.unsure_contact_method) wantsContact++;
+    if (e.unsure_contact_method && e.status !== "published") wantsContact++;
   });
 
   const activeEnquiries = enquiries?.filter(e => e.status !== "published") || [];
