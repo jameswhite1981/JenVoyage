@@ -16,16 +16,21 @@ function DealCheckRow({ dealCheck, onToggleHandled }) {
   return (
     <div style={{ background:C.white, border:`1px solid ${dealCheck.handled_at ? C.stone : C.gold}`, padding:"1.1rem 1.5rem", marginBottom:"1rem" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:"0.75rem", marginBottom:"0.6rem" }}>
-        <div>
+        <Link href={`/admin/deal-checks/${dealCheck.id}`} style={{ textDecoration:"none", color:"inherit" }}>
           <div style={{ fontSize:"0.95rem", fontWeight:500 }}>{dealCheck.name}</div>
           <div style={{ ...sans, fontSize:"0.72rem", color:C.stone, marginTop:"0.2rem" }}>
             {dealCheck.email} · Submitted {fmtDate(dealCheck.created_at)}
-            {dealCheck.handled_at && ` · Handled ${fmtDate(dealCheck.handled_at)}`}
+            {dealCheck.published_at && ` · Sent ${fmtDate(dealCheck.published_at)}`}
           </div>
+        </Link>
+        <div style={{ display:"flex", gap:"0.6rem" }}>
+          <Link href={`/admin/deal-checks/${dealCheck.id}`} style={{ ...smallBtn, textDecoration:"none", display:"inline-block" }}>
+            {dealCheck.published_at ? "View response" : "Respond"}
+          </Link>
+          <button style={smallBtn} onClick={toggle} disabled={busy}>
+            {busy ? "…" : dealCheck.handled_at ? "Mark unhandled" : "Mark handled"}
+          </button>
         </div>
-        <button style={smallBtn} onClick={toggle} disabled={busy}>
-          {busy ? "…" : dealCheck.handled_at ? "Mark unhandled" : "Mark handled"}
-        </button>
       </div>
       {dealCheck.link && (
         <div style={{ marginBottom:"0.5rem" }}>

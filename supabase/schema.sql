@@ -139,8 +139,21 @@ CREATE TABLE deal_checks (
   email       TEXT NOT NULL,
   description TEXT NOT NULL,
   link        TEXT,
-  handled_at  TIMESTAMPTZ
+  handled_at  TIMESTAMPTZ,
+
+  -- Jen's response — built in /admin/deal-checks/[id], same shape as the
+  -- itinerary editor's accommodation-options pattern (a label + URL per
+  -- suggested alternative, tagged flight/hotel/other). response_token is
+  -- an unguessable public id (not a login token — no session, just a
+  -- direct read, same trust model as a shared itinerary PDF link) that
+  -- resolves to /deal-check/view/[token] once published.
+  response_links   JSONB NOT NULL DEFAULT '[]',  -- [{ type, label, url }]
+  response_message TEXT,
+  response_token   TEXT UNIQUE,
+  published_at     TIMESTAMPTZ
 );
+
+CREATE INDEX deal_checks_response_token_idx ON deal_checks (response_token);
 
 CREATE INDEX deal_checks_handled_idx ON deal_checks (handled_at);
 

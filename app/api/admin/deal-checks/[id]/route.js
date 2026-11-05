@@ -1,10 +1,26 @@
-import { markDealCheckHandled } from "../../../../../lib/storage.js";
+import { getDealCheck, markDealCheckHandled, updateDealCheck } from "../../../../../lib/storage.js";
 
+export async function GET(request, { params }) {
+  const { id } = await params;
+  const dealCheck = await getDealCheck(id);
+  if (!dealCheck) return Response.json({ error: "Not found" }, { status: 404 });
+  return Response.json(dealCheck);
+}
+
+// Used both by the list page's quick "Mark handled" toggle ({ handled }) and
+// the response editor's "Save draft" ({ response_links, response_message }),
+// so the editor can be saved without publishing/emailing the customer yet.
 export async function PATCH(request, { params }) {
   const { id } = await params;
-  const { handled } = await request.json();
+  const body = await request.json();
   try {
-    const dealCheck = await markDealCheckHandled(id, handled);
+    if (typeof body.handled === "boolean" && Object.keys(body).length === 1) {
+      const dealCheck = await markDealCheckHandled(id, body.handled);
+      return Response.json(dealCheck);
+    }
+    const allowed = ["response_links", "response_message"];
+    const updates = Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
+    const dealCheck = await updateDealCheck(id, updates);
     return Response.json(dealCheck);
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
