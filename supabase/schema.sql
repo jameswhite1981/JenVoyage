@@ -154,6 +154,10 @@ CREATE TABLE deal_checks (
   -- there's no party-size data here to divide a total by.
   response_total_cost      TEXT,
   response_per_person_cost TEXT,
+  response_amount_saved    TEXT,
+  -- Jen's explicit verdict — nullable so a draft-saved-but-not-decided
+  -- response doesn't silently default to either answer.
+  response_verdict TEXT CHECK (response_verdict IN ('deal', 'not_a_deal')),
   response_token   TEXT UNIQUE,
   published_at     TIMESTAMPTZ
 );

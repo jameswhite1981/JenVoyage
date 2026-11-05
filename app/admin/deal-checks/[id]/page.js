@@ -26,6 +26,8 @@ export default function DealCheckEditor() {
   const [message, setMessage] = useState("");
   const [totalCost, setTotalCost] = useState("");
   const [perPersonCost, setPerPersonCost] = useState("");
+  const [amountSaved, setAmountSaved] = useState("");
+  const [verdict, setVerdict] = useState(null);
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [msg, setMsg] = useState("");
@@ -39,6 +41,8 @@ export default function DealCheckEditor() {
         setMessage(data.response_message || "");
         setTotalCost(data.response_total_cost || "");
         setPerPersonCost(data.response_per_person_cost || "");
+        setAmountSaved(data.response_amount_saved || "");
+        setVerdict(data.response_verdict || null);
       });
   }, [id]);
 
@@ -54,7 +58,7 @@ export default function DealCheckEditor() {
       const res = await fetch(`/api/admin/deal-checks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ response_links: cleanLinks(), response_message: message, response_total_cost: totalCost, response_per_person_cost: perPersonCost }),
+        body: JSON.stringify({ response_links: cleanLinks(), response_message: message, response_total_cost: totalCost, response_per_person_cost: perPersonCost, response_amount_saved: amountSaved, response_verdict: verdict }),
       });
       if (!res.ok) throw new Error("Save failed");
       setMsg("Draft saved.");
@@ -69,7 +73,7 @@ export default function DealCheckEditor() {
       const res = await fetch(`/api/admin/deal-checks/${id}/publish`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ response_links: cleanLinks(), response_message: message, response_total_cost: totalCost, response_per_person_cost: perPersonCost }),
+        body: JSON.stringify({ response_links: cleanLinks(), response_message: message, response_total_cost: totalCost, response_per_person_cost: perPersonCost, response_amount_saved: amountSaved, response_verdict: verdict }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Publish failed");
@@ -157,7 +161,7 @@ export default function DealCheckEditor() {
         <div style={{ ...sans, fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, margin:"0 0 1rem" }}>
           Cost summary
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem", marginBottom:"2rem" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"1rem", marginBottom:"1.5rem" }}>
           <div>
             <label style={lbl}>Total cost</label>
             <input style={inp} value={totalCost} onChange={e => setTotalCost(e.target.value)} placeholder="£XXX" />
@@ -165,6 +169,31 @@ export default function DealCheckEditor() {
           <div>
             <label style={lbl}>Per person cost</label>
             <input style={inp} value={perPersonCost} onChange={e => setPerPersonCost(e.target.value)} placeholder="£XXX" />
+          </div>
+          <div>
+            <label style={lbl}>Amount saved</label>
+            <input style={inp} value={amountSaved} onChange={e => setAmountSaved(e.target.value)} placeholder="£XXX" />
+          </div>
+        </div>
+
+        {/* Verdict */}
+        <div style={{ marginBottom:"2rem" }}>
+          <label style={lbl}>Verdict</label>
+          <div style={{ display:"flex", gap:"0.75rem" }}>
+            <button
+              type="button"
+              onClick={() => setVerdict(v => v === "deal" ? null : "deal")}
+              style={{ ...sans, flex:1, textAlign:"center", border:`1.5px solid ${verdict === "deal" ? "#2F6B3A" : C.stone}`, background: verdict === "deal" ? "#e9f3ea" : C.white, color: verdict === "deal" ? "#2F6B3A" : C.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.75rem 1rem", cursor:"pointer" }}
+            >
+              ✓ Good deal
+            </button>
+            <button
+              type="button"
+              onClick={() => setVerdict(v => v === "not_a_deal" ? null : "not_a_deal")}
+              style={{ ...sans, flex:1, textAlign:"center", border:`1.5px solid ${verdict === "not_a_deal" ? "#9B3A2A" : C.stone}`, background: verdict === "not_a_deal" ? "#fdf0ee" : C.white, color: verdict === "not_a_deal" ? "#9B3A2A" : C.dusk, fontSize:"0.78rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.75rem 1rem", cursor:"pointer" }}
+            >
+              ✕ Not a deal
+            </button>
           </div>
         </div>
 

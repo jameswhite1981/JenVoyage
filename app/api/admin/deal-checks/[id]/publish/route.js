@@ -4,7 +4,7 @@ import { sendDealCheckResponse } from "../../../../../../lib/email.js";
 
 export async function POST(request, { params }) {
   const { id } = await params;
-  const { response_links, response_message, response_total_cost, response_per_person_cost } = await request.json();
+  const { response_links, response_message, response_total_cost, response_per_person_cost, response_amount_saved, response_verdict } = await request.json();
 
   const existing = await getDealCheck(id);
   if (!existing) return Response.json({ error: "Not found" }, { status: 404 });
@@ -20,6 +20,8 @@ export async function POST(request, { params }) {
       response_message: response_message || null,
       response_total_cost: response_total_cost || null,
       response_per_person_cost: response_per_person_cost || null,
+      response_amount_saved: response_amount_saved || null,
+      response_verdict: response_verdict || null,
       response_token: token,
       published_at: new Date().toISOString(),
     });

@@ -23,7 +23,14 @@ function DealCheckRow({ dealCheck, onToggleHandled, onDelete }) {
     <div style={{ background:C.white, border:`1px solid ${dealCheck.handled_at ? C.stone : C.gold}`, padding:"1.1rem 1.5rem", marginBottom:"1rem" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:"0.75rem", marginBottom:"0.6rem" }}>
         <Link href={`/admin/deal-checks/${dealCheck.id}`} style={{ textDecoration:"none", color:"inherit" }}>
-          <div style={{ fontSize:"0.95rem", fontWeight:500 }}>{dealCheck.name}</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"0.6rem" }}>
+            <div style={{ fontSize:"0.95rem", fontWeight:500 }}>{dealCheck.name}</div>
+            {dealCheck.response_verdict && (
+              <span style={{ ...sans, fontSize:"0.62rem", fontWeight:600, letterSpacing:"0.08em", textTransform:"uppercase", padding:"0.2rem 0.5rem", background: dealCheck.response_verdict === "deal" ? "#e9f3ea" : "#fdf0ee", color: dealCheck.response_verdict === "deal" ? "#2F6B3A" : "#9B3A2A" }}>
+                {dealCheck.response_verdict === "deal" ? "Good deal" : "Not a deal"}
+              </span>
+            )}
+          </div>
           <div style={{ ...sans, fontSize:"0.72rem", color:C.stone, marginTop:"0.2rem" }}>
             {dealCheck.email} · Submitted {fmtDate(dealCheck.created_at)}
             {dealCheck.published_at && ` · Sent ${fmtDate(dealCheck.published_at)}`}

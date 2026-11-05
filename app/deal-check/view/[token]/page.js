@@ -42,9 +42,17 @@ export default async function DealCheckViewPage({ params }) {
         ) : (
           <>
             <div style={{ ...sans, fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.gold, marginBottom: "0.75rem", textAlign:"center" }}>Deal Check</div>
-            <h1 style={{ fontSize: "clamp(1.8rem,4.5vw,2.6rem)", fontWeight: 300, lineHeight: 1.15, marginBottom: "2rem", textAlign:"center", color:"#1C3461" }}>
+            <h1 style={{ fontSize: "clamp(1.8rem,4.5vw,2.6rem)", fontWeight: 300, lineHeight: 1.15, marginBottom: dealCheck.response_verdict ? "1.5rem" : "2rem", textAlign:"center", color:"#1C3461" }}>
               Hi {dealCheck.name}, here&apos;s what I found
             </h1>
+
+            {dealCheck.response_verdict && (
+              <div style={{ textAlign:"center", marginBottom:"2rem" }}>
+                <span style={{ ...sans, display:"inline-block", fontSize:"0.78rem", fontWeight:600, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0.6rem 1.5rem", background: dealCheck.response_verdict === "deal" ? "#e9f3ea" : "#fdf0ee", color: dealCheck.response_verdict === "deal" ? "#2F6B3A" : "#9B3A2A" }}>
+                  {dealCheck.response_verdict === "deal" ? "✓ This is a good deal" : "✕ This isn't a great deal"}
+                </span>
+              </div>
+            )}
 
             {dealCheck.response_message && (
               <div style={{ background: COLORS.white, borderLeft: `3px solid ${COLORS.gold}`, padding: "1.25rem 1.5rem", marginBottom: "2rem", fontSize: "0.95rem", lineHeight: 1.8, color: COLORS.dusk, whiteSpace: "pre-wrap" }}>
@@ -76,7 +84,7 @@ export default async function DealCheckViewPage({ params }) {
               </div>
             )}
 
-            {(dealCheck.response_total_cost || dealCheck.response_per_person_cost) && (
+            {(dealCheck.response_total_cost || dealCheck.response_per_person_cost || dealCheck.response_amount_saved) && (
               <div style={{ background: COLORS.mist, border:`1px solid ${COLORS.stone}`, padding: "1.25rem 1.5rem", marginBottom: "2.5rem" }}>
                 <div style={{ ...sans, fontSize: "0.65rem", letterSpacing: "0.15em", textTransform: "uppercase", color: COLORS.gold, marginBottom: "0.75rem" }}>
                   Cost summary
@@ -88,9 +96,15 @@ export default async function DealCheckViewPage({ params }) {
                   </div>
                 )}
                 {dealCheck.response_per_person_cost && (
-                  <div style={{ display:"flex", justifyContent:"space-between", ...sans, fontSize:"0.88rem", color:COLORS.ink }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", ...sans, fontSize:"0.88rem", color:COLORS.ink, marginBottom: dealCheck.response_amount_saved ? "0.4rem" : 0 }}>
                     <span>Per person</span>
                     <strong>{dealCheck.response_per_person_cost}</strong>
+                  </div>
+                )}
+                {dealCheck.response_amount_saved && (
+                  <div style={{ display:"flex", justifyContent:"space-between", ...sans, fontSize:"0.88rem", color:"#2F6B3A" }}>
+                    <span>You&apos;d save</span>
+                    <strong>{dealCheck.response_amount_saved}</strong>
                   </div>
                 )}
               </div>
