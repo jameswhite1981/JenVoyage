@@ -10,9 +10,15 @@ function fmtDate(s) {
   return new Date(s).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" });
 }
 
-function DealCheckRow({ dealCheck, onToggleHandled }) {
+function DealCheckRow({ dealCheck, onToggleHandled, onDelete }) {
   const [busy, setBusy] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const toggle = async () => { setBusy(true); await onToggleHandled(dealCheck.id, !dealCheck.handled_at); setBusy(false); };
+  const handleDelete = async () => {
+    if (!confirm(`Delete the Deal Check request from ${dealCheck.name}? This can't be undone.`)) return;
+    setDeleting(true);
+    await onDelete(dealCheck.id);
+  };
   return (
     <div style={{ background:C.white, border:`1px solid ${dealCheck.handled_at ? C.stone : C.gold}`, padding:"1.1rem 1.5rem", marginBottom:"1rem" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:"0.75rem", marginBottom:"0.6rem" }}>
@@ -30,6 +36,15 @@ function DealCheckRow({ dealCheck, onToggleHandled }) {
           <button style={smallBtn} onClick={toggle} disabled={busy}>
             {busy ? "…" : dealCheck.handled_at ? "Mark unhandled" : "Mark handled"}
           </button>
+          {dealCheck.handled_at && (
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              style={{ ...sans, background:"none", border:"none", color:"#9B3A2A", fontSize:"0.68rem", fontWeight:500, letterSpacing:"0.08em", textTransform:"uppercase", cursor:"pointer", padding:"0.4rem 0.25rem", opacity: deleting ? 0.5 : 1 }}
+            >
+              {deleting ? "Deleting…" : "Delete"}
+            </button>
+          )}
         </div>
       </div>
       {dealCheck.link && (
@@ -61,6 +76,11 @@ export default function AdminDealChecksPage() {
     load();
   };
 
+  const deleteDealCheck = async (id) => {
+    await fetch(`/api/admin/deal-checks/${id}`, { method: "DELETE" });
+    load();
+  };
+
   if (!dealChecks) return <div style={{ fontFamily:"Georgia,serif", background:C.sand, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.stone }}>Loading…</div>;
 
   const outstanding = dealChecks.filter(d => !d.handled_at);
@@ -79,13 +99,13 @@ export default function AdminDealChecksPage() {
           Outstanding
         </div>
         {outstanding.length === 0 && <p style={{ ...sans, fontSize:"0.85rem", color:C.stone, marginBottom:"2rem" }}>Nothing waiting.</p>}
-        {outstanding.map(d => <DealCheckRow key={d.id} dealCheck={d} onToggleHandled={toggleHandled} />)}
+        {outstanding.map(d => <DealCheckRow key={d.id} dealCheck={d} onToggleHandled={toggleHandled} onDelete={deleteDealCheck} />)}
 
         <div style={{ ...sans, fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, margin:"2.5rem 0 1rem" }}>
           Handled
         </div>
         {handled.length === 0 && <p style={{ ...sans, fontSize:"0.85rem", color:C.stone }}>None yet.</p>}
-        {handled.map(d => <DealCheckRow key={d.id} dealCheck={d} onToggleHandled={toggleHandled} />)}
+        {handled.map(d => <DealCheckRow key={d.id} dealCheck={d} onToggleHandled={toggleHandled} onDelete={deleteDealCheck} />)}
       </div>
     </div>
   );

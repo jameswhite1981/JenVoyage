@@ -1,4 +1,4 @@
-import { getDealCheck, markDealCheckHandled, updateDealCheck } from "../../../../../lib/storage.js";
+import { getDealCheck, markDealCheckHandled, updateDealCheck, deleteDealCheck } from "../../../../../lib/storage.js";
 
 export async function GET(request, { params }) {
   const { id } = await params;
@@ -22,6 +22,16 @@ export async function PATCH(request, { params }) {
     const updates = Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
     const dealCheck = await updateDealCheck(id, updates);
     return Response.json(dealCheck);
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request, { params }) {
+  const { id } = await params;
+  try {
+    await deleteDealCheck(id);
+    return Response.json({ ok: true });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
   }
