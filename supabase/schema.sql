@@ -127,12 +127,30 @@ CREATE TABLE reviews (
 
 CREATE INDEX reviews_approved_idx ON reviews (approved_at);
 
+-- "Deal Check" submissions — a free public lead-magnet page where someone
+-- can ask Jen to sanity-check a deal they've already been offered by
+-- another provider. No file upload (just free text + an optional link to
+-- the deal), reviewed manually by Jen in /admin/deal-checks, not an
+-- automated/AI response.
+CREATE TABLE deal_checks (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  name        TEXT NOT NULL,
+  email       TEXT NOT NULL,
+  description TEXT NOT NULL,
+  link        TEXT,
+  handled_at  TIMESTAMPTZ
+);
+
+CREATE INDEX deal_checks_handled_idx ON deal_checks (handled_at);
+
 -- Revoke anonymous access — all DB access goes through the service role key on the server
 REVOKE ALL ON enquiries           FROM anon, authenticated;
 REVOKE ALL ON magic_links         FROM anon, authenticated;
 REVOKE ALL ON itinerary_templates FROM anon, authenticated;
 REVOKE ALL ON reviews             FROM anon, authenticated;
 REVOKE ALL ON admin_mfa           FROM anon, authenticated;
+REVOKE ALL ON deal_checks         FROM anon, authenticated;
 
 -- Enable RLS with no policies — hard default-deny for anon/authenticated.
 -- The server-side service role key bypasses RLS entirely, so the app is
@@ -143,3 +161,4 @@ ALTER TABLE magic_links          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE itinerary_templates  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_mfa            ENABLE ROW LEVEL SECURITY;
+ALTER TABLE deal_checks          ENABLE ROW LEVEL SECURITY;

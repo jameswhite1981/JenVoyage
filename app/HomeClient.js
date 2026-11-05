@@ -624,6 +624,7 @@ export default function JenVoyagePage() {
           <a href="/about" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>About</a>
           <a href="/reviews" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>Reviews</a>
           <a href="/faq" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>FAQ</a>
+          <a href="/deal-check" style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none" }}>Deal Check</a>
           <button onClick={()=>setScreen("pricing")} style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, background:"none", border:"none", cursor:"pointer", padding:0 }}>Pricing</button>
           <a href={CONTACT_MAILTO} style={{ ...sans, fontSize:"0.78rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.dusk, textDecoration:"none", border:`1px solid ${COLORS.dusk}`, padding:"0.4rem 0.9rem" }}>Contact</a>
         </div>
