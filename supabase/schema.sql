@@ -147,8 +147,13 @@ CREATE TABLE deal_checks (
   -- an unguessable public id (not a login token — no session, just a
   -- direct read, same trust model as a shared itinerary PDF link) that
   -- resolves to /deal-check/view/[token] once published.
-  response_links   JSONB NOT NULL DEFAULT '[]',  -- [{ type, label, url }]
+  response_links   JSONB NOT NULL DEFAULT '[]',  -- [{ type, label, url, price }]
   response_message TEXT,
+  -- Free text like the itinerary editor's own cost fields (e.g. "£450"),
+  -- not auto-summed from response_links — Jen enters these herself since
+  -- there's no party-size data here to divide a total by.
+  response_total_cost      TEXT,
+  response_per_person_cost TEXT,
   response_token   TEXT UNIQUE,
   published_at     TIMESTAMPTZ
 );

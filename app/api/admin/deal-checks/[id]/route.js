@@ -18,7 +18,7 @@ export async function PATCH(request, { params }) {
       const dealCheck = await markDealCheckHandled(id, body.handled);
       return Response.json(dealCheck);
     }
-    const allowed = ["response_links", "response_message"];
+    const allowed = ["response_links", "response_message", "response_total_cost", "response_per_person_cost"];
     const updates = Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
     const dealCheck = await updateDealCheck(id, updates);
     return Response.json(dealCheck);

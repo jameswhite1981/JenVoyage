@@ -16,7 +16,7 @@ function fmtDate(s) {
   return new Date(s).toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
 }
 
-function emptyLink() { return { type: "Flight", label: "", url: "" }; }
+function emptyLink() { return { type: "Flight", label: "", url: "", price: "" }; }
 
 export default function DealCheckEditor() {
   const { id } = useParams();
@@ -24,6 +24,8 @@ export default function DealCheckEditor() {
   const [dealCheck, setDealCheck] = useState(null);
   const [links, setLinks] = useState([]);
   const [message, setMessage] = useState("");
+  const [totalCost, setTotalCost] = useState("");
+  const [perPersonCost, setPerPersonCost] = useState("");
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [msg, setMsg] = useState("");
@@ -35,6 +37,8 @@ export default function DealCheckEditor() {
         setDealCheck(data);
         setLinks(data.response_links?.length ? data.response_links : [emptyLink()]);
         setMessage(data.response_message || "");
+        setTotalCost(data.response_total_cost || "");
+        setPerPersonCost(data.response_per_person_cost || "");
       });
   }, [id]);
 
@@ -50,7 +54,7 @@ export default function DealCheckEditor() {
       const res = await fetch(`/api/admin/deal-checks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ response_links: cleanLinks(), response_message: message }),
+        body: JSON.stringify({ response_links: cleanLinks(), response_message: message, response_total_cost: totalCost, response_per_person_cost: perPersonCost }),
       });
       if (!res.ok) throw new Error("Save failed");
       setMsg("Draft saved.");
@@ -65,7 +69,7 @@ export default function DealCheckEditor() {
       const res = await fetch(`/api/admin/deal-checks/${id}/publish`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ response_links: cleanLinks(), response_message: message }),
+        body: JSON.stringify({ response_links: cleanLinks(), response_message: message, response_total_cost: totalCost, response_per_person_cost: perPersonCost }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Publish failed");
@@ -126,7 +130,7 @@ export default function DealCheckEditor() {
         </div>
         {links.map((l, i) => (
           <div key={i} style={groupBox}>
-            <div style={{ display:"grid", gridTemplateColumns:"120px 1fr 40px", gap:"0.75rem", marginBottom:"0.75rem", alignItems:"end" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"110px 1fr 110px 40px", gap:"0.75rem", marginBottom:"0.75rem", alignItems:"end" }}>
               <div>
                 <label style={lbl}>Type</label>
                 <select style={{ ...inp, appearance:"none" }} value={l.type} onChange={e => updateLink(i, "type", e.target.value)}>
@@ -137,6 +141,10 @@ export default function DealCheckEditor() {
                 <label style={lbl}>Label</label>
                 <input style={inp} value={l.label} onChange={e => updateLink(i, "label", e.target.value)} placeholder="e.g. Same hotel, £140 cheaper on Booking.com" />
               </div>
+              <div>
+                <label style={lbl}>Price</label>
+                <input style={inp} value={l.price || ""} onChange={e => updateLink(i, "price", e.target.value)} placeholder="£XXX" />
+              </div>
               <button onClick={() => removeLink(i)} style={{ ...removeBtn, justifySelf:"start" }}>✕</button>
             </div>
             <label style={lbl}>Link</label>
@@ -144,6 +152,21 @@ export default function DealCheckEditor() {
           </div>
         ))}
         <button onClick={addLink} style={{ ...smallBtn, marginBottom:"2rem" }}>+ Add alternative</button>
+
+        {/* Cost summary */}
+        <div style={{ ...sans, fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", color:C.gold, margin:"0 0 1rem" }}>
+          Cost summary
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1rem", marginBottom:"2rem" }}>
+          <div>
+            <label style={lbl}>Total cost</label>
+            <input style={inp} value={totalCost} onChange={e => setTotalCost(e.target.value)} placeholder="£XXX" />
+          </div>
+          <div>
+            <label style={lbl}>Per person cost</label>
+            <input style={inp} value={perPersonCost} onChange={e => setPerPersonCost(e.target.value)} placeholder="£XXX" />
+          </div>
+        </div>
 
         {/* Message to customer */}
         <div style={{ marginBottom:"1.5rem" }}>

@@ -63,13 +63,36 @@ export default async function DealCheckViewPage({ params }) {
                       <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:COLORS.gold, marginBottom:"0.25rem" }}>{l.type}</div>
                       <div style={{ ...sans, fontSize:"0.88rem", color:COLORS.ink }}>{l.label}</div>
                     </div>
-                    {l.url && (
-                      <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ ...sans, fontSize:"0.72rem", fontWeight:500, color:COLORS.gold, textDecoration:"none", whiteSpace:"nowrap" }}>
-                        View →
-                      </a>
-                    )}
+                    <div style={{ display:"flex", alignItems:"center", gap:"1rem", flexShrink:0 }}>
+                      {l.price && <div style={{ ...sans, fontSize:"0.88rem", fontWeight:500, color:COLORS.ink, whiteSpace:"nowrap" }}>{l.price}</div>}
+                      {l.url && (
+                        <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ ...sans, fontSize:"0.72rem", fontWeight:500, color:COLORS.gold, textDecoration:"none", whiteSpace:"nowrap" }}>
+                          View →
+                        </a>
+                      )}
+                    </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {(dealCheck.response_total_cost || dealCheck.response_per_person_cost) && (
+              <div style={{ background: COLORS.mist, border:`1px solid ${COLORS.stone}`, padding: "1.25rem 1.5rem", marginBottom: "2.5rem" }}>
+                <div style={{ ...sans, fontSize: "0.65rem", letterSpacing: "0.15em", textTransform: "uppercase", color: COLORS.gold, marginBottom: "0.75rem" }}>
+                  Cost summary
+                </div>
+                {dealCheck.response_total_cost && (
+                  <div style={{ display:"flex", justifyContent:"space-between", ...sans, fontSize:"0.88rem", color:COLORS.ink, marginBottom:"0.4rem" }}>
+                    <span>Total cost</span>
+                    <strong>{dealCheck.response_total_cost}</strong>
+                  </div>
+                )}
+                {dealCheck.response_per_person_cost && (
+                  <div style={{ display:"flex", justifyContent:"space-between", ...sans, fontSize:"0.88rem", color:COLORS.ink }}>
+                    <span>Per person</span>
+                    <strong>{dealCheck.response_per_person_cost}</strong>
+                  </div>
+                )}
               </div>
             )}
 
