@@ -51,7 +51,7 @@ export default function DealCheckPage() {
       {/* Intro */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "2.5rem 1.5rem 1rem" }}>
         <p style={{ ...sans, fontSize: "0.95rem", fontWeight: 300, color: COLORS.dusk, lineHeight: 1.8, maxWidth: "62ch" }}>
-          Already been quoted a holiday by another agent or travel site? Before you book, send it over. Jen will take an honest look — flights, accommodation, what&apos;s actually included — and tell you straight whether it&apos;s good value or whether you could do better. No pressure to book with us instead, just a second opinion from someone who does this for a living.
+          Already been quoted a holiday by another agent or travel site? Before you book, send it over. Jen will take an honest look — flights, accommodation, what&apos;s actually included — and tell you straight whether it&apos;s good value or whether you could do better.
         </p>
       </div>
 
