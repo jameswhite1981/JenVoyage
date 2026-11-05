@@ -32,7 +32,11 @@ function DealCheckRow({ dealCheck, onToggleHandled }) {
           <a href={dealCheck.link} target="_blank" rel="noopener noreferrer" style={{ ...sans, fontSize:"0.8rem", color:C.gold }}>{dealCheck.link}</a>
         </div>
       )}
-      <p style={{ fontSize:"0.9rem", fontWeight:300, lineHeight:1.7, margin:0, color:C.ink, whiteSpace:"pre-wrap" }}>{dealCheck.description}</p>
+      {dealCheck.description ? (
+        <p style={{ fontSize:"0.9rem", fontWeight:300, lineHeight:1.7, margin:0, color:C.ink, whiteSpace:"pre-wrap" }}>{dealCheck.description}</p>
+      ) : (
+        <p style={{ ...sans, fontSize:"0.8rem", fontStyle:"italic", margin:0, color:C.stone }}>No description provided — see link above.</p>
+      )}
     </div>
   );
 }

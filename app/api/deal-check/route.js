@@ -9,15 +9,18 @@ export async function POST(request) {
 
   const { name, email, description, link } = await request.json().catch(() => ({}));
 
-  if (!name?.trim() || !email?.trim() || !description?.trim()) {
-    return Response.json({ error: "Please fill in your name, email and a description." }, { status: 400 });
+  if (!name?.trim() || !email?.trim()) {
+    return Response.json({ error: "Please fill in your name and email." }, { status: 400 });
+  }
+  if (!description?.trim() && !link?.trim()) {
+    return Response.json({ error: "Please add a description or a link to the deal." }, { status: 400 });
   }
 
   try {
     const dealCheck = await createDealCheck({
       name: name.trim(),
       email: email.trim(),
-      description: description.trim(),
+      description: description?.trim() || "",
       link: link?.trim() || null,
     });
     notifyNewDealCheck(dealCheck).catch((err) => console.error("[discord] deal-check notify failed —", err?.message || err));

@@ -20,8 +20,12 @@ export default function DealCheckForm() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !description.trim()) {
-      setError("Please fill in your name, email and a description of the deal.");
+    if (!name.trim() || !email.trim()) {
+      setError("Please fill in your name and email.");
+      return;
+    }
+    if (!description.trim() && !link.trim()) {
+      setError("Please add a description or a link to the deal.");
       return;
     }
     setSubmitting(true); setError("");
@@ -65,7 +69,7 @@ export default function DealCheckForm() {
         <input style={inp} value={link} onChange={e=>setLink(e.target.value)} placeholder="https://…" />
       </div>
       <div style={{ marginBottom:"1.25rem" }}>
-        <label style={lbl}>Tell us about the deal</label>
+        <label style={lbl}>Tell us about the deal (optional if you&apos;ve added a link above)</label>
         <textarea
           style={{ ...inp, minHeight:140, resize:"vertical" }}
           value={description}
