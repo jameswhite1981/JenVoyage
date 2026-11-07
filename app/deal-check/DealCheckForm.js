@@ -14,6 +14,10 @@ export default function DealCheckForm() {
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
+  const [totalCost, setTotalCost] = useState("");
+  const [adults, setAdults] = useState("2");
+  const [childrenUnder16, setChildrenUnder16] = useState("0");
+  const [transferIncluded, setTransferIncluded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
@@ -33,7 +37,10 @@ export default function DealCheckForm() {
       const res = await fetch("/api/deal-check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, description, link }),
+        body: JSON.stringify({
+          name, email, description, link,
+          totalCost, adults, childrenUnder16, transferIncluded,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
@@ -68,6 +75,24 @@ export default function DealCheckForm() {
         <label style={lbl}>Link to the deal (optional)</label>
         <input style={inp} value={link} onChange={e=>setLink(e.target.value)} placeholder="https://…" />
       </div>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"1rem", marginBottom:"1rem" }}>
+        <div>
+          <label style={lbl}>Total cost quoted</label>
+          <input style={inp} value={totalCost} onChange={e=>setTotalCost(e.target.value)} placeholder="£XXX" />
+        </div>
+        <div>
+          <label style={lbl}>Adults</label>
+          <input type="number" min="0" style={inp} value={adults} onChange={e=>setAdults(e.target.value)} />
+        </div>
+        <div>
+          <label style={lbl}>Children under 16</label>
+          <input type="number" min="0" style={inp} value={childrenUnder16} onChange={e=>setChildrenUnder16(e.target.value)} />
+        </div>
+      </div>
+      <label style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"1.25rem", cursor:"pointer" }}>
+        <input type="checkbox" checked={transferIncluded} onChange={e=>setTransferIncluded(e.target.checked)} />
+        <span style={{ ...sans, fontSize:"0.82rem", color:COLORS.dusk }}>Transfer included in the quote</span>
+      </label>
       <div style={{ marginBottom:"1.25rem" }}>
         <label style={lbl}>Tell us about the deal (optional if you&apos;ve added a link above)</label>
         <textarea

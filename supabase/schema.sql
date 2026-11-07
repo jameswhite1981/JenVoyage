@@ -141,6 +141,15 @@ CREATE TABLE deal_checks (
   link        TEXT,
   handled_at  TIMESTAMPTZ,
 
+  -- Details of the deal they're asking about, as submitted on the public
+  -- form — free text for the cost (e.g. "£2,400"), same convention as the
+  -- itinerary editor's own cost fields, since customers write it however
+  -- their quote showed it rather than a strict currency/number type.
+  quoted_total_cost  TEXT,
+  adults             INTEGER,
+  children_under_16  INTEGER,
+  transfer_included  BOOLEAN NOT NULL DEFAULT false,
+
   -- Jen's response — built in /admin/deal-checks/[id], same shape as the
   -- itinerary editor's accommodation-options pattern (a label + URL per
   -- suggested alternative, tagged flight/hotel/other). response_token is

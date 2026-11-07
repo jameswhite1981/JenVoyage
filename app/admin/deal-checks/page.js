@@ -54,6 +54,14 @@ function DealCheckRow({ dealCheck, onToggleHandled, onDelete }) {
           )}
         </div>
       </div>
+      {(dealCheck.quoted_total_cost || dealCheck.adults != null) && (
+        <div style={{ ...sans, fontSize:"0.78rem", color:C.dusk, marginBottom:"0.5rem" }}>
+          {dealCheck.quoted_total_cost && `Quoted ${dealCheck.quoted_total_cost}`}
+          {dealCheck.quoted_total_cost && dealCheck.adults != null && " · "}
+          {dealCheck.adults != null && `${dealCheck.adults} adult(s), ${dealCheck.children_under_16 ?? 0} child(ren) under 16`}
+          {dealCheck.transfer_included && " · Transfer included"}
+        </div>
+      )}
       {dealCheck.link && (
         <div style={{ marginBottom:"0.5rem" }}>
           <a href={dealCheck.link} target="_blank" rel="noopener noreferrer" style={{ ...sans, fontSize:"0.8rem", color:C.gold }}>{dealCheck.link}</a>

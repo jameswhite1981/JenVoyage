@@ -118,6 +118,15 @@ export default function DealCheckEditor() {
           <div style={{ ...sans, fontSize:"0.65rem", letterSpacing:"0.15em", textTransform:"uppercase", color:C.gold, marginBottom:"0.75rem" }}>
             What they submitted
           </div>
+          {(dealCheck.quoted_total_cost || dealCheck.adults != null || dealCheck.children_under_16 != null || dealCheck.transfer_included) && (
+            <div style={{ display:"flex", gap:"1.5rem", flexWrap:"wrap", marginBottom:"0.75rem", ...sans, fontSize:"0.82rem", color:C.ink }}>
+              {dealCheck.quoted_total_cost && <div><strong>Quoted:</strong> {dealCheck.quoted_total_cost}</div>}
+              {(dealCheck.adults != null || dealCheck.children_under_16 != null) && (
+                <div><strong>Party:</strong> {dealCheck.adults ?? "?"} adult(s), {dealCheck.children_under_16 ?? 0} child(ren) under 16</div>
+              )}
+              <div><strong>Transfer included:</strong> {dealCheck.transfer_included ? "Yes" : "No"}</div>
+            </div>
+          )}
           {dealCheck.link && (
             <div style={{ marginBottom:"0.6rem" }}>
               <a href={dealCheck.link} target="_blank" rel="noopener noreferrer" style={{ ...sans, fontSize:"0.84rem", color:C.gold }}>{dealCheck.link}</a>
