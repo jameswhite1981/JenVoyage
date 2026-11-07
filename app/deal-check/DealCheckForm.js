@@ -52,8 +52,11 @@ export default function DealCheckForm() {
   if (done) {
     return (
       <div style={{ textAlign:"center", padding:"2rem 1.5rem" }}>
-        <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk }}>
-          Thanks, {name}! Jen will take a look and get back to you at {email}.
+        <p style={{ ...sans, fontSize:"0.92rem", fontWeight:300, color:COLORS.dusk, marginBottom:"0.75rem" }}>
+          Thanks, {name}! Your check is being completed by Jen and you&apos;ll hear back at {email}.
+        </p>
+        <p style={{ ...sans, fontSize:"0.82rem", fontWeight:300, color:COLORS.stone }}>
+          Please check your &quot;junk&quot; mail folder in case you don&apos;t see a response in your inbox.
         </p>
       </div>
     );
