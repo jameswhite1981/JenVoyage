@@ -37,7 +37,6 @@ const FAQS = [
     ],
     exampleLinks: [
       { href: "/examples/new-york", label: "See a full, live example itinerary (New York) →" },
-      { href: "/deal-check/view/4fed874eb1e93b4b6b790e5a6ef67c3ac5234c0e77f32813", label: "See a real Deal Check response →" },
     ],
   },
   {
