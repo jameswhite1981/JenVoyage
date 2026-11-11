@@ -35,7 +35,10 @@ const FAQS = [
       { src: "/examples/sample-itinerary-flights-accommodation.png", width: 1985, height: 2491, alt: "Sample itinerary flights and accommodation sections, each suggestion with a direct booking link" },
       { src: "/examples/sample-itinerary-daily-plan.png", width: 1985, height: 2291, alt: "Sample day-by-day itinerary with suggested activities, links and costs" },
     ],
-    exampleLink: { href: "/examples/new-york", label: "See a full, live example itinerary (New York) →" },
+    exampleLinks: [
+      { href: "/examples/new-york", label: "See a full, live example itinerary (New York) →" },
+      { href: "/deal-check/view/4fed874eb1e93b4b6b790e5a6ef67c3ac5234c0e77f32813", label: "See a real Deal Check response →" },
+    ],
   },
   {
     q: "Why should I pay you to design my itinerary when I can just do it myself?",
@@ -120,7 +123,7 @@ export default function FaqPage() {
 
       {/* FAQs */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "1.5rem 1.5rem", borderBottom: `1px solid ${COLORS.stone}` }}>
-        {FAQS.map(({ q, a, list, images, exampleLink }, i) => (
+        {FAQS.map(({ q, a, list, images, exampleLinks }, i) => (
           <details key={i} style={{ borderTop: i === 0 ? "none" : `1px solid ${COLORS.stone}`, padding: "1.25rem 0" }}>
             <summary style={{ ...sans, fontSize: "0.95rem", fontWeight: 500, color: COLORS.ink, cursor: "pointer", listStyle: "none", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
               {q}
@@ -141,10 +144,14 @@ export default function FaqPage() {
                 ))}
               </div>
             )}
-            {exampleLink && (
-              <Link href={exampleLink.href} style={{ ...sans, display: "inline-block", fontSize: "0.82rem", fontWeight: 500, color: COLORS.gold, textDecoration: "underline", marginTop: "1.25rem" }}>
-                {exampleLink.label}
-              </Link>
+            {exampleLinks && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "1.25rem" }}>
+                {exampleLinks.map((ex, j) => (
+                  <Link key={j} href={ex.href} style={{ ...sans, display: "inline-block", fontSize: "0.82rem", fontWeight: 500, color: COLORS.gold, textDecoration: "underline" }}>
+                    {ex.label}
+                  </Link>
+                ))}
+              </div>
             )}
           </details>
         ))}
